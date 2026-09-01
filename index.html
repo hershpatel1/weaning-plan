@@ -6,133 +6,148 @@
 <title>Riyaan's Weaning Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --teal:#4C5FD5;--teal-dark:#3B4BB0;--teal-deep:#262F7A;--teal-light:#C7CDF5;--teal-surface:#EAEBFB;
-  --burgundy:#D6365B;--burgundy-light:#FBE1E7;--pink:#2FB8C4;
-  --amber-light:#FCEACB;--amber-deep:#8A5A00;
-  --bg-1:#F4F6FA;--bg-2:#EAEDF5;--card:#FFFFFF;--border:#E1E5EE;
-  --text:#151A23;--text-muted:#6B7280;
-  --shadow-sm:0 1px 2px rgba(21,26,35,0.05);--shadow-md:0 2px 6px rgba(21,26,35,0.07);
+  --coral:#FF6B57; --coral-dark:#E5503C;
+  --indigo:#6C63FF; --indigo-dark:#5148E0;
+  --amber:#F5A623; --amber-dark:#C6820D;
+  --teal:#17A6A6; --teal-dark:#0E7F7F;
+  --emerald:#1DA55E; --emerald-dark:#158048;
+  --root:#C96A2E; --leafy:#3FAE6A; --garden:#D6336C; --legume:#C99A2E; --spice:#8E4CC1; --allergenc:#2E9CD6;
+  --bg:#FAFAF8; --card:#FFFFFF; --border:#ECEAE3;
+  --text:#20232B; --text-muted:#767B87;
+  --burgundy:#D6336C; --burgundy-light:#FBE1E9;
+  --shadow-sm:0 1px 3px rgba(32,35,43,0.06); --shadow-md:0 4px 16px rgba(32,35,43,0.09);
 }
-
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-1);color:var(--text);line-height:1.5;font-size:14px;}
-.wrap{max-width:760px;margin:0 auto;padding:20px 18px 60px;}
-.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;padding-bottom:14px;border-bottom:2px solid var(--teal-dark);}
-h1{font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-0.01em;}
-.sync-status{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--bg-2);color:var(--text-muted);}
-.sync-status.live{background:var(--teal-surface);color:var(--teal-dark);}
-.sync-status.err{background:var(--burgundy-light);color:var(--burgundy);}
+body{font-family:'Nunito Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px;}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 90px;}
+.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+h1{font-family:'Baloo 2',sans-serif;font-size:23px;font-weight:800;color:var(--text);}
+.nav-link{font-size:12.5px;color:var(--indigo);text-decoration:none;font-weight:700;}
+.sync-status{font-size:9px;font-weight:800;padding:3px 9px;border-radius:20px;background:var(--border);color:var(--text-muted);}
+.sync-status.live{background:var(--emerald);color:#fff;}
+.sync-status.err{background:var(--burgundy);color:#fff;}
 
-section{margin-bottom:24px;}
-h2{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:var(--teal-dark);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.card{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm);border:1px solid var(--border);}
+section{margin-bottom:22px;}
+.section-label{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:9px;padding-left:2px;}
 
-/* Next meal */
-.next-meal{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:12px;padding:20px;}
-.next-meal .stage-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--teal-dark);background:var(--teal-surface);padding:3px 10px;border-radius:20px;margin-bottom:10px;}
-.next-meal .items{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,4.5vw,22px);font-weight:600;margin-bottom:4px;line-height:1.3;}
-.next-meal .meta{font-size:12.5px;color:var(--text-muted);margin-bottom:10px;}
-.next-meal .allergen-note{font-size:12.5px;color:var(--burgundy);font-weight:600;margin-bottom:10px;}
-.food-link{color:var(--teal-dark);cursor:pointer;background:var(--teal-surface);border:1px solid var(--teal-light);border-radius:6px;font:inherit;font-weight:600;padding:2px 8px;}
-.food-link:hover{background:var(--teal-light);}
-.hist-food-link{color:var(--teal-dark);cursor:pointer;background:none;border:none;font:inherit;font-weight:600;padding:0;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;}
-.btn{display:inline-block;background:var(--teal);color:#fff;border:none;border-radius:9px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;}
-.btn:hover{background:var(--teal-deep);}
-.btn.secondary{background:var(--card);color:var(--teal-dark);border:1px solid var(--teal-dark);}
-.btn.danger{background:var(--burgundy-light);color:var(--burgundy);}
+/* Bold full-bleed hero cards */
+.hero-card{border-radius:24px;padding:22px;color:#fff;box-shadow:var(--shadow-md);}
+.hero-card.c-coral{background:var(--coral);}
+.hero-card.c-indigo{background:var(--indigo);}
+.hero-card.c-amber{background:var(--amber);}
+.hero-card .hc-tag{font-size:11px;font-weight:800;background:rgba(255,255,255,0.28);display:inline-block;padding:3px 11px;border-radius:20px;margin-bottom:12px;}
+.hero-card .hc-items{font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;}
+.hero-card .hc-meta{font-size:12.5px;opacity:0.92;margin-bottom:14px;}
+.hero-card .hc-allergen{font-size:12.5px;font-weight:700;background:rgba(255,255,255,0.2);border-radius:10px;padding:8px 12px;margin-bottom:14px;}
+.badge-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.badge-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.22);border-radius:20px;padding:5px 12px 5px 5px;}
+.badge-chip .label{font-size:12px;font-weight:700;}
 
-/* Recipe panel */
-.recipe-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--teal-dark);padding:18px;max-height:60vh;overflow-y:auto;z-index:400;display:none;}
-.recipe-panel.open{display:block;}
-.recipe-panel h3{font-family:'Space Grotesk',sans-serif;font-size:17px;color:var(--teal-dark);margin-bottom:8px;}
-.recipe-panel .close-btn{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);}
-.recipe-panel p{font-size:13px;margin-bottom:6px;}
+.btn-hero{display:block;width:100%;background:#fff;color:var(--coral);border:none;border-radius:16px;padding:15px;font-size:16px;font-weight:800;font-family:'Baloo 2',sans-serif;cursor:pointer;min-height:52px;}
+.pill-secondary{display:block;width:100%;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:30px;padding:13px;font-size:13.5px;font-weight:700;cursor:pointer;min-height:48px;margin-top:10px;}
+.pill-secondary:active{background:var(--border);}
 
-/* Shared field styles used inside the sheet */
-label{font-size:11.5px;font-weight:600;color:var(--teal-dark);display:block;margin-bottom:5px;}
-input,select,textarea{width:100%;font-size:16px;font-family:inherit;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-1);color:var(--text);}
-textarea{resize:vertical;min-height:50px;}
-.chip-group{display:flex;flex-wrap:wrap;gap:8px;}
-.chip{border:1px solid var(--border);background:var(--bg-1);border-radius:20px;padding:10px 16px;font-size:13.5px;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;}
-.chip.selected{background:var(--teal-dark);color:#fff;border-color:var(--teal-dark);}
-.chip.reaction-liked.selected{background:var(--teal-dark);}
-.chip.reaction-refused.selected{background:var(--burgundy);border-color:var(--burgundy);}
-.chip.reaction-neutral.selected{background:var(--text-muted);border-color:var(--text-muted);}
-.checkbox-row{display:flex;align-items:center;gap:8px;font-size:13.5px;}
-.checkbox-row input{width:auto;min-height:20px;}
-.sub-fields{padding:10px;background:var(--bg-1);border-radius:8px;margin-top:6px;display:none;}
-.sub-fields.open{display:block;}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:2px;}
+.stat-pill{background:rgba(255,255,255,0.18);border-radius:14px;padding:11px 14px;}
+.stat-pill .num{font-family:'Baloo 2',sans-serif;font-size:clamp(18px,5vw,23px);font-weight:800;color:#fff;white-space:nowrap;}
+.stat-pill .lbl{font-size:10.5px;color:#fff;opacity:0.85;}
+.allergen-list{margin-top:12px;font-size:12.5px;}
+.allergen-list .row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.22);}
+.allergen-list .row:last-child{border-bottom:none;}
+.allergen-list .aname{flex:1;font-weight:700;color:#fff;}
+.status-pill{font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.25);color:#fff;}
+.status-pill.alert{background:#fff;color:var(--burgundy);}
 
-/* FAB */
-.fab{position:fixed;right:20px;bottom:24px;width:58px;height:58px;border-radius:50%;background:var(--teal);color:#fff;border:none;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(76,95,213,0.4);z-index:250;}
-.fab:active{transform:scale(0.94);}
+/* Shopping list */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px;}
+.shop-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.22);border-radius:12px;padding:7px 10px;}
+.shop-item .label{font-size:12px;font-weight:700;color:#fff;}
 
-/* Bottom sheet */
-.sheet-backdrop{position:fixed;inset:0;background:rgba(21,26,35,0.4);z-index:390;display:none;}
+/* History — clean white cards, colour comes from badges */
+.hist-entry{background:var(--card);border-radius:16px;padding:12px 14px;border:1px solid var(--border);margin-bottom:8px;box-shadow:var(--shadow-sm);}
+.hist-entry .top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.hist-entry .badges{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.hist-entry .date{color:var(--text-muted);font-size:11px;white-space:nowrap;}
+.hist-entry .tags{margin-top:7px;font-size:11.5px;color:var(--text-muted);}
+.hist-entry .actions{margin-top:8px;display:flex;gap:6px;}
+.hist-entry .actions button{font-size:12px;padding:8px 13px;min-height:36px;border-radius:20px;border:none;font-weight:700;cursor:pointer;}
+.hist-entry .actions .edit-btn{background:var(--border);color:var(--text);}
+.hist-entry .actions .del-btn{background:var(--burgundy-light);color:var(--burgundy);}
+.empty{color:var(--text-muted);font-size:13px;font-style:italic;}
+
+/* Badge icon (food/spice/allergen) */
+.food-badge{border-radius:50%;flex-shrink:0;display:inline-flex;}
+.badge-with-label{display:inline-flex;align-items:center;gap:7px;}
+
+/* Chips with badges (used in sheet) */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--border);background:var(--card);border-radius:24px;padding:7px 14px 7px 7px;font-size:13px;font-weight:700;cursor:pointer;min-height:44px;color:var(--text);}
+.chip.selected{border-color:var(--indigo);background:#EEEDFF;}
+.chip-group-label{font-size:11px;font-weight:800;color:var(--text-muted);margin:12px 0 6px;text-transform:uppercase;letter-spacing:0.04em;}
+.chip-group-label:first-child{margin-top:0;}
+
+/* Sheet */
+.fab{display:none;}
+.sheet-backdrop{position:fixed;inset:0;background:rgba(32,35,43,0.45);z-index:390;display:none;}
 .sheet-backdrop.open{display:block;}
-.sheet{position:fixed;left:0;right:0;bottom:0;max-height:88vh;background:var(--card);border-radius:20px 20px 0 0;z-index:395;transform:translateY(110%);transition:transform 0.32s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;box-shadow:0 -8px 30px rgba(21,26,35,0.18);}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:90vh;background:var(--card);border-radius:26px 26px 0 0;z-index:395;transform:translateY(110%);transition:transform 0.32s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;box-shadow:0 -8px 30px rgba(32,35,43,0.2);}
 .sheet.open{transform:translateY(0);}
-.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 4px;}
-.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px;}
-.sheet-dots{display:flex;gap:6px;}
-.sheet-dots span{width:7px;height:7px;border-radius:50%;background:var(--border);}
-.sheet-dots span.active{background:var(--teal);width:18px;border-radius:4px;}
+.sheet-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 2px;}
+.sheet-header{padding:8px 20px 4px;}
+.sheet-header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sheet-step-label{font-size:11.5px;font-weight:800;color:var(--indigo);}
 .sheet-close{background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;line-height:1;padding:4px 6px;}
-.sheet-body{padding:4px 20px 18px;overflow-y:auto;flex:1;}
-.sheet-step-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;margin-bottom:14px;}
+.sheet-progress{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.sheet-progress-fill{height:100%;background:var(--indigo);border-radius:3px;transition:width 0.25s ease;}
+.sheet-body{padding:14px 20px 18px;overflow-y:auto;flex:1;}
+.sheet-step-title{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:700;margin-bottom:14px;}
 .sheet-footer{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border);}
-.sheet-footer .btn{flex:1;}
+.sheet-footer button{flex:1;border:none;border-radius:16px;padding:14px;font-size:15px;font-weight:800;font-family:'Baloo 2',sans-serif;cursor:pointer;min-height:50px;}
+.sheet-footer .btn-back{background:var(--border);color:var(--text);flex:0 0 90px;}
+.sheet-footer .btn-next{background:var(--indigo);color:#fff;}
+.sheet-footer .btn-submit{background:var(--emerald);color:#fff;}
+
+label{font-size:11.5px;font-weight:800;color:var(--text-muted);display:block;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.03em;}
+input,select,textarea{width:100%;font-size:16px;font-family:inherit;padding:11px 12px;border:2px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);}
+textarea{resize:vertical;min-height:60px;}
+.quick-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.quick-chip{border:2px solid var(--border);background:var(--card);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;}
 
 /* Format cards */
 .format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.format-card{border:2px solid var(--border);background:var(--bg-1);border-radius:12px;padding:14px;cursor:pointer;text-align:left;}
-.format-card.selected{border-color:var(--teal);background:var(--teal-surface);}
-.format-card .fc-icon{color:var(--teal-dark);margin-bottom:8px;}
-.format-card .fc-title{font-weight:700;font-size:13.5px;margin-bottom:2px;}
+.format-card{border:2px solid var(--border);background:var(--card);border-radius:14px;padding:14px;cursor:pointer;text-align:left;}
+.format-card.selected{border-color:var(--indigo);background:#EEEDFF;}
+.format-card .fc-icon{color:var(--indigo);margin-bottom:8px;}
+.format-card .fc-title{font-weight:800;font-size:13.5px;margin-bottom:2px;}
 .format-card .fc-desc{font-size:11.5px;color:var(--text-muted);line-height:1.35;}
 
 /* Reaction cards */
 .reaction-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.reaction-card{border:2px solid var(--border);background:var(--bg-1);border-radius:12px;padding:16px 8px;cursor:pointer;text-align:center;}
+.reaction-card{border:2px solid var(--border);background:var(--card);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;}
 .reaction-card .rc-icon{font-size:26px;margin-bottom:4px;}
-.reaction-card .rc-label{font-size:12.5px;font-weight:700;}
-.reaction-card.selected.r-liked{border-color:var(--teal);background:var(--teal-surface);}
-.reaction-card.selected.r-neutral{border-color:var(--text-muted);background:var(--bg-2);}
+.reaction-card .rc-label{font-size:12.5px;font-weight:800;}
+.reaction-card.selected.r-liked{border-color:var(--emerald);background:#E4F7EC;}
+.reaction-card.selected.r-neutral{border-color:var(--text-muted);background:var(--border);}
 .reaction-card.selected.r-refused{border-color:var(--burgundy);background:var(--burgundy-light);}
 
-/* Progress */
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-.stat-card{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border);box-shadow:var(--shadow-sm);}
-.stat-card .num{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,5vw,24px);font-weight:600;color:var(--teal-dark);white-space:nowrap;}
-.stat-card .lbl{font-size:11px;color:var(--text-muted);}
-.allergen-list{margin-top:10px;font-size:12.5px;}
-.allergen-list .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
-.allergen-list .row:last-child{border-bottom:none;}
-.status-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
-.status-done{background:var(--teal-surface);color:var(--teal-dark);}
-.status-due{background:var(--amber-light);color:var(--amber-deep);}
-.status-wait{background:var(--bg-2);color:var(--text-muted);}
-.status-alert{background:var(--burgundy-light);color:var(--burgundy);}
+.checkbox-row{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;}
+.checkbox-row input{width:20px;height:20px;min-height:auto;}
+.sub-fields{padding:12px;background:var(--bg);border-radius:12px;margin-top:10px;display:none;}
+.sub-fields.open{display:block;}
 
-/* Shopping */
-.shop-list{columns:2;font-size:13px;}
-.shop-list div{padding:2px 0;}
+.summary-strip{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;padding:12px;background:var(--bg);border-radius:12px;}
 
-/* History */
-.hist-entry{background:var(--card);border-radius:10px;padding:10px 14px;border:1px solid var(--border);margin-bottom:8px;font-size:13px;}
-.hist-entry .top{display:flex;justify-content:space-between;align-items:center;}
-.hist-entry .items{font-weight:600;}
-.hist-entry .date{color:var(--text-muted);font-size:11.5px;}
-.hist-entry .tags{margin-top:4px;font-size:11.5px;color:var(--text-muted);}
-.hist-entry .actions{margin-top:6px;display:flex;gap:6px;}
-.hist-entry .actions button{font-size:12.5px;padding:9px 14px;min-height:40px;}
-.empty{color:var(--text-muted);font-size:13px;font-style:italic;}
-.nav-link{font-size:12.5px;color:var(--teal-dark);text-decoration:none;border-bottom:1px dotted var(--teal-dark);}
+/* Recipe panel */
+.recipe-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;padding:20px;max-height:65vh;overflow-y:auto;z-index:400;display:none;box-shadow:0 -8px 30px rgba(32,35,43,0.2);}
+.recipe-panel.open{display:block;}
+.recipe-panel h3{font-family:'Baloo 2',sans-serif;font-size:19px;color:var(--text);margin-bottom:12px;}
+.recipe-panel .close-btn{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);}
+.recipe-panel p{font-size:13.5px;margin-bottom:8px;}
 
-@media(max-width:600px){.stat-grid{grid-template-columns:1fr 1fr;}.shop-list{columns:1;}}
+@media(max-width:600px){.format-grid{grid-template-columns:1fr 1fr;}.shop-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -141,42 +156,47 @@ textarea{resize:vertical;min-height:50px;}
 <div class="header-bar">
   <h1>Riyaan's Weaning Log</h1>
   <div style="display:flex;align-items:center;gap:12px;">
-    <a href="analytics.html" class="nav-link">View analytics &rarr;</a>
+    <a href="analytics.html" class="nav-link">Analytics &rarr;</a>
     <span id="syncStatus" class="sync-status">connecting&hellip;</span>
   </div>
 </div>
 
 <section>
-  <h2>Next meal</h2>
-  <div id="nextMealCard" class="next-meal"><span class="empty">Loading&hellip;</span></div>
+  <div id="nextMealCard"></div>
+  <button class="pill-secondary" id="logOwnBtn">Log your own meal</button>
 </section>
 
 <section>
-  <h2>Progress</h2>
-  <div class="stat-grid" id="statGrid"></div>
-  <div class="card allergen-list" id="allergenStatus" style="margin-top:10px;"></div>
+  <div class="section-label">Progress</div>
+  <div class="hero-card c-indigo">
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="allergen-list" id="allergenStatus"></div>
+  </div>
 </section>
 
 <section>
-  <h2>Shopping · next 7 suggested meals</h2>
-  <div class="card shop-list" id="shopList"></div>
+  <div class="section-label">Shopping · next 7 suggested meals</div>
+  <div class="hero-card c-amber">
+    <div class="shop-grid" id="shopList"></div>
+  </div>
 </section>
 
 <section>
-  <h2>History</h2>
+  <div class="section-label" style="color:var(--teal-dark);">History</div>
   <div id="historyList"></div>
 </section>
 
 </div>
 
-<button class="fab" id="fabBtn" aria-label="Log a meal">+</button>
-
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
 <div class="sheet" id="sheet">
   <div class="sheet-handle"></div>
   <div class="sheet-header">
-    <div class="sheet-dots" id="sheetDots"></div>
-    <button class="sheet-close" id="sheetCloseBtn" aria-label="Close">&times;</button>
+    <div class="sheet-header-top">
+      <span class="sheet-step-label" id="sheetStepLabel"></span>
+      <button class="sheet-close" id="sheetCloseBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="sheet-progress"><div class="sheet-progress-fill" id="sheetProgressFill"></div></div>
   </div>
   <div class="sheet-body" id="sheetBody"></div>
   <div class="sheet-footer" id="sheetFooter"></div>
@@ -211,42 +231,96 @@ const db = getFirestore(app);
 const mealsCol = collection(db, "mealLog");
 const statusEl = document.getElementById('syncStatus');
 
-// ---------------- Reference data ----------------
+// ==================== Colour system ====================
+const GROUP_COLORS = { root:"#C96A2E", leafy:"#3FAE6A", garden:"#D6336C", legume:"#C99A2E", spice:"#8E4CC1", allergen:"#2E9CD6" };
+
+// ==================== Icon library (white silhouette on group-coloured circle) ====================
+// 'AC' is replaced with the item's group colour at render time — used for small accent marks inside a mostly-white icon.
+const ICONS = {
+  "Sweet potato": '<ellipse cx="50" cy="55" rx="29" ry="17" fill="#fff" transform="rotate(-18 50 55)"/><circle cx="40" cy="48" r="2.2" fill="AC"/><circle cx="58" cy="60" r="2" fill="AC"/>',
+  "Potato": '<ellipse cx="50" cy="55" rx="27" ry="20" fill="#fff"/><circle cx="41" cy="50" r="2.4" fill="AC"/><circle cx="59" cy="58" r="2.1" fill="AC"/><circle cx="52" cy="42" r="1.9" fill="AC"/>',
+  "Carrot": '<path d="M35 30 L65 30 L52 82 Q50 86 48 82 Z" fill="#fff"/><path d="M42 30 L38 16 M50 30 L50 14 M58 30 L62 16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+  "Parsnip": '<path d="M33 34 Q50 28 67 34 L56 80 Q50 86 44 80 Z" fill="#fff"/>',
+  "Beetroot": '<circle cx="50" cy="58" r="24" fill="#fff"/><path d="M44 34 L40 18 M50 34 L50 14 M56 34 L60 18" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+  "Spinach": '<path d="M50 20 Q76 34 66 62 Q58 84 50 86 Q42 84 34 62 Q24 34 50 20 Z" fill="#fff"/><path d="M50 28 L50 80" stroke="AC" stroke-width="2.5"/>',
+  "Broccoli": '<rect x="42" y="66" width="16" height="24" rx="6" fill="#fff"/><circle cx="50" cy="46" r="22" fill="#fff"/><circle cx="33" cy="52" r="14" fill="#fff"/><circle cx="67" cy="52" r="14" fill="#fff"/><circle cx="50" cy="30" r="15" fill="#fff"/>',
+  "Cabbage": '<circle cx="50" cy="52" r="30" fill="#fff"/><path d="M32 42 Q50 34 68 42" stroke="AC" stroke-width="2.5" fill="none"/><path d="M30 56 Q50 48 70 56" stroke="AC" stroke-width="2.5" fill="none"/>',
+  "Peas": '<rect x="22" y="42" width="56" height="28" rx="14" fill="#fff"/><circle cx="34" cy="56" r="4.5" fill="AC"/><circle cx="46" cy="56" r="4.5" fill="AC"/><circle cx="58" cy="56" r="4.5" fill="AC"/><circle cx="70" cy="56" r="4.5" fill="AC"/>',
+  "Green beans": '<rect x="18" y="48" width="34" height="14" rx="7" fill="#fff" transform="rotate(-18 35 55)"/><rect x="45" y="40" width="34" height="14" rx="7" fill="#fff" transform="rotate(-10 62 47)"/><rect x="30" y="62" width="34" height="14" rx="7" fill="#fff" transform="rotate(8 47 69)"/>',
+  "Courgette": '<rect x="24" y="38" width="52" height="24" rx="12" fill="#fff" transform="rotate(-12 50 50)"/><circle cx="24" cy="34" r="5" fill="AC"/>',
+  "Red peppers": '<path d="M50 24 Q70 24 68 46 Q66 78 50 84 Q34 78 32 46 Q30 24 50 24 Z" fill="#fff"/><rect x="46" y="16" width="8" height="12" rx="3" fill="#fff"/>',
+  "Aubergine": '<path d="M50 30 Q76 44 66 68 Q58 88 50 88 Q42 88 34 68 Q24 44 50 30 Z" fill="#fff"/><rect x="44" y="14" width="12" height="16" rx="4" fill="AC"/>',
+  "Sweetcorn": '<ellipse cx="50" cy="52" rx="18" ry="34" fill="#fff"/><path d="M38 26 L62 26 M36 38 L64 38 M35 50 L65 50 M36 62 L64 62 M38 74 L62 74" stroke="AC" stroke-width="2"/>',
+  "Avocado": '<path d="M50 18 Q74 26 72 56 Q70 84 50 88 Q30 84 28 56 Q26 26 50 18 Z" fill="#fff"/><circle cx="50" cy="58" r="12" fill="AC"/>',
+  "Butternut squash": '<circle cx="50" cy="34" r="14" fill="#fff"/><circle cx="50" cy="64" r="24" fill="#fff"/>',
+  "Cauliflower": '<rect x="43" y="70" width="14" height="16" rx="5" fill="#fff"/><circle cx="50" cy="48" r="22" fill="#fff"/><circle cx="34" cy="54" r="12" fill="#fff"/><circle cx="66" cy="54" r="12" fill="#fff"/><circle cx="50" cy="32" r="13" fill="#fff"/>',
+  "Red lentil": '<circle cx="40" cy="52" r="15" fill="#fff"/><circle cx="60" cy="48" r="14" fill="#fff"/><circle cx="50" cy="66" r="13" fill="#fff"/>',
+  "Chickpea": '<circle cx="40" cy="52" r="16" fill="#fff"/><circle cx="63" cy="50" r="15" fill="#fff"/><circle cx="50" cy="72" r="14" fill="#fff"/><path d="M35 52 L45 52 M58 50 L68 50 M45 72 L55 72" stroke="AC" stroke-width="1.6"/>',
+  "Butter bean": '<ellipse cx="38" cy="46" rx="17" ry="10" fill="#fff" transform="rotate(-20 38 46)"/><ellipse cx="64" cy="54" rx="17" ry="10" fill="#fff" transform="rotate(15 64 54)"/><ellipse cx="46" cy="72" rx="17" ry="10" fill="#fff" transform="rotate(-8 46 72)"/>',
+  "Rice": '<ellipse cx="34" cy="40" rx="9" ry="4" fill="#fff" transform="rotate(-30 34 40)"/><ellipse cx="54" cy="34" rx="9" ry="4" fill="#fff" transform="rotate(10 54 34)"/><ellipse cx="68" cy="52" rx="9" ry="4" fill="#fff" transform="rotate(-15 68 52)"/><ellipse cx="40" cy="60" rx="9" ry="4" fill="#fff" transform="rotate(25 40 60)"/><ellipse cx="60" cy="70" rx="9" ry="4" fill="#fff" transform="rotate(-5 60 70)"/>',
+  "Dairy": '<path d="M40 20 L60 20 L60 30 L68 40 L68 84 L32 84 L32 40 L40 30 Z" fill="#fff"/>',
+  "Peanut": '<ellipse cx="40" cy="42" rx="16" ry="20" fill="#fff"/><ellipse cx="58" cy="62" rx="16" ry="20" fill="#fff"/>',
+  "Wheat": '<line x1="50" y1="20" x2="50" y2="82" stroke="#fff" stroke-width="4"/><ellipse cx="42" cy="32" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 32)"/><ellipse cx="58" cy="32" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 32)"/><ellipse cx="42" cy="46" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 46)"/><ellipse cx="58" cy="46" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 46)"/><ellipse cx="42" cy="60" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 60)"/><ellipse cx="58" cy="60" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 60)"/>',
+  "Soya": '<rect x="26" y="38" width="48" height="26" rx="13" fill="#fff" transform="rotate(-6 50 51)"/><circle cx="38" cy="50" r="5" fill="AC"/><circle cx="52" cy="48" r="5" fill="AC"/><circle cx="64" cy="52" r="5" fill="AC"/>',
+  "Tree nut": '<path d="M50 18 Q72 26 70 52 Q68 80 50 86 Q32 80 30 52 Q28 26 50 18 Z" fill="#fff"/><rect x="44" y="12" width="12" height="12" rx="3" fill="AC"/>',
+  "Turmeric": '<path d="M42 40 Q40 60 46 74 Q50 80 54 74 Q60 60 58 40 Q56 30 50 30 Q44 30 42 40 Z" fill="#fff"/><circle cx="47" cy="42" r="2.5" fill="AC"/>',
+  "Cumin": '<ellipse cx="50" cy="56" rx="20" ry="14" fill="#fff"/><line x1="36" y1="50" x2="44" y2="54" stroke="AC" stroke-width="2"/><line x1="50" y1="46" x2="56" y2="52" stroke="AC" stroke-width="2"/><line x1="58" y1="52" x2="64" y2="58" stroke="AC" stroke-width="2"/>',
+  "Coriander": '<ellipse cx="50" cy="56" rx="20" ry="14" fill="#fff"/><circle cx="42" cy="52" r="3" fill="AC"/><circle cx="52" cy="48" r="3" fill="AC"/><circle cx="60" cy="56" r="3" fill="AC"/>',
+  "Fennel": '<ellipse cx="50" cy="56" rx="20" ry="14" fill="#fff"/><path d="M50 46 L50 66 M42 56 L58 56 M45 50 L55 62 M55 50 L45 62" stroke="AC" stroke-width="1.6"/>',
+  "Asafoetida (hing)": '<ellipse cx="50" cy="56" rx="20" ry="14" fill="#fff"/><path d="M50 48 L54 56 L50 64 L46 56 Z" fill="AC"/>',
+  "Ginger": '<path d="M38 50 Q34 40 42 36 Q50 32 52 40 Q60 38 62 46 Q66 54 58 58 Q62 66 54 68 Q46 72 42 64 Q34 62 38 50 Z" fill="#fff"/>',
+  "Cardamom": '<ellipse cx="50" cy="56" rx="19" ry="15" fill="none" stroke="#fff" stroke-width="4"/>',
+  "Cinnamon": '<path d="M32 40 Q50 30 68 40" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M32 56 Q50 46 68 56" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M32 72 Q50 62 68 72" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>'
+};
+
+function badgeSvg(name, size){
+  const def = foodByName[name] || allergenByName[name];
+  const group = def ? def.group : 'spice';
+  const color = GROUP_COLORS[group] || '#999';
+  const iconMarkup = (ICONS[name]||'').split('AC').join(color);
+  return '<svg class="food-badge" width="'+size+'" height="'+size+'" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="'+color+'"/>'+iconMarkup+'</svg>';
+}
+function badgeWithLabel(name, size){
+  return '<span class="badge-with-label">'+badgeSvg(name,size)+'<span class="label">'+escapeHtml(name)+'</span></span>';
+}
+
+// ==================== Reference data ====================
 const FOODS = [
-  {name:"Sweet potato", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Steamed and mashed or puréed", finger:"Steamed spear, adult-finger sized"},
-  {name:"Potato", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Boiled and mashed", finger:"Boiled wedge"},
-  {name:"Carrot", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Steamed and puréed", finger:"Steamed stick, well softened"},
-  {name:"Butternut squash", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Roasted and mashed", finger:"Roasted spear"},
-  {name:"Parsnip", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Steamed and puréed", finger:"Steamed spear"},
-  {name:"Courgette", cat:"veg", formats:["soft","finger"], unlockWeek:1, soft:"Steamed and mashed", finger:"Steamed spear, skin on"},
-  {name:"Spinach", cat:"veg", formats:["soft"], unlockWeek:1, soft:"Wilted/steamed, finely puréed or mashed", finger:"Not yet — offer soft wilted strands once pincer grasp is established"},
-  {name:"Peas", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Steamed and mashed — squash each pea before serving whole", finger:"Soft-cooked whole peas, squashed, once pincer grip is there"},
-  {name:"Green beans", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Steamed and puréed", finger:"Steamed bean, halved lengthways"},
-  {name:"Broccoli", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Steamed and mashed", finger:"Steamed floret, stem trimmed"},
-  {name:"Cauliflower", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Steamed and puréed", finger:"Steamed floret"},
-  {name:"Avocado", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Mashed, no cooking needed", finger:"Ripe spear, skin on as a handle"},
-  {name:"Sweetcorn", cat:"veg", formats:["soft","finger"], unlockWeek:2, soft:"Cooked kernels, blended and sieved", finger:"Corn on the cob to gnaw, supervised — not loose kernels"},
-  {name:"Red lentil", cat:"legume", formats:["soft"], unlockWeek:2, soft:"Cooked soft and mashed or blended, dal-style", finger:"Not applicable — too small, choking risk whole"},
-  {name:"Cabbage", cat:"veg", formats:["soft","finger"], unlockWeek:3, soft:"Steamed until very soft, finely puréed", finger:"Steamed strip, well softened"},
-  {name:"Red peppers", cat:"veg", formats:["soft","finger"], unlockWeek:3, soft:"Roasted, skin removed, puréed", finger:"Roasted strip, skin removed"},
-  {name:"Beetroot", cat:"veg", formats:["soft","finger"], unlockWeek:3, soft:"Roasted or boiled, puréed", finger:"Roasted spear, cooled and softened"},
-  {name:"Aubergine", cat:"veg", formats:["soft","finger"], unlockWeek:3, soft:"Roasted and mashed", finger:"Roasted strip, skin removed"},
-  {name:"Chickpea", cat:"legume", formats:["soft"], unlockWeek:3, soft:"Well cooked and mashed", finger:"Not applicable yet — whole chickpeas are a choking hazard"},
-  {name:"Butter bean", cat:"legume", formats:["soft"], unlockWeek:3, soft:"Well cooked and mashed", finger:"Not applicable yet"},
-  {name:"Rice", cat:"grain", formats:["soft"], unlockWeek:3, soft:"Cooked very soft and slightly sticky, mashed", finger:"Not applicable at this stage"}
+  {name:"Sweet potato", group:"root", formats:["soft","finger"], soft:"Steamed and mashed or puréed", finger:"Steamed spear, adult-finger sized"},
+  {name:"Potato", group:"root", formats:["soft","finger"], soft:"Boiled and mashed", finger:"Boiled wedge"},
+  {name:"Carrot", group:"root", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed stick, well softened"},
+  {name:"Parsnip", group:"root", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed spear"},
+  {name:"Beetroot", group:"root", formats:["soft","finger"], soft:"Roasted or boiled, puréed", finger:"Roasted spear, cooled and softened"},
+  {name:"Spinach", group:"leafy", formats:["soft"], soft:"Wilted/steamed, finely puréed or mashed", finger:"Not yet — offer soft wilted strands once pincer grasp is established"},
+  {name:"Broccoli", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed", finger:"Steamed floret, stem trimmed"},
+  {name:"Cabbage", group:"leafy", formats:["soft","finger"], soft:"Steamed until very soft, finely puréed", finger:"Steamed strip, well softened"},
+  {name:"Peas", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed — squash each pea before serving whole", finger:"Soft-cooked whole peas, squashed, once pincer grip is there"},
+  {name:"Green beans", group:"leafy", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed bean, halved lengthways"},
+  {name:"Courgette", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed", finger:"Steamed spear, skin on"},
+  {name:"Red peppers", group:"garden", formats:["soft","finger"], soft:"Roasted, skin removed, puréed", finger:"Roasted strip, skin removed"},
+  {name:"Aubergine", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted strip, skin removed"},
+  {name:"Sweetcorn", group:"garden", formats:["soft","finger"], soft:"Cooked kernels, blended and sieved", finger:"Corn on the cob to gnaw, supervised — not loose kernels"},
+  {name:"Avocado", group:"garden", formats:["soft","finger"], soft:"Mashed, no cooking needed", finger:"Ripe spear, skin on as a handle"},
+  {name:"Butternut squash", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted spear"},
+  {name:"Cauliflower", group:"garden", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed floret"},
+  {name:"Red lentil", group:"legume", formats:["soft"], soft:"Cooked soft and mashed or blended, dal-style", finger:"Not applicable — too small, choking risk whole"},
+  {name:"Chickpea", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — whole chickpeas are a choking hazard"},
+  {name:"Butter bean", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet"},
+  {name:"Rice", group:"legume", formats:["soft"], soft:"Cooked very soft and slightly sticky, mashed", finger:"Not applicable at this stage"}
 ];
 const ALLERGENS = [
-  {name:"Dairy", ingredient:"Plain yoghurt"},
-  {name:"Peanut", ingredient:"Peanut butter, smooth"},
-  {name:"Wheat", ingredient:"Wheat bread or pasta"},
-  {name:"Sesame", ingredient:"Sesame seeds, ground at home"},
-  {name:"Soya", ingredient:"Firm tofu"},
-  {name:"Tree nut", ingredient:"Cashews, ground at home"}
+  {name:"Dairy", group:"allergen", ingredient:"Plain yoghurt"},
+  {name:"Peanut", group:"allergen", ingredient:"Peanut butter, smooth"},
+  {name:"Wheat", group:"allergen", ingredient:"Wheat bread or pasta"},
+  {name:"Sesame", group:"allergen", ingredient:"Sesame seeds, ground at home"},
+  {name:"Soya", group:"allergen", ingredient:"Firm tofu"},
+  {name:"Tree nut", group:"allergen", ingredient:"Cashews, ground at home"}
 ];
-// Ground/powdered, no salt, no heat — safe from 6 months in small (pinch) amounts per BSACI-aligned weaning guidance.
-// Deliberately excludes chilli/pepper (heat) and anything only recommended from 8mo+ (clove, mustard) to keep this list safe by default.
 const SPICES = ["Turmeric","Cumin","Coriander","Fennel","Asafoetida (hing)","Ginger","Cardamom","Cinnamon"];
 const foodByName = {}; FOODS.forEach(f=>foodByName[f.name]=f);
+const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
+// fix missing icons for wheat/soya/tree nut lacking dedicated white silhouette fill fallback
+["Sesame"].forEach(n=>{ if(!ICONS[n]) ICONS[n] = '<ellipse cx="38" cy="46" rx="7" ry="3" fill="#fff" transform="rotate(-20 38 46)"/><ellipse cx="55" cy="42" rx="7" ry="3" fill="#fff" transform="rotate(15 55 42)"/><ellipse cx="62" cy="58" rx="7" ry="3" fill="#fff" transform="rotate(-10 62 58)"/><ellipse cx="45" cy="62" rx="7" ry="3" fill="#fff" transform="rotate(25 45 62)"/><ellipse cx="30" cy="60" rx="7" ry="3" fill="#fff" transform="rotate(5 30 60)"/>'; });
 
 // ---------------- State ----------------
 let entries = [];
@@ -257,13 +331,11 @@ let selectedAllergens = [];
 let selectedAllergenReaction = null;
 let selectedSpices = [];
 
-// ---------------- Derived stats ----------------
+// ---------------- Derived stats (unchanged logic) ----------------
 function computeStats(){
-  const foodExposures = {}; // name -> [{ts, reaction}]
-  FOODS.forEach(f=>foodExposures[f.name]=[]);
-  const pairs = {}; // "A+B" -> {count, spicedCount, combinedCount, lastPlainReaction, lastSpicedReaction, lastCombinedReaction}
-  const allergenLog = {}; // name -> [{ts, reaction}]
-  ALLERGENS.forEach(a=>allergenLog[a.name]=[]);
+  const foodExposures = {}; FOODS.forEach(f=>foodExposures[f.name]=[]);
+  const pairs = {};
+  const allergenLog = {}; ALLERGENS.forEach(a=>allergenLog[a.name]=[]);
 
   const sorted = [...entries].sort((a,b)=> new Date(a.ts) - new Date(b.ts));
   sorted.forEach(e=>{
@@ -303,28 +375,21 @@ function computeStats(){
     allergenStatus[a.name] = {state, lastGiven, daysSince, count:log.length};
   });
 
-  // unlock week: based on days since first entry (or today if none)
-  const firstTs = sorted.length ? new Date(sorted[0].ts) : now;
-  const weeksSinceStart = Math.max(1, Math.floor((now-firstTs)/(7*dayMs))+1);
-  const unlockedFoods = FOODS.map(f=>f.name); // all foods available from day one — pacing is driven by logged data, not the calendar
+  const unlockedFoods = FOODS.map(f=>f.name);
 
-  return {foodExposures, pairs, allergenStatus, acceptance, unlockedFoods, weeksSinceStart};
+  return {foodExposures, pairs, allergenStatus, acceptance, unlockedFoods};
 }
 
-// ---------------- Suggestion engine ----------------
 function suggestAllergenAction(stats){
   const order = ALLERGENS.map(a=>a.name);
-  // priority 1: any allergen awaiting its day-2 repeat
   for(const name of order){
     if(stats.allergenStatus[name].state==='awaiting-repeat') return {type:'repeat', name};
   }
-  // priority 2: maintenance due (introduced, >=3 days since last given)
   const due = order.find(name=>{
     const s = stats.allergenStatus[name];
     return s.state==='introduced' && s.daysSince!==null && s.daysSince>=3;
   });
   if(due) return {type:'maintenance', name:due};
-  // priority 3: next new allergen, if last new intro was >=2 days ago (or none started yet)
   const lastIntroDate = order.map(n=>stats.allergenStatus[n]).filter(s=>s.count>0).map(s=>s.lastGiven).sort((a,b)=>b-a)[0];
   const daysSinceLastIntro = lastIntroDate ? Math.floor((new Date()-lastIntroDate)/86400000) : 99;
   if(daysSinceLastIntro>=2){
@@ -344,7 +409,6 @@ function suggestNextMeal(stats){
   const allergenIngredient = allergenAction ? ALLERGENS.find(a=>a.name===allergenAction.name).ingredient : null;
   const withAllergen = obj => ({...obj, allergenTag, allergenIngredient});
 
-  // Discrete graduation events — always take these immediately, they don't wait their turn
   for(const key in stats.pairs){
     const p = stats.pairs[key];
     const items = key.split(' + ');
@@ -356,7 +420,6 @@ function suggestNextMeal(stats){
     }
   }
 
-  // A pair "in progress" (started but not yet ready to graduate) — at most one should be live at a time
   function findInProgress(){
     for(const key in stats.pairs){
       const p = stats.pairs[key];
@@ -378,7 +441,6 @@ function suggestNextMeal(stats){
   const candidates = stats.unlockedFoods.filter(f=>!stats.acceptance[f]);
   const inProgress = findInProgress();
 
-  // Interleave: don't let pairing crowd out foundation reps for foods that still need them
   if(candidates.length>0){
     const alternateToFoundation = (entries.length % 2 === 0) || !inProgress;
     if(alternateToFoundation){
@@ -388,7 +450,6 @@ function suggestNextMeal(stats){
   }
   if(inProgress) return withAllergen(inProgress);
 
-  // No in-progress pair — start exactly one new pair among accepted foods, prioritising foods with the fewest existing pairings for fairness
   const accepted = stats.unlockedFoods.filter(f=>stats.acceptance[f]);
   const pairCountFor = f => Object.keys(stats.pairs).filter(k=>k.split(' + ').includes(f)).length;
   const byFewestPairs = [...accepted].sort((a,b)=> pairCountFor(a)-pairCountFor(b));
@@ -408,48 +469,41 @@ function suggestNextMeal(stats){
 }
 
 function projectShoppingList(stats){
-  // simulate 7 suggested meals forward using a cloned, mutated copy of stats
   const clone = {foodExposures:Object.fromEntries(Object.entries(stats.foodExposures).map(([k,v])=>[k,v.length])), pairs:JSON.parse(JSON.stringify(stats.pairs)), acceptance:{...stats.acceptance}, unlockedFoods:[...stats.unlockedFoods]};
   const needed = new Set();
   for(let i=0;i<7;i++){
     const fakeStats = {
       foodExposures: Object.fromEntries(Object.entries(clone.foodExposures).map(([k,v])=>[k,Array(v)])),
       pairs: clone.pairs, acceptance: clone.acceptance, unlockedFoods: clone.unlockedFoods,
-      allergenStatus: stats.allergenStatus // allergen state held constant for this 7-meal projection — good enough for a shopping list, not meant to simulate exact future allergen timing
+      allergenStatus: stats.allergenStatus
     };
     const s = suggestNextMeal(fakeStats);
     s.items.forEach(it=>needed.add(it));
     if(s.allergenIngredient) needed.add(s.allergenIngredient);
-    // bump exposure count for suggested items so next iteration differs
     s.items.forEach(it=>{ clone.foodExposures[it] = (clone.foodExposures[it]||0)+1; });
     if(s.items.length===0) break;
   }
   return [...needed];
 }
 
-// ---------------- Rendering ----------------
-const STAGE_ORDER = ['Foundation','Paired','Spiced pair','Combined dish'];
-function stageIcon(stage){
-  const idx = STAGE_ORDER.indexOf(stage);
-  let dots = '';
-  for(let i=0;i<4;i++){
-    const cx = 4 + i*11;
-    dots += i<=idx ? '<circle cx="'+cx+'" cy="6" r="4" fill="currentColor"/>' : '<circle cx="'+cx+'" cy="6" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>';
-  }
-  return '<svg width="38" height="12" viewBox="0 0 38 12" xmlns="http://www.w3.org/2000/svg">'+dots+'</svg>';
-}
+// ==================== Rendering ====================
 function renderNextMeal(stats){
   const s = suggestNextMeal(stats);
   const el = document.getElementById('nextMealCard');
-  if(!s.items.length){ el.innerHTML = '<span class="empty">Every unlocked food is accepted and paired — nice work. Check back once more foods unlock.</span>'; return; }
-  const itemLinks = s.items.map(it=>'<button class="food-link" data-food="'+escapeHtml(it)+'">'+escapeHtml(it)+'</button>').join(' + ');
+  if(!s.items.length){
+    el.innerHTML = '<div class="hero-card c-coral"><div class="hc-tag">All caught up</div><div class="hc-items">Every unlocked food is accepted and paired</div><div class="hc-meta">Check back once more foods unlock, or log something yourself below.</div></div>';
+    return;
+  }
+  const badges = s.items.map(it=>'<span class="badge-chip" data-food="'+escapeHtml(it)+'">'+badgeSvg(it,28)+'<span class="label">'+escapeHtml(it)+'</span></span>').join('');
   el.innerHTML =
-    '<span class="stage-tag">'+stageIcon(s.stage)+s.stage+'</span>'+
-    '<div class="items">'+itemLinks+'</div>'+
-    '<div class="meta">'+(s.spiceSuggested?'Add a mild spice this time. ':'')+'Format: '+s.format+' · tap a food name for its recipe</div>'+
-    (s.allergenTag ? '<div class="allergen-note">'+escapeHtml(s.allergenTag)+'</div>' : '')+
-    '<button class="btn" id="prefillBtn">Log this meal</button>';
-  document.getElementById('prefillBtn').onclick = ()=>{
+    '<div class="hero-card c-coral">'+
+      '<div class="hc-tag">'+s.stage+'</div>'+
+      '<div class="badge-row">'+badges+'</div>'+
+      '<div class="hc-meta">'+(s.spiceSuggested?'Add a mild spice this time · ':'')+'Format: '+s.format+'</div>'+
+      (s.allergenTag ? '<div class="hc-allergen">'+escapeHtml(s.allergenTag)+'</div>' : '')+
+      '<button class="btn-hero" id="logNextBtn">Log the next meal</button>'+
+    '</div>';
+  document.getElementById('logNextBtn').onclick = ()=>{
     const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
     openSheet({
       items: s.items,
@@ -458,40 +512,41 @@ function renderNextMeal(stats){
       allergens: matchedAllergen ? [matchedAllergen.name] : []
     });
   };
-  el.querySelectorAll('.food-link').forEach(b=> b.onclick = ()=>{
-    const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
-    openRecipe(s.items, {
-      format: s.format,
-      spiceSuggested: s.spiceSuggested,
-      allergens: matchedAllergen ? [matchedAllergen] : []
-    });
+  el.querySelectorAll('.badge-chip').forEach(b=>{
+    b.onclick = ()=>{
+      const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+      openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [] });
+    };
   });
 }
 
 function renderStats(stats){
   const acceptedCount = stats.unlockedFoods.filter(f=>stats.acceptance[f]).length;
-  const grid = document.getElementById('statGrid');
-  grid.innerHTML =
-    '<div class="stat-card"><div class="num">'+acceptedCount+'/'+stats.unlockedFoods.length+'</div><div class="lbl">Foods accepted</div></div>'+
-    '<div class="stat-card"><div class="num">'+entries.length+'</div><div class="lbl">Meals logged</div></div>'+
-    '<div class="stat-card"><div class="num">'+stats.weeksSinceStart+'</div><div class="lbl">Weeks in</div></div>'+
-    '<div class="stat-card"><div class="num">'+Object.keys(stats.pairs).length+'</div><div class="lbl">Pairings started</div></div>';
+  document.getElementById('statGrid').innerHTML =
+    '<div class="stat-pill"><div class="num">'+acceptedCount+'/'+stats.unlockedFoods.length+'</div><div class="lbl">Foods accepted</div></div>'+
+    '<div class="stat-pill"><div class="num">'+entries.length+'</div><div class="lbl">Meals logged</div></div>'+
+    '<div class="stat-pill"><div class="num">'+Object.keys(stats.pairs).length+'</div><div class="lbl">Pairings started</div></div>'+
+    '<div class="stat-pill"><div class="num">'+Object.values(stats.pairs).filter(p=>p.combinedCount>0).length+'</div><div class="lbl">Combined dishes</div></div>';
 
-  const al = document.getElementById('allergenStatus');
-  al.innerHTML = ALLERGENS.map(a=>{
+  document.getElementById('allergenStatus').innerHTML = ALLERGENS.map(a=>{
     const s = stats.allergenStatus[a.name];
-    let pill = '<span class="status-pill status-wait">Not started</span>';
-    if(s.state==='awaiting-repeat') pill = '<span class="status-pill status-due">Repeat tomorrow</span>';
-    if(s.state==='introduced') pill = '<span class="status-pill status-done">Introduced'+(s.daysSince>=3?' — top-up due':'')+'</span>';
-    if(s.state==='reaction') pill = '<span class="status-pill status-alert">Reaction noted — see notes</span>';
-    return '<div class="row"><span>'+a.name+'</span>'+pill+'</div>';
+    let pill = '<span class="status-pill">Not started</span>';
+    if(s.state==='awaiting-repeat') pill = '<span class="status-pill">Repeat tomorrow</span>';
+    if(s.state==='introduced') pill = '<span class="status-pill">Introduced'+(s.daysSince>=3?' — top-up due':'')+'</span>';
+    if(s.state==='reaction') pill = '<span class="status-pill alert">Reaction noted</span>';
+    return '<div class="row">'+badgeSvg(a.name,22)+'<span class="aname">'+a.name+'</span>'+pill+'</div>';
   }).join('');
 }
 
 function renderShopping(stats){
   const items = projectShoppingList(stats);
   const el = document.getElementById('shopList');
-  el.innerHTML = items.length ? items.map(i=>'<div>'+escapeHtml(i)+'</div>').join('') : '<span class="empty">Nothing projected yet — log a meal or two first.</span>';
+  if(!items.length){ el.innerHTML = '<span class="empty" style="color:#fff;">Nothing projected yet — log a meal or two first.</span>'; return; }
+  el.innerHTML = items.map(i=>{
+    const known = foodByName[i] || allergenByName[i];
+    const b = known ? badgeSvg(i,22) : '<span class="food-badge" style="width:22px;height:22px;background:rgba(255,255,255,0.35);border-radius:50%;display:inline-block;"></span>';
+    return '<div class="shop-item">'+b+'<span class="label">'+escapeHtml(i)+'</span></div>';
+  }).join('');
 }
 
 function renderHistory(){
@@ -502,11 +557,11 @@ function renderHistory(){
     const d = new Date(e.ts);
     const dateStr = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
     const tags = [e.format, e.reaction, (e.spices&&e.spices.length)?('spice: '+e.spices.join(', ')):null, e.allergenUsed?('allergen: '+(e.allergens||[]).join(', ')):null].filter(Boolean).join(' · ');
-    const itemLinks = (e.items||[]).map(it=>'<button class="hist-food-link" data-food="'+escapeHtml(it)+'">'+escapeHtml(it)+'</button>').join(' + ');
+    const badges = (e.items||[]).map(it=>'<span data-food="'+escapeHtml(it)+'" class="hist-badge">'+badgeSvg(it,26)+'</span>').join('');
     return '<div class="hist-entry" data-id="'+e.id+'">'+
-      '<div class="top"><span class="items">'+itemLinks+'</span><span class="date">'+dateStr+'</span></div>'+
+      '<div class="top"><div class="badges">'+badges+'</div><span class="date">'+dateStr+'</span></div>'+
       '<div class="tags">'+escapeHtml(tags)+(e.notes?(' · '+escapeHtml(e.notes)):'')+'</div>'+
-      '<div class="actions"><button class="btn secondary" data-edit="'+e.id+'">Edit</button><button class="btn danger" data-del="'+e.id+'">Delete</button></div>'+
+      '<div class="actions"><button class="edit-btn" data-edit="'+e.id+'">Edit</button><button class="del-btn" data-del="'+e.id+'">Delete</button></div>'+
     '</div>';
   }).join('');
   el.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{
@@ -514,16 +569,12 @@ function renderHistory(){
     if(en) openSheet({...en, editingId: en.id});
   });
   el.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>removeEntry(b.dataset.del));
-  el.querySelectorAll('.hist-food-link').forEach(b=>{
+  el.querySelectorAll('.hist-badge').forEach(b=>{
     b.onclick = ()=>{
-      const e = entries.find(x=>x.id===b.closest('.hist-entry').dataset.id);
-      if(!e) return;
-      const allergenObjs = (e.allergenUsed && e.allergens || []).map(n=>ALLERGENS.find(a=>a.name===n)).filter(Boolean);
-      openRecipe(e.items||[], {
-        format: e.format,
-        spiceNames: e.spices||[],
-        allergens: allergenObjs
-      });
+      const entry = entries.find(x=>x.id===b.closest('.hist-entry').dataset.id);
+      if(!entry) return;
+      const allergenObjs = (entry.allergenUsed && entry.allergens || []).map(n=>ALLERGENS.find(a=>a.name===n)).filter(Boolean);
+      openRecipe(entry.items||[], { format: entry.format, spiceNames: entry.spices||[], allergens: allergenObjs });
     };
   });
 }
@@ -533,8 +584,7 @@ function openRecipe(items, context){
   const format = context.format || 'both';
   const foods = items.map(n=>foodByName[n]).filter(Boolean);
   if(!foods.length) return;
-
-  let body = '';
+  let body = '<div class="badge-row">'+foods.map(f=>badgeWithLabel(f.name,30)).join('')+'</div>';
   foods.forEach(f=>{
     body += '<p><b>'+escapeHtml(f.name)+':</b> ';
     if(format==='finger'){ body += escapeHtml(f.finger); }
@@ -548,14 +598,12 @@ function openRecipe(items, context){
   if(context.spiceNames && context.spiceNames.length){
     body += '<p><b>Spice:</b> stir in a small pinch of '+escapeHtml(context.spiceNames.join(', '))+', ground, no salt.</p>';
   } else if(context.spiceSuggested){
-    body += '<p><b>Spice:</b> a mild spice is suggested this time — pick one from the log form below.</p>';
+    body += '<p><b>Spice:</b> a mild spice is suggested this time — pick one in the log flow.</p>';
   }
   (context.allergens||[]).forEach(a=>{
     body += '<p><b>Allergen — '+escapeHtml(a.name)+':</b> stir in '+escapeHtml(a.ingredient)+' to combine.</p>';
   });
-
-  document.getElementById('recipeContent').innerHTML =
-    '<h3>'+escapeHtml(items.join(' + '))+'</h3>' + body;
+  document.getElementById('recipeContent').innerHTML = '<h3>'+escapeHtml(items.join(' + '))+'</h3>' + body;
   document.getElementById('recipePanel').classList.add('open');
 }
 window.closeRecipe = closeRecipe;
@@ -568,7 +616,8 @@ function renderAll(){
   renderHistory();
 }
 
-// ---------------- Format & reaction option data ----------------
+// ==================== Sheet: 6-step guided flow ====================
+const STEP_LABELS = ["Time & date","Main veg","Legume, grain or lentil","Spice","Allergen","Review & save"];
 const FORMAT_OPTIONS = [
   {value:'soft', title:'Soft / purée', desc:'Just the smooth version', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor"/></svg>'},
   {value:'finger', title:'Finger food', desc:'Just self-fed pieces', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><rect x="7" y="2" width="6" height="16" rx="3" fill="currentColor"/></svg>'},
@@ -581,11 +630,11 @@ const REACTION_OPTIONS = [
   {value:'Liked', label:'Liked', cls:'r-liked', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 14c1 1.6 2.5 2.4 4 2.4s3-0.8 4-2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'}
 ];
 
-// ---------------- Sheet state ----------------
 let sheetStep = 1;
 let selectedFormat = 'soft';
 let selectedTs = '';
 let allergenUsedFlag = false;
+let notesValue = '';
 
 function nowLocalIso(){ return new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16); }
 
@@ -601,7 +650,6 @@ function resetSheetState(prefill){
   selectedTs = (prefill && prefill.ts) ? new Date(new Date(prefill.ts) - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : nowLocalIso();
   notesValue = (prefill && prefill.notes) || '';
 }
-let notesValue = '';
 
 function openSheet(prefill){
   resetSheetState(prefill);
@@ -616,29 +664,44 @@ function closeSheet(){
 }
 document.getElementById('sheetCloseBtn').onclick = closeSheet;
 document.getElementById('sheetBackdrop').onclick = closeSheet;
-document.getElementById('fabBtn').onclick = ()=> openSheet(null);
+document.getElementById('logOwnBtn').onclick = ()=> openSheet(null);
 
-function renderDots(){
-  document.getElementById('sheetDots').innerHTML = [1,2,3].map(n=>'<span class="'+(n===sheetStep?'active':'')+'"></span>').join('');
+function chipListHtml(names, selectedArr, dataAttr){
+  return names.map(n=>
+    '<button type="button" class="chip'+(selectedArr.includes(n)?' selected':'')+'" data-'+dataAttr+'="'+escapeHtml(n)+'">'+badgeSvg(n,24)+'<span>'+escapeHtml(n)+'</span></button>'
+  ).join('');
 }
 
 function renderSheetStep(){
-  renderDots();
+  document.getElementById('sheetStepLabel').textContent = 'Step '+sheetStep+' of 6 · '+STEP_LABELS[sheetStep-1];
+  document.getElementById('sheetProgressFill').style.width = (sheetStep/6*100)+'%';
   const body = document.getElementById('sheetBody');
   const footer = document.getElementById('sheetFooter');
-  const stats = computeStats();
 
   if(sheetStep===1){
     body.innerHTML =
-      '<div class="sheet-step-title">What did he eat?</div>'+
-      '<label>Items (up to 3)</label>'+
-      '<div class="chip-group" id="sheetItemChips" style="margin-bottom:16px;"></div>'+
-      '<label>Format</label>'+
-      '<div class="format-grid" id="sheetFormatGrid"></div>';
-    document.getElementById('sheetItemChips').innerHTML = stats.unlockedFoods.map(f=>
-      '<button type="button" class="chip'+(selectedItems.includes(f)?' selected':'')+'" data-food="'+escapeHtml(f)+'">'+escapeHtml(f)+'</button>'
-    ).join('');
-    document.querySelectorAll('#sheetItemChips .chip').forEach(c=>{
+      '<div class="sheet-step-title">When was this meal?</div>'+
+      '<label>Date &amp; time</label>'+
+      '<input type="datetime-local" id="sheetTsInput" value="'+selectedTs+'">'+
+      '<div class="quick-chips">'+
+        '<button type="button" class="quick-chip" id="qcNow">Just now</button>'+
+      '</div>';
+    document.getElementById('sheetTsInput').oninput = e=>{ selectedTs = e.target.value; };
+    document.getElementById('qcNow').onclick = ()=>{ selectedTs = nowLocalIso(); renderSheetStep(); };
+    footer.innerHTML = '<button class="btn-next" id="nextBtn" style="flex:1;">Next</button>';
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
+  }
+
+  else if(sheetStep===2){
+    const rootF = FOODS.filter(f=>f.group==='root').map(f=>f.name);
+    const leafyF = FOODS.filter(f=>f.group==='leafy').map(f=>f.name);
+    const gardenF = FOODS.filter(f=>f.group==='garden').map(f=>f.name);
+    body.innerHTML =
+      '<div class="sheet-step-title">Which vegetable(s)?</div>'+
+      '<div class="chip-group-label">Root veg</div><div class="chip-grid" id="rootChips">'+chipListHtml(rootF, selectedItems, 'food')+'</div>'+
+      '<div class="chip-group-label">Leafy &amp; green veg</div><div class="chip-grid" id="leafyChips">'+chipListHtml(leafyF, selectedItems, 'food')+'</div>'+
+      '<div class="chip-group-label">Garden veg</div><div class="chip-grid" id="gardenChips">'+chipListHtml(gardenF, selectedItems, 'food')+'</div>';
+    body.querySelectorAll('.chip').forEach(c=>{
       c.onclick = ()=>{
         const f = c.dataset.food;
         if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
@@ -646,41 +709,36 @@ function renderSheetStep(){
         renderSheetStep();
       };
     });
-    document.getElementById('sheetFormatGrid').innerHTML = FORMAT_OPTIONS.map(fo=>
-      '<button type="button" class="format-card'+(selectedFormat===fo.value?' selected':'')+'" data-fmt="'+fo.value+'">'+
-        '<div class="fc-icon">'+fo.icon+'</div>'+
-        '<div class="fc-title">'+fo.title+'</div>'+
-        '<div class="fc-desc">'+fo.desc+'</div>'+
-      '</button>'
-    ).join('');
-    document.querySelectorAll('#sheetFormatGrid .format-card').forEach(c=>{
-      c.onclick = ()=>{ selectedFormat = c.dataset.fmt; renderSheetStep(); };
-    });
-    footer.innerHTML = '<button class="btn" id="stepNextBtn">Next</button>';
-    document.getElementById('stepNextBtn').onclick = ()=>{
-      if(!selectedItems.length){ alert('Pick at least one food item.'); return; }
-      sheetStep = 2; renderSheetStep();
-    };
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=1; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=3; renderSheetStep(); };
   }
 
-  else if(sheetStep===2){
+  else if(sheetStep===3){
+    const legF = FOODS.filter(f=>f.group==='legume').map(f=>f.name);
     body.innerHTML =
-      '<div class="sheet-step-title">How did it go?</div>'+
-      '<div class="reaction-grid" id="sheetReactionGrid"></div>'+
-      '<label style="margin-top:18px;">Spices used (optional — pick any)</label>'+
-      '<div class="chip-group" id="sheetSpiceChips"></div>';
-    document.getElementById('sheetReactionGrid').innerHTML = REACTION_OPTIONS.map(ro=>
-      '<button type="button" class="reaction-card '+ro.cls+(selectedReaction===ro.value?' selected':'')+'" data-reaction="'+ro.value+'">'+
-        '<div class="rc-icon">'+ro.icon+'</div><div class="rc-label">'+ro.label+'</div>'+
-      '</button>'
-    ).join('');
-    document.querySelectorAll('#sheetReactionGrid .reaction-card').forEach(c=>{
-      c.onclick = ()=>{ selectedReaction = c.dataset.reaction; renderSheetStep(); };
+      '<div class="sheet-step-title">Any legume, grain or lentil?</div>'+
+      '<div class="chip-grid" id="legChips">'+chipListHtml(legF, selectedItems, 'food')+'</div>'+
+      '<p style="font-size:12px;color:var(--text-muted);margin-top:12px;">Optional — skip if this meal is veg only.</p>';
+    body.querySelectorAll('.chip').forEach(c=>{
+      c.onclick = ()=>{
+        const f = c.dataset.food;
+        if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
+        else if(selectedItems.length<3) selectedItems.push(f);
+        renderSheetStep();
+      };
     });
-    document.getElementById('sheetSpiceChips').innerHTML = SPICES.map(sp=>
-      '<button type="button" class="chip'+(selectedSpices.includes(sp)?' selected':'')+'" data-sp="'+escapeHtml(sp)+'">'+escapeHtml(sp)+'</button>'
-    ).join('');
-    document.querySelectorAll('#sheetSpiceChips .chip').forEach(c=>{
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=4; renderSheetStep(); };
+  }
+
+  else if(sheetStep===4){
+    body.innerHTML =
+      '<div class="sheet-step-title">Any spice?</div>'+
+      '<div class="chip-grid" id="spiceChips">'+chipListHtml(SPICES, selectedSpices, 'sp')+'</div>'+
+      '<p style="font-size:12px;color:var(--text-muted);margin-top:12px;">Optional — ground, no salt, a pinch is plenty.</p>';
+    body.querySelectorAll('.chip').forEach(c=>{
       c.onclick = ()=>{
         const n = c.dataset.sp;
         if(selectedSpices.includes(n)) selectedSpices = selectedSpices.filter(x=>x!==n);
@@ -688,33 +746,23 @@ function renderSheetStep(){
         renderSheetStep();
       };
     });
-    footer.innerHTML = '<button class="btn secondary" id="stepBackBtn">Back</button><button class="btn" id="stepNextBtn">Next</button>';
-    document.getElementById('stepBackBtn').onclick = ()=>{ sheetStep=1; renderSheetStep(); };
-    document.getElementById('stepNextBtn').onclick = ()=>{
-      if(!selectedReaction){ alert('Pick a reaction.'); return; }
-      sheetStep = 3; renderSheetStep();
-    };
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=3; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=5; renderSheetStep(); };
   }
 
-  else if(sheetStep===3){
+  else if(sheetStep===5){
     body.innerHTML =
-      '<div class="sheet-step-title">Anything else?</div>'+
-      '<div class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" id="sheetAllergenCheck"'+(allergenUsedFlag?' checked':'')+'><span>Allergen used?</span></div>'+
-      '<div class="sub-fields'+(allergenUsedFlag?' open':'')+'" id="sheetAllergenFields">'+
-        '<label>Which allergen(s)</label>'+
-        '<div class="chip-group" id="sheetAllergenChips" style="margin-bottom:10px;"></div>'+
-        '<label>Any reaction observed?</label>'+
-        '<div class="chip-group" id="sheetAllergenReactChips"></div>'+
-      '</div>'+
-      '<label style="margin-top:14px;">When</label>'+
-      '<input type="datetime-local" id="sheetTsInput" value="'+selectedTs+'" style="margin-bottom:14px;">'+
-      '<label>Notes</label>'+
-      '<textarea id="sheetNotesInput" placeholder="Optional">'+escapeHtml(notesValue)+'</textarea>';
-
-    document.getElementById('sheetAllergenChips').innerHTML = ALLERGENS.map(a=>
-      '<button type="button" class="chip'+(selectedAllergens.includes(a.name)?' selected':'')+'" data-al="'+a.name+'">'+a.name+'</button>'
-    ).join('');
-    document.querySelectorAll('#sheetAllergenChips .chip').forEach(c=>{
+      '<div class="sheet-step-title">Any allergen this meal?</div>'+
+      '<div class="checkbox-row" style="margin-bottom:12px;"><input type="checkbox" id="allergenCheck"'+(allergenUsedFlag?' checked':'')+'><span>Allergen used</span></div>'+
+      '<div class="sub-fields'+(allergenUsedFlag?' open':'')+'" id="allergenFields">'+
+        '<div class="chip-grid" id="allergenChips">'+chipListHtml(ALLERGENS.map(a=>a.name), selectedAllergens, 'al')+'</div>'+
+      '</div>';
+    document.getElementById('allergenCheck').onchange = e=>{
+      allergenUsedFlag = e.target.checked;
+      document.getElementById('allergenFields').classList.toggle('open', allergenUsedFlag);
+    };
+    body.querySelectorAll('#allergenChips .chip').forEach(c=>{
       c.onclick = ()=>{
         const n = c.dataset.al;
         if(selectedAllergens.includes(n)) selectedAllergens = selectedAllergens.filter(x=>x!==n);
@@ -722,26 +770,54 @@ function renderSheetStep(){
         renderSheetStep();
       };
     });
-    document.getElementById('sheetAllergenReactChips').innerHTML =
-      '<button type="button" class="chip'+(selectedAllergenReaction==='fine'?' selected':'')+'" data-ar="fine">No reaction</button>'+
-      '<button type="button" class="chip'+(selectedAllergenReaction==='reaction'?' selected':'')+'" data-ar="reaction">Reaction observed</button>';
-    document.querySelectorAll('#sheetAllergenReactChips .chip').forEach(c=>{
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=4; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=6; renderSheetStep(); };
+  }
+
+  else if(sheetStep===6){
+    const summaryItems = [...selectedItems, ...selectedSpices, ...(allergenUsedFlag?selectedAllergens:[])];
+    body.innerHTML =
+      '<div class="sheet-step-title">How did it go?</div>'+
+      '<div class="reaction-grid" id="reactionGrid">'+REACTION_OPTIONS.map(ro=>
+        '<button type="button" class="reaction-card '+ro.cls+(selectedReaction===ro.value?' selected':'')+'" data-reaction="'+ro.value+'"><div class="rc-icon">'+ro.icon+'</div><div class="rc-label">'+ro.label+'</div></button>'
+      ).join('')+'</div>'+
+      '<label style="margin-top:18px;">Format</label>'+
+      '<div class="format-grid" id="formatGrid">'+FORMAT_OPTIONS.map(fo=>
+        '<button type="button" class="format-card'+(selectedFormat===fo.value?' selected':'')+'" data-fmt="'+fo.value+'"><div class="fc-icon">'+fo.icon+'</div><div class="fc-title">'+fo.title+'</div><div class="fc-desc">'+fo.desc+'</div></button>'
+      ).join('')+'</div>'+
+      (allergenUsedFlag ? (
+        '<label style="margin-top:18px;">Allergen reaction observed?</label>'+
+        '<div class="chip-grid">'+
+          '<button type="button" class="chip'+(selectedAllergenReaction==='fine'?' selected':'')+'" data-ar="fine"><span>No reaction</span></button>'+
+          '<button type="button" class="chip'+(selectedAllergenReaction==='reaction'?' selected':'')+'" data-ar="reaction"><span>Reaction observed</span></button>'+
+        '</div>'
+      ) : '')+
+      '<label style="margin-top:18px;">Notes</label>'+
+      '<textarea id="notesInput" placeholder="Optional">'+escapeHtml(notesValue)+'</textarea>'+
+      '<label style="margin-top:18px;">Summary</label>'+
+      '<div class="summary-strip">'+(summaryItems.length ? summaryItems.map(n=>badgeSvg(n,26)).join('') : '<span class="empty">Nothing selected yet</span>')+'</div>';
+
+    body.querySelectorAll('#reactionGrid .reaction-card').forEach(c=>{
+      c.onclick = ()=>{ selectedReaction = c.dataset.reaction; renderSheetStep(); };
+    });
+    body.querySelectorAll('#formatGrid .format-card').forEach(c=>{
+      c.onclick = ()=>{ selectedFormat = c.dataset.fmt; renderSheetStep(); };
+    });
+    body.querySelectorAll('[data-ar]').forEach(c=>{
       c.onclick = ()=>{ selectedAllergenReaction = c.dataset.ar; renderSheetStep(); };
     });
-    document.getElementById('sheetAllergenCheck').onchange = e=>{
-      allergenUsedFlag = e.target.checked;
-      document.getElementById('sheetAllergenFields').classList.toggle('open', allergenUsedFlag);
-    };
-    document.getElementById('sheetTsInput').oninput = e=>{ selectedTs = e.target.value; };
-    document.getElementById('sheetNotesInput').oninput = e=>{ notesValue = e.target.value; };
+    document.getElementById('notesInput').oninput = e=>{ notesValue = e.target.value; };
 
-    footer.innerHTML = '<button class="btn secondary" id="stepBackBtn">Back</button><button class="btn" id="saveBtn">'+(editingId?'Update meal':'Save meal')+'</button>';
-    document.getElementById('stepBackBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
-    document.getElementById('saveBtn').onclick = saveMeal;
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-submit" id="submitBtn">'+(editingId?'Update meal':'Save meal')+'</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=5; renderSheetStep(); };
+    document.getElementById('submitBtn').onclick = saveMeal;
   }
 }
 
 async function saveMeal(){
+  if(!selectedItems.length){ alert('Pick at least one vegetable or legume/grain (steps 2–3).'); return; }
+  if(!selectedReaction){ alert('Pick a reaction.'); return; }
   const payload = {
     ts: selectedTs ? new Date(selectedTs).toISOString() : new Date().toISOString(),
     items: selectedItems,
