@@ -45,14 +45,13 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:v
 .btn.danger{background:var(--burgundy-light);color:var(--burgundy);}
 
 /* Recipe panel */
-.recipe-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--teal-dark);padding:18px;max-height:60vh;overflow-y:auto;z-index:300;display:none;}
+.recipe-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--teal-dark);padding:18px;max-height:60vh;overflow-y:auto;z-index:400;display:none;}
 .recipe-panel.open{display:block;}
 .recipe-panel h3{font-family:'Space Grotesk',sans-serif;font-size:17px;color:var(--teal-dark);margin-bottom:8px;}
 .recipe-panel .close-btn{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);}
 .recipe-panel p{font-size:13px;margin-bottom:6px;}
 
-/* Form */
-.form-grid{display:grid;gap:12px;}
+/* Shared field styles used inside the sheet */
 label{font-size:11.5px;font-weight:600;color:var(--teal-dark);display:block;margin-bottom:5px;}
 input,select,textarea{width:100%;font-size:16px;font-family:inherit;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-1);color:var(--text);}
 textarea{resize:vertical;min-height:50px;}
@@ -66,7 +65,43 @@ textarea{resize:vertical;min-height:50px;}
 .checkbox-row input{width:auto;min-height:20px;}
 .sub-fields{padding:10px;background:var(--bg-1);border-radius:8px;margin-top:6px;display:none;}
 .sub-fields.open{display:block;}
-.form-actions{display:flex;gap:8px;margin-top:4px;}
+
+/* FAB */
+.fab{position:fixed;right:20px;bottom:24px;width:58px;height:58px;border-radius:50%;background:var(--teal);color:#fff;border:none;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(76,95,213,0.4);z-index:250;}
+.fab:active{transform:scale(0.94);}
+
+/* Bottom sheet */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(21,26,35,0.4);z-index:390;display:none;}
+.sheet-backdrop.open{display:block;}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:88vh;background:var(--card);border-radius:20px 20px 0 0;z-index:395;transform:translateY(110%);transition:transform 0.32s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;box-shadow:0 -8px 30px rgba(21,26,35,0.18);}
+.sheet.open{transform:translateY(0);}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 4px;}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px;}
+.sheet-dots{display:flex;gap:6px;}
+.sheet-dots span{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.sheet-dots span.active{background:var(--teal);width:18px;border-radius:4px;}
+.sheet-close{background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;line-height:1;padding:4px 6px;}
+.sheet-body{padding:4px 20px 18px;overflow-y:auto;flex:1;}
+.sheet-step-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;margin-bottom:14px;}
+.sheet-footer{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border);}
+.sheet-footer .btn{flex:1;}
+
+/* Format cards */
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.format-card{border:2px solid var(--border);background:var(--bg-1);border-radius:12px;padding:14px;cursor:pointer;text-align:left;}
+.format-card.selected{border-color:var(--teal);background:var(--teal-surface);}
+.format-card .fc-icon{color:var(--teal-dark);margin-bottom:8px;}
+.format-card .fc-title{font-weight:700;font-size:13.5px;margin-bottom:2px;}
+.format-card .fc-desc{font-size:11.5px;color:var(--text-muted);line-height:1.35;}
+
+/* Reaction cards */
+.reaction-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.reaction-card{border:2px solid var(--border);background:var(--bg-1);border-radius:12px;padding:16px 8px;cursor:pointer;text-align:center;}
+.reaction-card .rc-icon{font-size:26px;margin-bottom:4px;}
+.reaction-card .rc-label{font-size:12.5px;font-weight:700;}
+.reaction-card.selected.r-liked{border-color:var(--teal);background:var(--teal-surface);}
+.reaction-card.selected.r-neutral{border-color:var(--text-muted);background:var(--bg-2);}
+.reaction-card.selected.r-refused{border-color:var(--burgundy);background:var(--burgundy-light);}
 
 /* Progress */
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -117,65 +152,6 @@ textarea{resize:vertical;min-height:50px;}
 </section>
 
 <section>
-  <h2 id="formHeading">Log a meal</h2>
-  <div class="card form-grid">
-    <div>
-      <label>Items (up to 3)</label>
-      <div class="chip-group" id="itemChips"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div>
-        <label>Format</label>
-        <select id="formatSelect">
-          <option value="soft">Soft / purée</option>
-          <option value="finger">Finger food</option>
-          <option value="both">Both</option>
-          <option value="combined">Combined / mixed</option>
-        </select>
-      </div>
-      <div>
-        <label>When</label>
-        <input type="datetime-local" id="tsInput">
-      </div>
-    </div>
-    <div>
-      <label>Reaction</label>
-      <div class="chip-group">
-        <button type="button" class="chip reaction-refused" data-reaction="Refused">Refused</button>
-        <button type="button" class="chip reaction-neutral" data-reaction="Neutral">Neutral</button>
-        <button type="button" class="chip reaction-liked" data-reaction="Liked">Liked</button>
-      </div>
-    </div>
-    <div>
-      <label>Spices used (optional — pick any)</label>
-      <div class="chip-group" id="spiceChips"></div>
-    </div>
-    <div>
-      <div class="checkbox-row"><input type="checkbox" id="allergenCheck"><span>Allergen used?</span></div>
-      <div class="sub-fields" id="allergenSubFields">
-        <label>Which allergen(s)</label>
-        <div class="chip-group" id="allergenChips"></div>
-        <div style="margin-top:8px;">
-          <label>Any reaction observed?</label>
-          <div class="chip-group">
-            <button type="button" class="chip" data-allreact="fine">No reaction</button>
-            <button type="button" class="chip" data-allreact="reaction">Reaction observed</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <label>Notes</label>
-      <textarea id="notesInput" placeholder="Optional"></textarea>
-    </div>
-    <div class="form-actions">
-      <button class="btn" id="saveBtn">Save meal</button>
-      <button class="btn secondary" id="cancelEditBtn" style="display:none;">Cancel edit</button>
-    </div>
-  </div>
-</section>
-
-<section>
   <h2>Progress</h2>
   <div class="stat-grid" id="statGrid"></div>
   <div class="card allergen-list" id="allergenStatus" style="margin-top:10px;"></div>
@@ -191,6 +167,19 @@ textarea{resize:vertical;min-height:50px;}
   <div id="historyList"></div>
 </section>
 
+</div>
+
+<button class="fab" id="fabBtn" aria-label="Log a meal">+</button>
+
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-dots" id="sheetDots"></div>
+    <button class="sheet-close" id="sheetCloseBtn" aria-label="Close">&times;</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-footer" id="sheetFooter"></div>
 </div>
 
 <div class="recipe-panel" id="recipePanel">
@@ -461,19 +450,13 @@ function renderNextMeal(stats){
     (s.allergenTag ? '<div class="allergen-note">'+escapeHtml(s.allergenTag)+'</div>' : '')+
     '<button class="btn" id="prefillBtn">Log this meal</button>';
   document.getElementById('prefillBtn').onclick = ()=>{
-    selectedItems = [...s.items];
-    document.getElementById('formatSelect').value = s.format==='combined' ? 'combined' : (s.format==='both'?'both':'soft');
-    selectedSpices = []; // spice suggested but which one is your call — pick from the chips
-    if(s.allergenTag && s.allergenIngredient){
-      document.getElementById('allergenCheck').checked = true;
-      document.getElementById('allergenSubFields').classList.add('open');
-      const allergenNameMatch = ALLERGENS.find(a=>s.allergenTag.includes(a.name));
-      if(allergenNameMatch) selectedAllergens = [allergenNameMatch.name];
-    }
-    renderItemChips(stats);
-    renderAllergenChips();
-    renderSpiceChips();
-    document.getElementById('formHeading').scrollIntoView({behavior:'smooth'});
+    const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+    openSheet({
+      items: s.items,
+      format: s.format==='combined' ? 'combined' : (s.format==='both'?'both':'soft'),
+      allergenUsed: !!matchedAllergen,
+      allergens: matchedAllergen ? [matchedAllergen.name] : []
+    });
   };
   el.querySelectorAll('.food-link').forEach(b=> b.onclick = ()=>{
     const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
@@ -526,7 +509,10 @@ function renderHistory(){
       '<div class="actions"><button class="btn secondary" data-edit="'+e.id+'">Edit</button><button class="btn danger" data-del="'+e.id+'">Delete</button></div>'+
     '</div>';
   }).join('');
-  el.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>startEdit(b.dataset.edit));
+  el.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{
+    const en = entries.find(x=>x.id===b.dataset.edit);
+    if(en) openSheet({...en, editingId: en.id});
+  });
   el.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>removeEntry(b.dataset.del));
   el.querySelectorAll('.hist-food-link').forEach(b=>{
     b.onclick = ()=>{
@@ -538,49 +524,6 @@ function renderHistory(){
         spiceNames: e.spices||[],
         allergens: allergenObjs
       });
-    };
-  });
-}
-
-function renderItemChips(stats){
-  const el = document.getElementById('itemChips');
-  el.innerHTML = stats.unlockedFoods.map(f=>
-    '<button type="button" class="chip'+(selectedItems.includes(f)?' selected':'')+'" data-food="'+escapeHtml(f)+'">'+escapeHtml(f)+'</button>'
-  ).join('');
-  el.querySelectorAll('.chip').forEach(c=>{
-    c.onclick = ()=>{
-      const f = c.dataset.food;
-      if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
-      else if(selectedItems.length<3) selectedItems.push(f);
-      renderItemChips(stats);
-    };
-  });
-}
-function renderAllergenChips(){
-  const el = document.getElementById('allergenChips');
-  el.innerHTML = ALLERGENS.map(a=>
-    '<button type="button" class="chip'+(selectedAllergens.includes(a.name)?' selected':'')+'" data-al="'+a.name+'">'+a.name+'</button>'
-  ).join('');
-  el.querySelectorAll('.chip').forEach(c=>{
-    c.onclick = ()=>{
-      const n = c.dataset.al;
-      if(selectedAllergens.includes(n)) selectedAllergens = selectedAllergens.filter(x=>x!==n);
-      else selectedAllergens.push(n);
-      renderAllergenChips();
-    };
-  });
-}
-function renderSpiceChips(){
-  const el = document.getElementById('spiceChips');
-  el.innerHTML = SPICES.map(sp=>
-    '<button type="button" class="chip'+(selectedSpices.includes(sp)?' selected':'')+'" data-sp="'+escapeHtml(sp)+'">'+escapeHtml(sp)+'</button>'
-  ).join('');
-  el.querySelectorAll('.chip').forEach(c=>{
-    c.onclick = ()=>{
-      const n = c.dataset.sp;
-      if(selectedSpices.includes(n)) selectedSpices = selectedSpices.filter(x=>x!==n);
-      else selectedSpices.push(n);
-      renderSpiceChips();
     };
   });
 }
@@ -623,100 +566,204 @@ function renderAll(){
   renderStats(stats);
   renderShopping(stats);
   renderHistory();
-  renderItemChips(stats);
-  renderAllergenChips();
 }
 
-// ---------------- Form wiring ----------------
-document.querySelectorAll('[data-reaction]').forEach(b=>{
-  b.onclick = ()=>{
-    selectedReaction = b.dataset.reaction;
-    document.querySelectorAll('[data-reaction]').forEach(x=>x.classList.remove('selected'));
-    b.classList.add('selected');
-  };
-});
-document.querySelectorAll('[data-allreact]').forEach(b=>{
-  b.onclick = ()=>{
-    selectedAllergenReaction = b.dataset.allreact;
-    document.querySelectorAll('[data-allreact]').forEach(x=>x.classList.remove('selected'));
-    b.classList.add('selected');
-  };
-});
-document.getElementById('allergenCheck').addEventListener('change', e=>{
-  document.getElementById('allergenSubFields').classList.toggle('open', e.target.checked);
-});
+// ---------------- Format & reaction option data ----------------
+const FORMAT_OPTIONS = [
+  {value:'soft', title:'Soft / purée', desc:'Just the smooth version', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor"/></svg>'},
+  {value:'finger', title:'Finger food', desc:'Just self-fed pieces', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><rect x="7" y="2" width="6" height="16" rx="3" fill="currentColor"/></svg>'},
+  {value:'both', title:'Both textures', desc:'Same food, offered two ways side by side', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="6" cy="10" r="5" fill="currentColor"/><rect x="13" y="3" width="4" height="14" rx="2" fill="currentColor"/></svg>'},
+  {value:'combined', title:'Combined dish', desc:'Everything mashed or mixed together as one', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor" opacity="0.35"/><circle cx="7" cy="8" r="1.6" fill="currentColor"/><circle cx="12" cy="7" r="1.4" fill="currentColor"/><circle cx="11" cy="12" r="1.7" fill="currentColor"/><circle cx="7" cy="12" r="1.2" fill="currentColor"/></svg>'}
+];
+const REACTION_OPTIONS = [
+  {value:'Refused', label:'Refused', cls:'r-refused', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 16c1-1.3 2.5-2 4-2s3 0.7 4 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+  {value:'Neutral', label:'Neutral', cls:'r-neutral', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 15h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+  {value:'Liked', label:'Liked', cls:'r-liked', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 14c1 1.6 2.5 2.4 4 2.4s3-0.8 4-2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'}
+];
 
-function resetForm(){
-  editingId = null;
-  selectedItems = []; selectedReaction = null; selectedAllergens = []; selectedAllergenReaction = null; selectedSpices = [];
-  document.getElementById('formatSelect').value = 'soft';
-  document.getElementById('allergenCheck').checked = false;
-  document.getElementById('allergenSubFields').classList.remove('open');
-  document.getElementById('notesInput').value = '';
-  document.querySelectorAll('[data-reaction],[data-allreact]').forEach(x=>x.classList.remove('selected'));
-  document.getElementById('tsInput').value = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);
-  document.getElementById('cancelEditBtn').style.display = 'none';
-  document.getElementById('saveBtn').textContent = 'Save meal';
+// ---------------- Sheet state ----------------
+let sheetStep = 1;
+let selectedFormat = 'soft';
+let selectedTs = '';
+let allergenUsedFlag = false;
+
+function nowLocalIso(){ return new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16); }
+
+function resetSheetState(prefill){
+  editingId = (prefill && prefill.editingId) || null;
+  selectedItems = (prefill && prefill.items) ? [...prefill.items] : [];
+  selectedFormat = (prefill && prefill.format) || 'soft';
+  selectedReaction = (prefill && prefill.reaction) || null;
+  selectedSpices = (prefill && Array.isArray(prefill.spices)) ? [...prefill.spices] : [];
+  allergenUsedFlag = !!(prefill && prefill.allergenUsed);
+  selectedAllergens = (prefill && prefill.allergens) ? [...prefill.allergens] : [];
+  selectedAllergenReaction = (prefill && prefill.allergenReaction) || null;
+  selectedTs = (prefill && prefill.ts) ? new Date(new Date(prefill.ts) - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : nowLocalIso();
+  notesValue = (prefill && prefill.notes) || '';
+}
+let notesValue = '';
+
+function openSheet(prefill){
+  resetSheetState(prefill);
+  sheetStep = 1;
+  document.getElementById('sheetBackdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  renderSheetStep();
+}
+function closeSheet(){
+  document.getElementById('sheetBackdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+document.getElementById('sheetCloseBtn').onclick = closeSheet;
+document.getElementById('sheetBackdrop').onclick = closeSheet;
+document.getElementById('fabBtn').onclick = ()=> openSheet(null);
+
+function renderDots(){
+  document.getElementById('sheetDots').innerHTML = [1,2,3].map(n=>'<span class="'+(n===sheetStep?'active':'')+'"></span>').join('');
+}
+
+function renderSheetStep(){
+  renderDots();
+  const body = document.getElementById('sheetBody');
+  const footer = document.getElementById('sheetFooter');
   const stats = computeStats();
-  renderItemChips(stats);
-  renderAllergenChips();
-  renderSpiceChips();
-}
-resetForm();
 
-function startEdit(id){
-  const e = entries.find(x=>x.id===id);
-  if(!e) return;
-  editingId = id;
-  selectedItems = [...(e.items||[])];
-  selectedReaction = e.reaction;
-  selectedAllergens = [...(e.allergens||[])];
-  selectedAllergenReaction = e.allergenReaction || null;
-  selectedSpices = Array.isArray(e.spices) ? [...e.spices] : []; // legacy entries stored a boolean — treat as no specific spice recorded
-  document.getElementById('formatSelect').value = e.format || 'soft';
-  document.getElementById('allergenCheck').checked = !!e.allergenUsed;
-  document.getElementById('allergenSubFields').classList.toggle('open', !!e.allergenUsed);
-  document.getElementById('notesInput').value = e.notes || '';
-  document.querySelectorAll('[data-reaction]').forEach(x=>x.classList.toggle('selected', x.dataset.reaction===selectedReaction));
-  document.querySelectorAll('[data-allreact]').forEach(x=>x.classList.toggle('selected', x.dataset.allreact===selectedAllergenReaction));
-  const d = new Date(e.ts);
-  document.getElementById('tsInput').value = new Date(d - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
-  document.getElementById('cancelEditBtn').style.display = 'inline-block';
-  document.getElementById('saveBtn').textContent = 'Update meal';
-  const stats = computeStats();
-  renderItemChips(stats);
-  renderAllergenChips();
-  renderSpiceChips();
-  document.getElementById('formHeading').scrollIntoView({behavior:'smooth'});
+  if(sheetStep===1){
+    body.innerHTML =
+      '<div class="sheet-step-title">What did he eat?</div>'+
+      '<label>Items (up to 3)</label>'+
+      '<div class="chip-group" id="sheetItemChips" style="margin-bottom:16px;"></div>'+
+      '<label>Format</label>'+
+      '<div class="format-grid" id="sheetFormatGrid"></div>';
+    document.getElementById('sheetItemChips').innerHTML = stats.unlockedFoods.map(f=>
+      '<button type="button" class="chip'+(selectedItems.includes(f)?' selected':'')+'" data-food="'+escapeHtml(f)+'">'+escapeHtml(f)+'</button>'
+    ).join('');
+    document.querySelectorAll('#sheetItemChips .chip').forEach(c=>{
+      c.onclick = ()=>{
+        const f = c.dataset.food;
+        if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
+        else if(selectedItems.length<3) selectedItems.push(f);
+        renderSheetStep();
+      };
+    });
+    document.getElementById('sheetFormatGrid').innerHTML = FORMAT_OPTIONS.map(fo=>
+      '<button type="button" class="format-card'+(selectedFormat===fo.value?' selected':'')+'" data-fmt="'+fo.value+'">'+
+        '<div class="fc-icon">'+fo.icon+'</div>'+
+        '<div class="fc-title">'+fo.title+'</div>'+
+        '<div class="fc-desc">'+fo.desc+'</div>'+
+      '</button>'
+    ).join('');
+    document.querySelectorAll('#sheetFormatGrid .format-card').forEach(c=>{
+      c.onclick = ()=>{ selectedFormat = c.dataset.fmt; renderSheetStep(); };
+    });
+    footer.innerHTML = '<button class="btn" id="stepNextBtn">Next</button>';
+    document.getElementById('stepNextBtn').onclick = ()=>{
+      if(!selectedItems.length){ alert('Pick at least one food item.'); return; }
+      sheetStep = 2; renderSheetStep();
+    };
+  }
+
+  else if(sheetStep===2){
+    body.innerHTML =
+      '<div class="sheet-step-title">How did it go?</div>'+
+      '<div class="reaction-grid" id="sheetReactionGrid"></div>'+
+      '<label style="margin-top:18px;">Spices used (optional — pick any)</label>'+
+      '<div class="chip-group" id="sheetSpiceChips"></div>';
+    document.getElementById('sheetReactionGrid').innerHTML = REACTION_OPTIONS.map(ro=>
+      '<button type="button" class="reaction-card '+ro.cls+(selectedReaction===ro.value?' selected':'')+'" data-reaction="'+ro.value+'">'+
+        '<div class="rc-icon">'+ro.icon+'</div><div class="rc-label">'+ro.label+'</div>'+
+      '</button>'
+    ).join('');
+    document.querySelectorAll('#sheetReactionGrid .reaction-card').forEach(c=>{
+      c.onclick = ()=>{ selectedReaction = c.dataset.reaction; renderSheetStep(); };
+    });
+    document.getElementById('sheetSpiceChips').innerHTML = SPICES.map(sp=>
+      '<button type="button" class="chip'+(selectedSpices.includes(sp)?' selected':'')+'" data-sp="'+escapeHtml(sp)+'">'+escapeHtml(sp)+'</button>'
+    ).join('');
+    document.querySelectorAll('#sheetSpiceChips .chip').forEach(c=>{
+      c.onclick = ()=>{
+        const n = c.dataset.sp;
+        if(selectedSpices.includes(n)) selectedSpices = selectedSpices.filter(x=>x!==n);
+        else selectedSpices.push(n);
+        renderSheetStep();
+      };
+    });
+    footer.innerHTML = '<button class="btn secondary" id="stepBackBtn">Back</button><button class="btn" id="stepNextBtn">Next</button>';
+    document.getElementById('stepBackBtn').onclick = ()=>{ sheetStep=1; renderSheetStep(); };
+    document.getElementById('stepNextBtn').onclick = ()=>{
+      if(!selectedReaction){ alert('Pick a reaction.'); return; }
+      sheetStep = 3; renderSheetStep();
+    };
+  }
+
+  else if(sheetStep===3){
+    body.innerHTML =
+      '<div class="sheet-step-title">Anything else?</div>'+
+      '<div class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" id="sheetAllergenCheck"'+(allergenUsedFlag?' checked':'')+'><span>Allergen used?</span></div>'+
+      '<div class="sub-fields'+(allergenUsedFlag?' open':'')+'" id="sheetAllergenFields">'+
+        '<label>Which allergen(s)</label>'+
+        '<div class="chip-group" id="sheetAllergenChips" style="margin-bottom:10px;"></div>'+
+        '<label>Any reaction observed?</label>'+
+        '<div class="chip-group" id="sheetAllergenReactChips"></div>'+
+      '</div>'+
+      '<label style="margin-top:14px;">When</label>'+
+      '<input type="datetime-local" id="sheetTsInput" value="'+selectedTs+'" style="margin-bottom:14px;">'+
+      '<label>Notes</label>'+
+      '<textarea id="sheetNotesInput" placeholder="Optional">'+escapeHtml(notesValue)+'</textarea>';
+
+    document.getElementById('sheetAllergenChips').innerHTML = ALLERGENS.map(a=>
+      '<button type="button" class="chip'+(selectedAllergens.includes(a.name)?' selected':'')+'" data-al="'+a.name+'">'+a.name+'</button>'
+    ).join('');
+    document.querySelectorAll('#sheetAllergenChips .chip').forEach(c=>{
+      c.onclick = ()=>{
+        const n = c.dataset.al;
+        if(selectedAllergens.includes(n)) selectedAllergens = selectedAllergens.filter(x=>x!==n);
+        else selectedAllergens.push(n);
+        renderSheetStep();
+      };
+    });
+    document.getElementById('sheetAllergenReactChips').innerHTML =
+      '<button type="button" class="chip'+(selectedAllergenReaction==='fine'?' selected':'')+'" data-ar="fine">No reaction</button>'+
+      '<button type="button" class="chip'+(selectedAllergenReaction==='reaction'?' selected':'')+'" data-ar="reaction">Reaction observed</button>';
+    document.querySelectorAll('#sheetAllergenReactChips .chip').forEach(c=>{
+      c.onclick = ()=>{ selectedAllergenReaction = c.dataset.ar; renderSheetStep(); };
+    });
+    document.getElementById('sheetAllergenCheck').onchange = e=>{
+      allergenUsedFlag = e.target.checked;
+      document.getElementById('sheetAllergenFields').classList.toggle('open', allergenUsedFlag);
+    };
+    document.getElementById('sheetTsInput').oninput = e=>{ selectedTs = e.target.value; };
+    document.getElementById('sheetNotesInput').oninput = e=>{ notesValue = e.target.value; };
+
+    footer.innerHTML = '<button class="btn secondary" id="stepBackBtn">Back</button><button class="btn" id="saveBtn">'+(editingId?'Update meal':'Save meal')+'</button>';
+    document.getElementById('stepBackBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
+    document.getElementById('saveBtn').onclick = saveMeal;
+  }
 }
-document.getElementById('cancelEditBtn').onclick = resetForm;
+
+async function saveMeal(){
+  const payload = {
+    ts: selectedTs ? new Date(selectedTs).toISOString() : new Date().toISOString(),
+    items: selectedItems,
+    format: selectedFormat,
+    reaction: selectedReaction,
+    spices: selectedSpices,
+    allergenUsed: allergenUsedFlag,
+    allergens: allergenUsedFlag ? selectedAllergens : [],
+    allergenReaction: allergenUsedFlag ? selectedAllergenReaction : null,
+    notes: (notesValue||'').trim()
+  };
+  try{
+    if(editingId){ await updateDoc(doc(db,'mealLog',editingId), payload); }
+    else { await addDoc(mealsCol, payload); }
+    closeSheet();
+  }catch(err){ console.error(err); alert('Could not save — check your connection.'); }
+}
 
 async function removeEntry(id){
   if(!confirm('Delete this logged meal? This cannot be undone.')) return;
   try{ await deleteDoc(doc(db,'mealLog',id)); }catch(err){ console.error(err); alert('Could not delete — check your connection.'); }
 }
-
-document.getElementById('saveBtn').onclick = async ()=>{
-  if(!selectedItems.length){ alert('Pick at least one food item.'); return; }
-  if(!selectedReaction){ alert('Pick a reaction.'); return; }
-  const tsVal = document.getElementById('tsInput').value;
-  const payload = {
-    ts: tsVal ? new Date(tsVal).toISOString() : new Date().toISOString(),
-    items: selectedItems,
-    format: document.getElementById('formatSelect').value,
-    reaction: selectedReaction,
-    spices: selectedSpices,
-    allergenUsed: document.getElementById('allergenCheck').checked,
-    allergens: document.getElementById('allergenCheck').checked ? selectedAllergens : [],
-    allergenReaction: document.getElementById('allergenCheck').checked ? selectedAllergenReaction : null,
-    notes: document.getElementById('notesInput').value.trim()
-  };
-  try{
-    if(editingId){ await updateDoc(doc(db,'mealLog',editingId), payload); }
-    else { await addDoc(mealsCol, payload); }
-    resetForm();
-  }catch(err){ console.error(err); alert('Could not save — check your connection.'); }
-};
 
 // ---------------- Firebase wiring ----------------
 onAuthStateChanged(auth, user=>{
