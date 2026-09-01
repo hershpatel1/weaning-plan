@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riyaan's Weaning &mdash; Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal-dark:#2F4A34;--teal-deep:#1D2F21;--teal-light:#9FB79A;--teal-surface:#E7E9DD;
+  --burgundy:#A6432E;--burgundy-light:#F1DCD3;
+  --moss:#7C9473;--gold:#C08A28;--amber-light:#F3E1BC;--amber-deep:#8C6416;
+  --bg-1:#F1EDE1;--bg-2:#E9E3D2;--card:#FBF9F3;--border:#D8D0BC;
+  --text:#23301F;--text-muted:#6B6754;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Work Sans',system-ui,sans-serif;background:var(--bg-1);color:var(--text);line-height:1.5;font-size:14px;}
+.wrap{max-width:820px;margin:0 auto;padding:20px 18px 60px;}
+.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:10px;padding-bottom:14px;border-bottom:2px solid var(--teal-dark);}
+h1{font-family:'Fraunces',serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;}
+.subtitle{color:var(--text-muted);font-size:13px;margin:10px 0 20px;}
+.nav-link{font-size:12.5px;color:var(--teal-dark);text-decoration:none;border-bottom:1px dotted var(--teal-dark);}
+.sync-status{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--bg-2);color:var(--text-muted);}
+.sync-status.live{background:var(--teal-surface);color:var(--teal-dark);}
+.sync-status.err{background:var(--burgundy-light);color:var(--burgundy);}
+
+section{margin-bottom:30px;}
+h2{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--teal-dark);margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.section-note{font-size:12px;color:var(--text-muted);margin-bottom:14px;}
+.card{background:var(--card);border-radius:6px;padding:16px 18px;border:1px solid var(--border);}
+
+/* Reaction breakdown */
+.reaction-row{display:grid;grid-template-columns:110px 1fr 90px;align-items:center;gap:8px;padding:5px 0;font-size:12px;}
+.reaction-row .food-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.reaction-bar{display:flex;height:14px;border-radius:2px;overflow:hidden;background:var(--bg-2);}
+.reaction-bar .seg-liked{background:var(--teal-dark);}
+.reaction-bar .seg-neutral{background:var(--moss);}
+.reaction-bar .seg-refused{background:var(--burgundy);}
+.reaction-counts{font-size:10.5px;color:var(--text-muted);text-align:right;white-space:nowrap;}
+.legend{display:flex;gap:16px;font-size:11px;color:var(--text-muted);margin-top:10px;}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+/* Exposure trend */
+.trend-svg{width:100%;height:auto;}
+.trend-bar{fill:var(--teal-dark);}
+.trend-axis{stroke:var(--border);stroke-width:1;}
+.trend-label{font-size:9px;fill:var(--text-muted);font-family:'Work Sans',sans-serif;}
+
+/* Allergen timeline */
+.allergen-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.allergen-row:last-child{border-bottom:none;}
+.allergen-order{font-family:'Fraunces',serif;font-size:13px;color:var(--text-muted);width:18px;}
+.allergen-name{font-weight:600;flex:1;font-size:13.5px;}
+.status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:3px;white-space:nowrap;}
+.status-done{background:var(--teal-surface);color:var(--teal-dark);}
+.status-due{background:var(--amber-light);color:var(--amber-deep);}
+.status-wait{background:var(--bg-2);color:var(--text-muted);}
+.status-alert{background:var(--burgundy-light);color:var(--burgundy);}
+.allergen-meta{font-size:11px;color:var(--text-muted);width:110px;text-align:right;}
+
+/* Funnel */
+.funnel-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.funnel-row:last-child{border-bottom:none;}
+.funnel-icon{color:var(--teal-dark);flex-shrink:0;}
+.funnel-label{width:120px;font-weight:600;font-size:13px;}
+.funnel-bar-track{flex:1;height:16px;background:var(--bg-2);border-radius:2px;overflow:hidden;}
+.funnel-bar-fill{height:100%;background:var(--teal-dark);}
+.funnel-count{width:34px;text-align:right;font-family:'Fraunces',serif;font-size:14px;color:var(--teal-dark);}
+
+.empty{color:var(--text-muted);font-size:13px;font-style:italic;}
+@media(max-width:600px){.reaction-row{grid-template-columns:80px 1fr 70px;}.funnel-label{width:90px;font-size:12px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header-bar">
+  <h1>Field Notes</h1>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="index.html" class="nav-link">&larr; Back to log</a>
+    <span id="syncStatus" class="sync-status">connecting&hellip;</span>
+  </div>
+</div>
+<p class="subtitle">Riyaan's weaning journey so far, read from the same log as the meal tracker.</p>
+
+<section>
+  <h2>Reaction by food</h2>
+  <p class="section-note">Every logged reaction, per food, sorted by most-tried first.</p>
+  <div class="card" id="reactionBreakdown"><span class="empty">Loading&hellip;</span></div>
+  <div class="legend">
+    <span><i style="background:var(--teal-dark)"></i>Liked</span>
+    <span><i style="background:var(--moss)"></i>Neutral</span>
+    <span><i style="background:var(--burgundy)"></i>Refused</span>
+  </div>
+</section>
+
+<section>
+  <h2>Meals logged per week</h2>
+  <p class="section-note">Volume of exposures over time, from the first logged meal.</p>
+  <div class="card" id="trendChart"><span class="empty">Loading&hellip;</span></div>
+</section>
+
+<section>
+  <h2>Allergen introductions</h2>
+  <p class="section-note">Fixed introduction order, day-2 repeat, then ongoing maintenance.</p>
+  <div class="card" id="allergenTimeline"><span class="empty">Loading&hellip;</span></div>
+</section>
+
+<section>
+  <h2>Growing season &mdash; stage progression</h2>
+  <p class="section-note">Foods still finding their feet, through to fully combined dishes.</p>
+  <div class="card" id="stageFunnel"><span class="empty">Loading&hellip;</span></div>
+</section>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7jLl4DbwmNVJ_lCDMk6pQCO1ROdpXJZw",
+  authDomain: "weaning-plan.firebaseapp.com",
+  projectId: "weaning-plan",
+  storageBucket: "weaning-plan.firebasestorage.app",
+  messagingSenderId: "982823182771",
+  appId: "1:982823182771:web:da8686f4e95426a9452bc6"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const mealsCol = collection(db, "mealLog");
+const statusEl = document.getElementById('syncStatus');
+
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Same reference data as the log app, kept in sync manually
+const FOODS = [
+  {name:"Sweet potato", unlockWeek:1}, {name:"Potato", unlockWeek:1}, {name:"Carrot", unlockWeek:1},
+  {name:"Butternut squash", unlockWeek:1}, {name:"Parsnip", unlockWeek:1}, {name:"Courgette", unlockWeek:1},
+  {name:"Spinach", unlockWeek:1}, {name:"Peas", unlockWeek:2}, {name:"Green beans", unlockWeek:2},
+  {name:"Broccoli", unlockWeek:2}, {name:"Cauliflower", unlockWeek:2}, {name:"Avocado", unlockWeek:2},
+  {name:"Sweetcorn", unlockWeek:2}, {name:"Red lentil", unlockWeek:2}, {name:"Cabbage", unlockWeek:3},
+  {name:"Red peppers", unlockWeek:3}, {name:"Beetroot", unlockWeek:3}, {name:"Aubergine", unlockWeek:3},
+  {name:"Chickpea", unlockWeek:3}, {name:"Butter bean", unlockWeek:3}, {name:"Rice", unlockWeek:3}
+];
+const ALLERGENS = [
+  {name:"Dairy", ingredient:"Plain yoghurt"}, {name:"Peanut", ingredient:"Peanut butter, smooth"},
+  {name:"Wheat", ingredient:"Wheat bread or pasta"}, {name:"Sesame", ingredient:"Sesame seeds, ground at home"},
+  {name:"Soya", ingredient:"Firm tofu"}, {name:"Tree nut", ingredient:"Cashews, ground at home"}
+];
+
+let entries = [];
+
+function computeStats(){
+  const foodExposures = {}; FOODS.forEach(f=>foodExposures[f.name]=[]);
+  const pairs = {};
+  const allergenLog = {}; ALLERGENS.forEach(a=>allergenLog[a.name]=[]);
+  const sorted = [...entries].sort((a,b)=> new Date(a.ts) - new Date(b.ts));
+  sorted.forEach(e=>{
+    (e.items||[]).forEach(it=>{ if(foodExposures[it]) foodExposures[it].push({ts:e.ts, reaction:e.reaction}); });
+    if(e.items && e.items.length===2){
+      const key = [...e.items].sort().join(' + ');
+      if(!pairs[key]) pairs[key] = {count:0, spicedCount:0, combinedCount:0, lastPlain:null, lastSpiced:null};
+      const p = pairs[key];
+      if(e.format==='combined'){ p.combinedCount++; }
+      else if(e.spices){ p.spicedCount++; p.lastSpiced=e.reaction; }
+      else { p.count++; p.lastPlain=e.reaction; }
+    }
+    if(e.allergenUsed && e.allergens){ e.allergens.forEach(a=>{ if(allergenLog[a]) allergenLog[a].push({ts:e.ts, reaction:e.allergenReaction}); }); }
+  });
+  const acceptance = {};
+  FOODS.forEach(f=>{
+    const exp = foodExposures[f.name];
+    const last2 = exp.slice(-2).map(x=>x.reaction);
+    acceptance[f.name] = exp.length>=3 && !last2.includes('Refused');
+  });
+  const now = new Date(); const dayMs = 86400000;
+  const allergenStatus = {};
+  ALLERGENS.forEach(a=>{
+    const log = allergenLog[a.name];
+    const hadReaction = log.some(x=>x.reaction==='reaction');
+    let state = 'not-started';
+    if(hadReaction) state='reaction'; else if(log.length>=2) state='introduced'; else if(log.length===1) state='awaiting-repeat';
+    const lastGiven = log.length ? new Date(log[log.length-1].ts) : null;
+    const daysSince = lastGiven ? Math.floor((now-lastGiven)/dayMs) : null;
+    allergenStatus[a.name] = {state, daysSince, count:log.length};
+  });
+  return {foodExposures, pairs, acceptance, allergenStatus, sortedEntries:sorted};
+}
+
+function renderReactionBreakdown(stats){
+  const el = document.getElementById('reactionBreakdown');
+  const rows = FOODS.map(f=>{
+    const exp = stats.foodExposures[f.name];
+    const liked = exp.filter(x=>x.reaction==='Liked').length;
+    const neutral = exp.filter(x=>x.reaction==='Neutral').length;
+    const refused = exp.filter(x=>x.reaction==='Refused').length;
+    return {name:f.name, liked, neutral, refused, total: exp.length};
+  }).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
+  if(!rows.length){ el.innerHTML = '<span class="empty">No meals logged yet.</span>'; return; }
+  el.innerHTML = rows.map(r=>{
+    const pct = x => (x/r.total*100).toFixed(1);
+    return '<div class="reaction-row">'+
+      '<span class="food-name">'+escapeHtml(r.name)+'</span>'+
+      '<div class="reaction-bar">'+
+        (r.liked?'<div class="seg-liked" style="width:'+pct(r.liked)+'%"></div>':'')+
+        (r.neutral?'<div class="seg-neutral" style="width:'+pct(r.neutral)+'%"></div>':'')+
+        (r.refused?'<div class="seg-refused" style="width:'+pct(r.refused)+'%"></div>':'')+
+      '</div>'+
+      '<span class="reaction-counts">'+r.total+' tried</span>'+
+    '</div>';
+  }).join('');
+}
+
+function renderTrend(stats){
+  const el = document.getElementById('trendChart');
+  if(!stats.sortedEntries.length){ el.innerHTML = '<span class="empty">No meals logged yet.</span>'; return; }
+  const first = new Date(stats.sortedEntries[0].ts);
+  const weekOf = d => Math.floor((new Date(d)-first)/(7*86400000));
+  const counts = {};
+  stats.sortedEntries.forEach(e=>{ const w = weekOf(e.ts); counts[w]=(counts[w]||0)+1; });
+  const maxWeek = Math.max(...Object.keys(counts).map(Number));
+  const bars = [];
+  for(let w=0; w<=maxWeek; w++) bars.push(counts[w]||0);
+  const maxVal = Math.max(...bars, 1);
+  const barW = Math.max(18, Math.min(40, 600/bars.length));
+  const gap = 6;
+  const chartW = bars.length*(barW+gap);
+  const chartH = 120;
+  let svg = '<svg class="trend-svg" viewBox="0 0 '+chartW+' '+(chartH+20)+'" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<line x1="0" y1="'+chartH+'" x2="'+chartW+'" y2="'+chartH+'" class="trend-axis"/>';
+  bars.forEach((v,i)=>{
+    const h = (v/maxVal)*(chartH-10);
+    const x = i*(barW+gap);
+    svg += '<rect class="trend-bar" x="'+x+'" y="'+(chartH-h)+'" width="'+barW+'" height="'+h+'" rx="2"/>';
+    svg += '<text class="trend-label" x="'+(x+barW/2)+'" y="'+(chartH+14)+'" text-anchor="middle">W'+(i+1)+'</text>';
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+}
+
+function renderAllergenTimeline(stats){
+  const el = document.getElementById('allergenTimeline');
+  el.innerHTML = ALLERGENS.map((a,i)=>{
+    const s = stats.allergenStatus[a.name];
+    let pill = '<span class="status-pill status-wait">Not started</span>', meta = '';
+    if(s.state==='awaiting-repeat'){ pill = '<span class="status-pill status-due">Repeat tomorrow</span>'; }
+    if(s.state==='introduced'){ pill = '<span class="status-pill status-done">Introduced</span>'; meta = s.daysSince+' day'+(s.daysSince===1?'':'s')+' since last'; if(s.daysSince>=3) pill = '<span class="status-pill status-due">Top-up due</span>'; }
+    if(s.state==='reaction'){ pill = '<span class="status-pill status-alert">Reaction noted</span>'; }
+    return '<div class="allergen-row">'+
+      '<span class="allergen-order">'+(i+1)+'</span>'+
+      '<span class="allergen-name">'+a.name+'</span>'+
+      pill+
+      '<span class="allergen-meta">'+meta+'</span>'+
+    '</div>';
+  }).join('');
+}
+
+const FUNNEL_ICONS = {
+  seed: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="16" r="4"/><path d="M12 12V6"/></svg>',
+  sprout: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9"/><path d="M12 9c0-4 3-6 6-6-1 4-2 6-6 6z"/><path d="M12 13c0-3-2-5-5-5 1 3 2 5 5 5z"/></svg>',
+  bud: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V8"/><ellipse cx="12" cy="7" rx="4" ry="5"/></svg>',
+  harvest: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v6"/><path d="M8 8c-2 3-2 7 0 10a5 5 0 008 0c2-3 2-7 0-10"/><path d="M9 9c1.5-2 4.5-2 6 0"/></svg>'
+};
+
+function renderFunnel(stats){
+  const el = document.getElementById('stageFunnel');
+  const foundation = FOODS.filter(f=>!stats.acceptance[f.name]).length;
+  const pairsArr = Object.values(stats.pairs);
+  const paired = pairsArr.filter(p=>p.count>0 && p.spicedCount===0).length;
+  const spiced = pairsArr.filter(p=>p.spicedCount>0 && p.combinedCount===0).length;
+  const combined = pairsArr.filter(p=>p.combinedCount>0).length;
+  const rows = [
+    {label:'Foundation', icon:'seed', count:foundation},
+    {label:'Paired', icon:'sprout', count:paired},
+    {label:'Spiced pair', icon:'bud', count:spiced},
+    {label:'Combined dish', icon:'harvest', count:combined}
+  ];
+  const maxVal = Math.max(...rows.map(r=>r.count), 1);
+  el.innerHTML = rows.map(r=>
+    '<div class="funnel-row">'+
+      '<span class="funnel-icon">'+FUNNEL_ICONS[r.icon]+'</span>'+
+      '<span class="funnel-label">'+r.label+'</span>'+
+      '<div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:'+(r.count/maxVal*100)+'%"></div></div>'+
+      '<span class="funnel-count">'+r.count+'</span>'+
+    '</div>'
+  ).join('');
+}
+
+function renderAll(){
+  const stats = computeStats();
+  renderReactionBreakdown(stats);
+  renderTrend(stats);
+  renderAllergenTimeline(stats);
+  renderFunnel(stats);
+}
+
+onAuthStateChanged(auth, user=>{
+  if(!user) return;
+  onSnapshot(mealsCol, snap=>{
+    entries = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    statusEl.textContent = 'live'; statusEl.className = 'sync-status live';
+    renderAll();
+  }, err=>{ statusEl.textContent='sync error'; statusEl.className='sync-status err'; console.error(err); });
+});
+signInAnonymously(auth).catch(err=>{ statusEl.textContent='sync error'; statusEl.className='sync-status err'; console.error(err); });
+renderAll();
+</script>
+</body>
+</html>
