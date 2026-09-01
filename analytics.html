@@ -388,9 +388,10 @@ tabNav.addEventListener('click', e=>{
   if(tab===currentTab) return;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('panel-'+currentTab).classList.remove('in');
-  document.getElementById('panel-'+currentTab).classList.add('pre-in');
-  setTimeout(()=>{ document.getElementById('panel-'+currentTab).classList.remove('pre-in'); document.getElementById('panel-'+currentTab).style.display='none'; }, 280);
+  const oldPanel = document.getElementById('panel-'+currentTab);
+  oldPanel.classList.remove('in');
+  oldPanel.classList.add('pre-in');
+  setTimeout(()=>{ oldPanel.classList.remove('pre-in'); oldPanel.style.display='none'; }, 280);
   currentTab = tab;
   const panel = document.getElementById('panel-'+tab);
   panel.style.display='block';
