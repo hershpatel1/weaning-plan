@@ -45,12 +45,10 @@ section{margin-bottom:22px;}
 .wp-meals{display:flex;flex-direction:column;gap:6px;flex:1;}
 .wp-badges{display:flex;gap:6px;flex-wrap:wrap;}
 .hero-card .hc-tag{font-size:11px;font-weight:800;background:rgba(255,255,255,0.28);display:inline-block;padding:3px 11px;border-radius:20px;margin-bottom:12px;}
-.hero-card .hc-items{font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;}
-.hero-card .hc-meta{font-size:12.5px;opacity:0.92;margin-bottom:14px;}
-.hero-card .hc-allergen{font-size:12.5px;font-weight:700;background:rgba(255,255,255,0.2);border-radius:10px;padding:8px 12px;margin-bottom:14px;}
+.mono-row{display:flex;gap:6px;margin-bottom:10px;cursor:pointer;}
+.hero-card .hc-items{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;cursor:pointer;line-height:1.3;}
+.hero-card .hc-meta{font-size:12.5px;opacity:0.92;margin-bottom:16px;}
 .badge-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.badge-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.22);border-radius:20px;padding:5px 12px 5px 5px;}
-.badge-chip .label{font-size:12px;font-weight:700;}
 
 .btn-hero{display:block;width:100%;background:#fff;color:var(--coral);border:none;border-radius:16px;padding:15px;font-size:16px;font-weight:800;font-family:'Baloo 2',sans-serif;cursor:pointer;min-height:52px;}
 .pill-secondary{display:block;width:100%;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:30px;padding:13px;font-size:13.5px;font-weight:700;cursor:pointer;min-height:48px;margin-top:10px;}
@@ -594,14 +592,18 @@ function renderNextMeal(stats){
     el.innerHTML = '<div class="hero-card c-coral"><div class="hc-tag">All caught up</div><div class="hc-items">Every unlocked food is accepted and paired</div><div class="hc-meta">Check back once more foods unlock, or log something yourself below.</div></div>';
     return;
   }
-  const badges = s.items.map(it=>'<span class="badge-chip" data-food="'+escapeHtml(it)+'">'+badgeSvg(it,28)+'<span class="label">'+escapeHtml(it)+'</span></span>').join('');
+  const monoRow = s.items.map(it=>badgeSvg(it,30)).join('') + (dessert ? badgeSvg(dessert,30) : '');
+  const namesText = s.items.map(it=>escapeHtml(it)).join(' + ') + (dessert ? ' + '+escapeHtml(dessert)+' (dessert)' : '');
+  const metaParts = [];
+  if(s.spiceSuggested) metaParts.push('add a mild spice');
+  metaParts.push('format: '+s.format);
+  if(s.allergenTag) metaParts.push(s.allergenTag);
   el.innerHTML =
     '<div class="hero-card c-coral">'+
       '<div class="hc-tag">'+s.stage+'</div>'+
-      '<div class="badge-row">'+badges+'</div>'+
-      '<div class="hc-meta">'+(s.spiceSuggested?'Add a mild spice this time · ':'')+'Format: '+s.format+'</div>'+
-      (s.allergenTag ? '<div class="hc-allergen">'+escapeHtml(s.allergenTag)+'</div>' : '')+
-      (dessert ? '<div class="badge-row" style="margin-bottom:10px;"><span class="badge-chip">'+badgeSvg(dessert,26)+'<span class="label">Dessert: '+escapeHtml(dessert)+'</span></span></div>' : '')+
+      '<div class="mono-row" id="nextMealMono">'+monoRow+'</div>'+
+      '<div class="hc-items" id="nextMealNames">'+namesText+'</div>'+
+      '<div class="hc-meta">'+escapeHtml(metaParts.join(' · '))+'</div>'+
       '<button class="btn-hero" id="logNextBtn">Log the next meal</button>'+
     '</div>';
   document.getElementById('logNextBtn').onclick = ()=>{
@@ -614,12 +616,12 @@ function renderNextMeal(stats){
       dessertPrefill: dessert
     });
   };
-  el.querySelectorAll('.badge-chip').forEach(b=>{
-    b.onclick = ()=>{
-      const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
-      openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [] });
-    };
-  });
+  const openThisRecipe = ()=>{
+    const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+    openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [] });
+  };
+  document.getElementById('nextMealMono').onclick = openThisRecipe;
+  document.getElementById('nextMealNames').onclick = openThisRecipe;
 }
 
 function renderStats(stats){
