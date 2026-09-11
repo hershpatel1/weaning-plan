@@ -282,7 +282,6 @@ const FOODS = [
   {name:"Butternut squash", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted spear"},
   {name:"Cauliflower", group:"garden", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed floret"},
   {name:"Mushroom", group:"garden", formats:["soft","finger"], soft:"Cooked soft and finely chopped or puréed", finger:"Cooked mushroom strip, well softened"},
-  {name:"Onion", group:"garden", formats:["soft"], soft:"Cooked down soft and sweet, stirred into a purée", finger:"Not recommended whole — too fibrous, use as a soft stir-in only", role:"addin"},
   {name:"Tomato", group:"garden", formats:["soft","finger"], soft:"Skinned, deseeded and cooked down soft", finger:"Skinned wedge, deseeded"},
   {name:"Red lentil", group:"legume", formats:["soft"], soft:"Cooked soft and mashed or blended, dal-style", finger:"Not applicable — too small, choking risk whole"},
   {name:"Chickpea", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — whole chickpeas are a choking hazard"},
@@ -327,7 +326,7 @@ const FRUITS = [
   {name:"Plum", group:"fruit", formats:["soft","finger"], soft:"Stoned, steamed and mashed", finger:"Stoned, ripe wedge"},
   {name:"Orange", group:"fruit", formats:["soft","finger"], soft:"Segmented, membrane removed, mashed", finger:"Segment, membrane and pips removed"}
 ];
-const SPICES = ["Turmeric","Cumin","Coriander","Fennel","Asafoetida (hing)","Ginger","Cardamom","Cinnamon","Garlic","Basil","Mint","Parsley"];
+const SPICES = ["Turmeric","Cumin","Coriander","Fennel","Asafoetida (hing)","Ginger","Cardamom","Cinnamon","Basil","Mint","Parsley"];
 const SPICES_CAUTION = [
   {name:"Black pepper", note:"Milder heat than chilli, but still a heat spice — many parents wait until closer to 9-12 months. Start with a tiny pinch if used."},
   {name:"Paprika", note:"Sweet/mild paprika is generally fine in small amounts — check the jar isn't a hot/smoked blend with chilli added."},
@@ -353,18 +352,22 @@ const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
 const TARGET_MEALS = [
   {name:"Tomato & spinach pasta", foods:["Tomato","Spinach","Spaghetti","Red peppers"], spice:"Basil"},
   {name:"Carrot & lentil dal", foods:["Carrot","Red lentil","Rice"], spice:"Cumin"},
-  {name:"Broccoli & cheese pasta", foods:["Broccoli","Cheese","Penne"], spice:"Garlic"},
+  {name:"Broccoli & cheese pasta", foods:["Broccoli","Cheese","Penne"], spice:"Parsley"},
   {name:"Sweet potato & chickpea mash", foods:["Sweet potato","Chickpea"], spice:"Turmeric"},
-  {name:"Butternut squash risotto", foods:["Butternut squash","Rice","Cheese"], spice:"Garlic"},
-  {name:"Mushroom & pea risotto", foods:["Mushroom","Peas","Rice"], spice:"Garlic"},
+  {name:"Butternut squash risotto", foods:["Butternut squash","Rice","Cheese"], spice:"Parsley"},
+  {name:"Mushroom & pea risotto", foods:["Mushroom","Peas","Rice"], spice:"Parsley"},
   {name:"Aubergine & tomato bake", foods:["Aubergine","Tomato","Cheese"], spice:"Basil"},
   {name:"Butter bean & spinach stew", foods:["Butter bean","Spinach","Tomato"], spice:"Cumin"},
   {name:"Beetroot & butter bean mash", foods:["Beetroot","Butter bean"], spice:"Cumin"},
   {name:"Green bean & potato mash", foods:["Green beans","Potato"], spice:"Parsley"},
   {name:"Swede & carrot mash", foods:["Swede","Carrot"], spice:"Ginger"},
   {name:"Courgette & sweetcorn mash", foods:["Courgette","Sweetcorn"], spice:"Coriander"},
-  {name:"Cauliflower & cheese bake", foods:["Cauliflower","Cheese","Bread/toast"], spice:"Garlic"},
-  {name:"Kale & white bean stew", foods:["Kale","Cannellini beans","Tomato"], spice:"Garlic"}
+  {name:"Cauliflower & cheese bake", foods:["Cauliflower","Cheese","Bread/toast"], spice:"Turmeric"},
+  {name:"Kale & white bean stew", foods:["Kale","Cannellini beans","Tomato"], spice:"Cumin"},
+  {name:"Potato & pea mash", foods:["Potato","Peas"], spice:"Mint"},
+  {name:"Spinach & chickpea curry", foods:["Spinach","Chickpea","Rice"], spice:"Turmeric"},
+  {name:"Tomato & courgette pasta", foods:["Tomato","Courgette","Fusilli"], spice:"Basil"},
+  {name:"Carrot & butternut squash mash", foods:["Carrot","Butternut squash"], spice:"Cinnamon"}
 ];
 function targetMealCoreKey(meal){ return [meal.foods[0], meal.foods[1]].sort().join(' + '); }
 function findTargetMealByCoreKey(key){ return TARGET_MEALS.find(m => targetMealCoreKey(m)===key); }
@@ -377,7 +380,91 @@ const DESSERT_COMBOS = [
   {name:"Apple & cinnamon yoghurt", foods:["Apple","Yoghurt"], spice:"Cinnamon"},
   {name:"Banana yoghurt", foods:["Banana","Yoghurt"]},
   {name:"Blueberry yoghurt", foods:["Blueberries","Yoghurt"]},
-  {name:"Pear & cinnamon yoghurt", foods:["Pear","Yoghurt"], spice:"Cinnamon"}
+  {name:"Pear & cinnamon yoghurt", foods:["Pear","Yoghurt"], spice:"Cinnamon"},
+  {name:"Melon yoghurt", foods:["Melon","Yoghurt"]},
+  {name:"Kiwi yoghurt", foods:["Kiwi","Yoghurt"]},
+  {name:"Plum & cinnamon yoghurt", foods:["Plum","Yoghurt"], spice:"Cinnamon"},
+  {name:"Mango & cardamom yoghurt", foods:["Mango","Yoghurt"], spice:"Cardamom"},
+  {name:"Blueberry & cinnamon yoghurt", foods:["Blueberries","Yoghurt"], spice:"Cinnamon"}
+];
+
+// Snacks are deliberately lighter-weight than TARGET_MEALS/DESSERT_COMBOS — plain quick-pick
+// templates for "Log your own meal" only, with no pairing/staging logic behind them and no
+// separate progression to track. Several genuinely overlap with dessert combos above (e.g.
+// strawberries and yoghurt) — that's fine, a snack and a dessert can be the same food.
+const SNACK_PICKS = [
+  {name:"Banana pieces", items:["Banana"], format:"finger"},
+  {name:"Apple slices", items:["Apple"], format:"finger"},
+  {name:"Pear slices", items:["Pear"], format:"finger"},
+  {name:"Melon pieces", items:["Melon"], format:"finger"},
+  {name:"Blueberries", items:["Blueberries"], format:"finger"},
+  {name:"Cheese cube", items:["Cheese"], format:"finger"},
+  {name:"Toast fingers", items:["Bread/toast"], format:"finger"},
+  {name:"Carrot sticks", items:["Carrot"], format:"finger"},
+  {name:"Avocado spear", items:["Avocado"], format:"finger"},
+  {name:"Strawberries & yoghurt", items:["Strawberries","Yoghurt"], format:"combined"},
+  {name:"Yoghurt", items:["Yoghurt"], format:"soft"},
+  {name:"Crumpet fingers", items:["Crumpets"], format:"finger"},
+  {name:"Apple & cheese", items:["Apple","Cheese"], format:"finger"}
+];
+
+// ==================== Plain-English meal titles ====================
+// A natural phrase for stirring in each allergen vehicle, distinct from the shopping-list
+// wording (which needs to read as an ingredient, not a sentence fragment).
+const INGREDIENT_PHRASES = {
+  "Plain yoghurt": "a spoonful of yoghurt",
+  "Grated cheese": "a little grated cheese",
+  "Peanut butter, smooth": "a little peanut butter stirred in",
+  "Wheat bread or pasta": "a strip of toast",
+  "Sesame seeds, ground at home": "a pinch of ground sesame",
+  "Firm tofu": "a few cubes of tofu",
+  "Cashews, ground at home": "a little ground cashew stirred in"
+};
+// The only two allergen vehicles that map onto an actual FOODS entry — used so the badge
+// row shows the real food (Cheese/Yoghurt) rather than a generic allergen badge for these.
+const INGREDIENT_TO_FOOD_NAME = { "Plain yoghurt": "Yoghurt", "Grated cheese": "Cheese" };
+function joinNaturally(items){
+  if(items.length===1) return items[0];
+  if(items.length===2) return items[0]+' and '+items[1];
+  return items.slice(0,-1).join(', ')+' and '+items[items.length-1];
+}
+// Builds one plain-English title covering every stage — a single "Broccoli", a pair
+// "Carrot and Potato", a named combined dish, any allergen stirred in, and any dessert —
+// so the same function produces a correct sentence whether there's one ingredient or four.
+// allergenAlreadyInDish suppresses the extra phrase when the allergen's vehicle is already
+// one of the meal's own ingredients (e.g. Spaghetti covering Wheat), so the sentence never
+// implies bolting on a second, unrelated food.
+function buildMealSentence({items, mealName, spice, allergenIngredient, allergenAlreadyInDish, dessertItems, dessertName}){
+  let main = mealName || joinNaturally(items);
+  const extras = [];
+  if(spice) extras.push('a pinch of '+spice.toLowerCase());
+  if(allergenIngredient && !allergenAlreadyInDish){
+    extras.push(INGREDIENT_PHRASES[allergenIngredient] || ('a little '+allergenIngredient.toLowerCase()));
+  }
+  if(extras.length) main += ' with '+extras.join(' and ');
+  if(dessertItems && dessertItems.length){
+    main += ' and '+(dessertName || joinNaturally(dessertItems))+' for dessert';
+  }
+  return main;
+}
+
+// ==================== Meal templates ====================
+// Named recipes a parent can jump straight to from "Log your own meal", for the meals
+// that become the regular routine later rather than part of the gradual introduction
+// sequence — auto-fills the log flow, fully editable afterward.
+const MEAL_TEMPLATES = [
+  {name:"Baby porridge", items:["Oats"], format:"soft", spices:[], notes:"Cooked with his usual milk — breastmilk or formula, or cow's milk once he's past 12 months."},
+  {name:"Khichdi", items:["Rice","Red lentil"], format:"combined", spices:["Turmeric"], notes:"Rice and red lentil cooked down soft together with a little ghee. Add Cumin too if he's had it before."}
+];
+
+// Every named meal the app already knows about, in one consistent shape, so the quick-pick
+// list in "Log your own meal" draws on the same ingredient logic as the suggestion engine
+// rather than a separately-maintained list.
+const ALL_MEAL_PICKS = [
+  ...MEAL_TEMPLATES.map(t => ({name:t.name, items:t.items, format:t.format, spices:t.spices, notes:t.notes||'', category:'main'})),
+  ...TARGET_MEALS.map(m => ({name:m.name, items:[...m.foods], format:'combined', spices: m.spice?[m.spice]:[], notes:'', category:'main'})),
+  ...DESSERT_COMBOS.map(d => ({name:d.name, items:[...d.foods], format:'combined', spices: d.spice?[d.spice]:[], notes:'', category:'dessert'})),
+  ...SNACK_PICKS.map(sn => ({name:sn.name, items:[...sn.items], format:sn.format, spices:[], notes:'', category:'snack'}))
 ];
 
 // ---------------- State ----------------
@@ -499,13 +586,32 @@ function suggestAllergenAction(stats){
 
 function suggestNextMeal(stats){
   const allergenAction = suggestAllergenAction(stats);
-  const allergenTag = allergenAction ? (
-    allergenAction.type==='repeat' ? 'Repeat allergen (day 2): '+allergenAction.name :
-    allergenAction.type==='new' ? 'New allergen to introduce: '+allergenAction.name :
-    'Allergen maintenance due: '+allergenAction.name
-  ) : null;
-  const allergenIngredient = allergenAction ? ALLERGENS.find(a=>a.name===allergenAction.name).ingredient : null;
-  const withAllergen = obj => ({...obj, allergenTag, allergenIngredient});
+
+  // Picks a sensible allergen vehicle for the SPECIFIC dish being suggested, rather than
+  // one fixed ingredient regardless of context — yoghurt suits a plain veg mash, but not
+  // a tomato pasta sauce, where cheese is what actually belongs. If the dish already
+  // contains a food linked to this allergen (e.g. Spaghetti for Wheat), that food IS the
+  // vehicle — no need to bolt on an unrelated stir-in as well.
+  function pickAllergenVehicle(allergenName, currentItems){
+    const inDish = currentItems.find(it => foodByName[it] && foodByName[it].allergenLink === allergenName);
+    if(inDish) return {ingredient: inDish, alreadyInDish: true};
+    if(allergenName === 'Dairy'){
+      const hasCarb = currentItems.some(it => foodByName[it] && foodByName[it].group === 'carb');
+      return {ingredient: hasCarb ? 'Grated cheese' : 'Plain yoghurt', alreadyInDish: false};
+    }
+    const fallback = ALLERGENS.find(a=>a.name===allergenName);
+    return {ingredient: fallback ? fallback.ingredient : allergenName, alreadyInDish: false};
+  }
+
+  const withAllergen = obj => {
+    if(!allergenAction) return {...obj, allergenTag: null, allergenIngredient: null, allergenAlreadyInDish: false};
+    const vehicle = pickAllergenVehicle(allergenAction.name, obj.items || []);
+    const base = allergenAction.type==='repeat' ? 'Repeat allergen (day 2): ' :
+                 allergenAction.type==='new' ? 'New allergen to introduce: ' :
+                 'Allergen maintenance due: ';
+    const tag = base + allergenAction.name + (vehicle.alreadyInDish ? ' — already in this meal via '+vehicle.ingredient : '');
+    return {...obj, allergenTag: tag, allergenIngredient: vehicle.ingredient, allergenAlreadyInDish: vehicle.alreadyInDish};
+  };
 
   for(const key in stats.pairs){
     const p = stats.pairs[key];
@@ -659,12 +765,25 @@ function renderNextMeal(stats){
     return;
   }
   const dessertItems = dessert ? dessert.items : [];
-  const monoRow = s.items.map(it=>badgeSvg(it,30)).join('') + dessertItems.map(it=>badgeSvg(it,30)).join('');
-  const mainNamesText = s.mealName ? s.mealName : s.items.map(it=>escapeHtml(it)).join(' + ');
-  const dessertText = dessert ? (dessert.name ? dessert.name : dessert.items.map(it=>escapeHtml(it)).join(' + ')) : null;
-  const namesText = mainNamesText + (dessertText ? ' with '+escapeHtml(dessertText)+' for dessert' : '');
+  const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+  // Show the badge for whichever specific food is acting as the allergen vehicle
+  // (Cheese, Yoghurt) rather than a generic allergen badge, when one exists — and skip
+  // the extra badge entirely if the vehicle is already one of the meal's own ingredients.
+  const vehicleFoodName = INGREDIENT_TO_FOOD_NAME[s.allergenIngredient];
+  let allergenBadge = '';
+  if(matchedAllergen && !s.allergenAlreadyInDish){
+    allergenBadge = badgeSvg(vehicleFoodName || matchedAllergen.name, 30);
+  }
+  const monoRow = s.items.map(it=>badgeSvg(it,30)).join('')
+    + allergenBadge
+    + dessertItems.map(it=>badgeSvg(it,30)).join('');
+  const namesText = buildMealSentence({
+    items: s.items, mealName: s.mealName, spice: s.suggestedSpice,
+    allergenIngredient: s.allergenIngredient, allergenAlreadyInDish: s.allergenAlreadyInDish,
+    dessertItems, dessertName: dessert ? dessert.name : null
+  });
   const metaParts = [];
-  if(s.spiceSuggested) metaParts.push(s.suggestedSpice ? 'try: '+s.suggestedSpice : 'add a mild spice');
+  if(s.spiceSuggested && !s.suggestedSpice) metaParts.push('add a mild spice');
   metaParts.push('format: '+s.format);
   if(s.allergenTag) metaParts.push(s.allergenTag);
   if(dessert && dessert.spice) metaParts.push('dessert spice: '+dessert.spice);
@@ -672,7 +791,7 @@ function renderNextMeal(stats){
     '<div class="hero-card c-coral">'+
       '<div class="hc-tag">'+s.stage+'</div>'+
       '<div class="mono-row" id="nextMealMono">'+monoRow+'</div>'+
-      '<div class="hc-items" id="nextMealNames">'+namesText+'</div>'+
+      '<div class="hc-items" id="nextMealNames">'+escapeHtml(namesText)+'</div>'+
       '<div class="hc-meta">'+escapeHtml(metaParts.join(' · '))+'</div>'+
       '<button class="btn-hero" id="logNextBtn">Log the next meal</button>'+
     '</div>';
@@ -688,7 +807,14 @@ function renderNextMeal(stats){
   };
   const openThisRecipe = ()=>{
     const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
-    openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [], mealName: s.mealName, suggestedSpice: s.suggestedSpice });
+    const allergensForRecipe = (matchedAllergen && !s.allergenAlreadyInDish) ? [{name:matchedAllergen.name, ingredient:s.allergenIngredient}] : [];
+    openRecipe(s.items, {
+      format: s.format, spiceSuggested: s.spiceSuggested, allergens: allergensForRecipe,
+      mealName: s.mealName, suggestedSpice: s.suggestedSpice,
+      dessertItems, dessertName: dessert ? dessert.name : null,
+      allergenIngredient: s.allergenIngredient, allergenAlreadyInDish: s.allergenAlreadyInDish,
+      allergenNoteIfInDish: (matchedAllergen && s.allergenAlreadyInDish) ? matchedAllergen.name+' is already covered by '+s.allergenIngredient+' in this meal — no extra stir-in needed.' : null
+    });
   };
   document.getElementById('nextMealMono').onclick = openThisRecipe;
   document.getElementById('nextMealNames').onclick = openThisRecipe;
@@ -800,7 +926,20 @@ function openRecipe(items, context){
   (context.allergens||[]).forEach(a=>{
     body += '<p><b>Allergen — '+escapeHtml(a.name)+':</b> stir in '+escapeHtml(a.ingredient)+' to combine.</p>';
   });
-  const title = context.mealName || items.join(' + ');
+  if(context.allergenNoteIfInDish){
+    body += '<p><b>Allergen:</b> '+escapeHtml(context.allergenNoteIfInDish)+'</p>';
+  }
+  if(context.dessertItems && context.dessertItems.length){
+    const dessertFoods = context.dessertItems.map(n=>foodByName[n]).filter(Boolean);
+    body += '<p><b>Dessert'+(context.dessertName?' — '+escapeHtml(context.dessertName):'')+':</b> '+dessertFoods.map(f=>escapeHtml(f.name)+' ('+escapeHtml(f.soft)+')').join('; ')+'</p>';
+  }
+  const spiceForTitle = context.suggestedSpice || (context.spiceNames && context.spiceNames.length ? context.spiceNames.join(' and ').toLowerCase() : null);
+  const allergenIngredientForTitle = context.allergenIngredient || ((context.allergens && context.allergens[0]) ? context.allergens[0].ingredient : null);
+  const title = buildMealSentence({
+    items, mealName: context.mealName, spice: spiceForTitle,
+    allergenIngredient: allergenIngredientForTitle, allergenAlreadyInDish: !!context.allergenAlreadyInDish,
+    dessertItems: context.dessertItems, dessertName: context.dessertName
+  });
   document.getElementById('recipeContent').innerHTML = '<h3>'+escapeHtml(title)+'</h3>' + body;
   document.getElementById('recipePanel').classList.add('open');
 }
@@ -837,6 +976,11 @@ let selectedTs = '';
 let selectedMealSlot = null;
 let allergenUsedFlag = false;
 let notesValue = '';
+let sheetIsCustomLog = false;
+let selectedMainPick = null;
+let selectedDessertPick = null;
+let selectedSnackPick = null;
+const ITEM_CAP = 6; // raised from 4 so a full named dish (up to 4) plus a dessert combo (2) fit without silently truncating
 
 function nowLocalIso(){ return new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16); }
 
@@ -849,12 +993,31 @@ function getStepLabel(n){
 function isDessertStep(n){ return sheetHasDessert && n===6; }
 function isReviewStep(n){ return n===sheetTotalSteps; }
 
+// The three quick-pick slots (Main/Dessert/Snack) are independent and additive — this
+// rebuilds items/format/spices/notes from whichever of the three are currently selected,
+// rather than incrementally patching, so toggling any one slot can never leave stray
+// leftover items from a previously-selected pick in that same slot.
+function recomputeFromPicks(){
+  const picks = [selectedMainPick, selectedDessertPick, selectedSnackPick]
+    .filter(Boolean).map(name => ALL_MEAL_PICKS.find(m=>m.name===name)).filter(Boolean);
+  const items = [];
+  picks.forEach(p => p.items.forEach(it => { if(!items.includes(it) && items.length<ITEM_CAP) items.push(it); }));
+  selectedItems = items;
+  if(picks.length>1) selectedFormat = picks.some(p=>p.format==='combined') ? 'combined' : 'both';
+  else if(picks.length===1) selectedFormat = picks[0].format;
+  else selectedFormat = 'soft';
+  const spices = [];
+  picks.forEach(p => p.spices.forEach(sp => { if(!spices.includes(sp)) spices.push(sp); }));
+  selectedSpices = spices;
+  notesValue = picks.map(p=>p.notes).filter(Boolean).join(' ');
+}
+
 function resetSheetState(prefill){
   editingId = (prefill && prefill.editingId) || null;
   selectedItems = (prefill && prefill.items) ? [...prefill.items] : [];
   if(sheetHasDessert && prefill && prefill.dessertPrefill && prefill.dessertPrefill.length){
     prefill.dessertPrefill.forEach(it=>{
-      if(!selectedItems.includes(it) && selectedItems.length<4) selectedItems.push(it);
+      if(!selectedItems.includes(it) && selectedItems.length<ITEM_CAP) selectedItems.push(it);
     });
   }
   selectedMealSlot = (prefill && prefill.mealSlot) || null;
@@ -866,6 +1029,8 @@ function resetSheetState(prefill){
   selectedAllergenReaction = (prefill && prefill.allergenReaction) || null;
   selectedTs = (prefill && prefill.ts) ? new Date(new Date(prefill.ts) - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : nowLocalIso();
   notesValue = (prefill && prefill.notes) || '';
+  sheetIsCustomLog = !prefill;
+  selectedMainPick = null; selectedDessertPick = null; selectedSnackPick = null;
 }
 
 function openSheet(prefill){
@@ -899,8 +1064,24 @@ function renderSheetStep(){
   const footer = document.getElementById('sheetFooter');
 
   if(sheetStep===1){
+    let templateBlock = '';
+    if(sheetIsCustomLog){
+      const mains = ALL_MEAL_PICKS.filter(m=>m.category==='main');
+      const desserts = ALL_MEAL_PICKS.filter(m=>m.category==='dessert');
+      const snacks = ALL_MEAL_PICKS.filter(m=>m.category==='snack');
+      const pickChip = (m, current) => '<button type="button" class="chip'+(current===m.name?' selected':'')+'" data-tpl="'+escapeHtml(m.name)+'"><span>'+escapeHtml(m.name)+'</span></button>';
+      templateBlock = '<label>Quick pick — combine a main, a dessert, a snack, or any mix</label>'+
+        '<input type="text" id="templateFilter" placeholder="Search…" style="margin-bottom:10px;">'+
+        '<div id="templatePicks">'+
+          '<div class="chip-group-label">Main (pick one, optional)</div><div class="chip-grid" data-slot="main">'+mains.map(m=>pickChip(m,selectedMainPick)).join('')+'</div>'+
+          '<div class="chip-group-label">Dessert (pick one, optional)</div><div class="chip-grid" data-slot="dessert">'+desserts.map(m=>pickChip(m,selectedDessertPick)).join('')+'</div>'+
+          '<div class="chip-group-label">Snack (pick one, optional)</div><div class="chip-grid" data-slot="snack">'+snacks.map(m=>pickChip(m,selectedSnackPick)).join('')+'</div>'+
+        '</div>'+
+        '<p style="font-size:11.5px;color:var(--text-muted);margin:6px 0 16px;">Tap again to remove a pick. Everything stays editable in the steps ahead.</p>';
+    }
     body.innerHTML =
       '<div class="sheet-step-title">Which meal, and when?</div>'+
+      templateBlock+
       '<label>Meal</label>'+
       '<div class="chip-grid" id="mealSlotChips">'+MEAL_SLOTS.map(m=>'<button type="button" class="chip'+(selectedMealSlot===m?' selected':'')+'" data-slot="'+m+'"><span>'+m+'</span></button>').join('')+'</div>'+
       '<label style="margin-top:16px;">Date &amp; time</label>'+
@@ -913,6 +1094,30 @@ function renderSheetStep(){
     body.querySelectorAll('#mealSlotChips .chip').forEach(c=>{
       c.onclick = ()=>{ selectedMealSlot = (selectedMealSlot===c.dataset.slot) ? null : c.dataset.slot; renderSheetStep(); };
     });
+    if(sheetIsCustomLog){
+      body.querySelectorAll('#templatePicks .chip-grid[data-slot="main"] .chip').forEach(c=>{
+        c.onclick = ()=>{ selectedMainPick = (selectedMainPick===c.dataset.tpl) ? null : c.dataset.tpl; recomputeFromPicks(); renderSheetStep(); };
+      });
+      body.querySelectorAll('#templatePicks .chip-grid[data-slot="dessert"] .chip').forEach(c=>{
+        c.onclick = ()=>{ selectedDessertPick = (selectedDessertPick===c.dataset.tpl) ? null : c.dataset.tpl; recomputeFromPicks(); renderSheetStep(); };
+      });
+      body.querySelectorAll('#templatePicks .chip-grid[data-slot="snack"] .chip').forEach(c=>{
+        c.onclick = ()=>{ selectedSnackPick = (selectedSnackPick===c.dataset.tpl) ? null : c.dataset.tpl; recomputeFromPicks(); renderSheetStep(); };
+      });
+      document.getElementById('templateFilter').oninput = e=>{
+        const q = e.target.value.trim().toLowerCase();
+        document.querySelectorAll('#templatePicks .chip').forEach(c=>{
+          const name = (c.dataset.tpl||'').toLowerCase();
+          c.style.display = (!q || name.includes(q)) ? '' : 'none';
+        });
+        document.querySelectorAll('#templatePicks .chip-grid').forEach(grid=>{
+          const anyVisible = Array.from(grid.querySelectorAll('.chip')).some(c=>c.style.display!=='none');
+          grid.style.display = anyVisible ? '' : 'none';
+          const label = grid.previousElementSibling;
+          if(label && label.classList.contains('chip-group-label')) label.style.display = anyVisible ? '' : 'none';
+        });
+      };
+    }
     footer.innerHTML = '<button class="btn-next" id="nextBtn" style="flex:1;">Next</button>';
     document.getElementById('nextBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
   }
@@ -930,7 +1135,7 @@ function renderSheetStep(){
       c.onclick = ()=>{
         const f = c.dataset.food;
         if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
-        else if(selectedItems.length<4) selectedItems.push(f);
+        else if(selectedItems.length<ITEM_CAP) selectedItems.push(f);
         renderSheetStep();
       };
     });
@@ -956,7 +1161,7 @@ function renderSheetStep(){
       c.onclick = ()=>{
         const f = c.dataset.food;
         if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
-        else if(selectedItems.length<4) selectedItems.push(f);
+        else if(selectedItems.length<ITEM_CAP) selectedItems.push(f);
         renderSheetStep();
       };
     });
@@ -1042,7 +1247,7 @@ function renderSheetStep(){
       c.onclick = ()=>{
         const f = c.dataset.food;
         if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
-        else if(selectedItems.length<4) selectedItems.push(f);
+        else if(selectedItems.length<ITEM_CAP) selectedItems.push(f);
         renderSheetStep();
       };
     });
