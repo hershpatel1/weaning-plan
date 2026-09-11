@@ -59,8 +59,9 @@ section{margin-bottom:22px;}
 .food-group-heading:first-child{margin-top:0;}
 .reaction-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
 .reaction-row .fname{width:130px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;flex-shrink:0;}
-.reaction-bar{display:flex;flex:1;height:14px;border-radius:8px;overflow:hidden;background:var(--border);}
-.reaction-bar div{height:100%;width:0;transition:width 0.6s cubic-bezier(.2,.8,.3,1);}
+.reaction-track{flex:1;height:14px;background:var(--border);border-radius:8px;overflow:hidden;}
+.reaction-bar{display:flex;height:100%;width:0;border-radius:8px;overflow:hidden;transition:width 0.6s cubic-bezier(.2,.8,.3,1);}
+.reaction-bar div{height:100%;}
 .reaction-counts{font-size:10.5px;color:var(--text-muted);text-align:right;white-space:nowrap;width:56px;flex-shrink:0;}
 .legend{display:flex;gap:16px;font-size:11px;color:var(--text-muted);margin-top:12px;flex-wrap:wrap;}
 .legend span{display:inline-flex;align-items:center;gap:5px;}
@@ -145,63 +146,43 @@ const statusEl = document.getElementById('syncStatus');
 function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 // ==================== Colour + icon system (kept in sync with index.html) ====================
-const GROUP_COLORS = { root:"#C96A2E", leafy:"#3FAE6A", garden:"#D6336C", legume:"#C99A2E", spice:"#8E4CC1", allergen:"#2E9CD6" };
-const GROUP_LABELS = { root:"Root veg", leafy:"Leafy & green veg", garden:"Garden veg", legume:"Legumes & grains" };
-const ICONS = {
-  "Sweet potato": '<ellipse cx="50" cy="55" rx="29" ry="17" fill="#fff" transform="rotate(-18 50 55)"/><circle cx="40" cy="48" r="2.2" fill="AC"/><circle cx="58" cy="60" r="2" fill="AC"/>',
-  "Potato": '<ellipse cx="50" cy="55" rx="27" ry="20" fill="#fff"/><circle cx="41" cy="50" r="2.4" fill="AC"/><circle cx="59" cy="58" r="2.1" fill="AC"/><circle cx="52" cy="42" r="1.9" fill="AC"/>',
-  "Carrot": '<path d="M35 30 L65 30 L52 82 Q50 86 48 82 Z" fill="#fff"/><path d="M42 30 L38 16 M50 30 L50 14 M58 30 L62 16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
-  "Parsnip": '<path d="M33 34 Q50 28 67 34 L56 80 Q50 86 44 80 Z" fill="#fff"/>',
-  "Beetroot": '<circle cx="50" cy="58" r="24" fill="#fff"/><path d="M44 34 L40 18 M50 34 L50 14 M56 34 L60 18" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
-  "Spinach": '<path d="M50 20 Q76 34 66 62 Q58 84 50 86 Q42 84 34 62 Q24 34 50 20 Z" fill="#fff"/><path d="M50 28 L50 80" stroke="AC" stroke-width="2.5"/>',
-  "Broccoli": '<rect x="42" y="66" width="16" height="24" rx="6" fill="#fff"/><circle cx="50" cy="46" r="22" fill="#fff"/><circle cx="33" cy="52" r="14" fill="#fff"/><circle cx="67" cy="52" r="14" fill="#fff"/><circle cx="50" cy="30" r="15" fill="#fff"/>',
-  "Cabbage": '<circle cx="50" cy="52" r="30" fill="#fff"/><path d="M32 42 Q50 34 68 42" stroke="AC" stroke-width="2.5" fill="none"/><path d="M30 56 Q50 48 70 56" stroke="AC" stroke-width="2.5" fill="none"/>',
-  "Peas": '<rect x="22" y="42" width="56" height="28" rx="14" fill="#fff"/><circle cx="34" cy="56" r="4.5" fill="AC"/><circle cx="46" cy="56" r="4.5" fill="AC"/><circle cx="58" cy="56" r="4.5" fill="AC"/><circle cx="70" cy="56" r="4.5" fill="AC"/>',
-  "Green beans": '<rect x="18" y="48" width="34" height="14" rx="7" fill="#fff" transform="rotate(-18 35 55)"/><rect x="45" y="40" width="34" height="14" rx="7" fill="#fff" transform="rotate(-10 62 47)"/><rect x="30" y="62" width="34" height="14" rx="7" fill="#fff" transform="rotate(8 47 69)"/>',
-  "Courgette": '<rect x="24" y="38" width="52" height="24" rx="12" fill="#fff" transform="rotate(-12 50 50)"/><circle cx="24" cy="34" r="5" fill="AC"/>',
-  "Red peppers": '<path d="M50 24 Q70 24 68 46 Q66 78 50 84 Q34 78 32 46 Q30 24 50 24 Z" fill="#fff"/><rect x="46" y="16" width="8" height="12" rx="3" fill="#fff"/>',
-  "Aubergine": '<path d="M50 30 Q76 44 66 68 Q58 88 50 88 Q42 88 34 68 Q24 44 50 30 Z" fill="#fff"/><rect x="44" y="14" width="12" height="16" rx="4" fill="AC"/>',
-  "Sweetcorn": '<ellipse cx="50" cy="52" rx="18" ry="34" fill="#fff"/><path d="M38 26 L62 26 M36 38 L64 38 M35 50 L65 50 M36 62 L64 62 M38 74 L62 74" stroke="AC" stroke-width="2"/>',
-  "Avocado": '<path d="M50 18 Q74 26 72 56 Q70 84 50 88 Q30 84 28 56 Q26 26 50 18 Z" fill="#fff"/><circle cx="50" cy="58" r="12" fill="AC"/>',
-  "Butternut squash": '<circle cx="50" cy="34" r="14" fill="#fff"/><circle cx="50" cy="64" r="24" fill="#fff"/>',
-  "Cauliflower": '<rect x="43" y="70" width="14" height="16" rx="5" fill="#fff"/><circle cx="50" cy="48" r="22" fill="#fff"/><circle cx="34" cy="54" r="12" fill="#fff"/><circle cx="66" cy="54" r="12" fill="#fff"/><circle cx="50" cy="32" r="13" fill="#fff"/>',
-  "Red lentil": '<circle cx="40" cy="52" r="15" fill="#fff"/><circle cx="60" cy="48" r="14" fill="#fff"/><circle cx="50" cy="66" r="13" fill="#fff"/>',
-  "Chickpea": '<circle cx="40" cy="52" r="16" fill="#fff"/><circle cx="63" cy="50" r="15" fill="#fff"/><circle cx="50" cy="72" r="14" fill="#fff"/><path d="M35 52 L45 52 M58 50 L68 50 M45 72 L55 72" stroke="AC" stroke-width="1.6"/>',
-  "Butter bean": '<ellipse cx="38" cy="46" rx="17" ry="10" fill="#fff" transform="rotate(-20 38 46)"/><ellipse cx="64" cy="54" rx="17" ry="10" fill="#fff" transform="rotate(15 64 54)"/><ellipse cx="46" cy="72" rx="17" ry="10" fill="#fff" transform="rotate(-8 46 72)"/>',
-  "Rice": '<ellipse cx="34" cy="40" rx="9" ry="4" fill="#fff" transform="rotate(-30 34 40)"/><ellipse cx="54" cy="34" rx="9" ry="4" fill="#fff" transform="rotate(10 54 34)"/><ellipse cx="68" cy="52" rx="9" ry="4" fill="#fff" transform="rotate(-15 68 52)"/><ellipse cx="40" cy="60" rx="9" ry="4" fill="#fff" transform="rotate(25 40 60)"/><ellipse cx="60" cy="70" rx="9" ry="4" fill="#fff" transform="rotate(-5 60 70)"/>',
-  "Dairy": '<path d="M40 20 L60 20 L60 30 L68 40 L68 84 L32 84 L32 40 L40 30 Z" fill="#fff"/>',
-  "Peanut": '<ellipse cx="40" cy="42" rx="16" ry="20" fill="#fff"/><ellipse cx="58" cy="62" rx="16" ry="20" fill="#fff"/>',
-  "Wheat": '<line x1="50" y1="20" x2="50" y2="82" stroke="#fff" stroke-width="4"/><ellipse cx="42" cy="32" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 32)"/><ellipse cx="58" cy="32" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 32)"/><ellipse cx="42" cy="46" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 46)"/><ellipse cx="58" cy="46" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 46)"/><ellipse cx="42" cy="60" rx="8" ry="4.5" fill="#fff" transform="rotate(-30 42 60)"/><ellipse cx="58" cy="60" rx="8" ry="4.5" fill="#fff" transform="rotate(30 58 60)"/>',
-  "Soya": '<rect x="26" y="38" width="48" height="26" rx="13" fill="#fff" transform="rotate(-6 50 51)"/><circle cx="38" cy="50" r="5" fill="AC"/><circle cx="52" cy="48" r="5" fill="AC"/><circle cx="64" cy="52" r="5" fill="AC"/>',
-  "Tree nut": '<path d="M50 18 Q72 26 70 52 Q68 80 50 86 Q32 80 30 52 Q28 26 50 18 Z" fill="#fff"/><rect x="44" y="12" width="12" height="12" rx="3" fill="AC"/>',
-  "Sesame": '<ellipse cx="38" cy="46" rx="7" ry="3" fill="#fff" transform="rotate(-20 38 46)"/><ellipse cx="55" cy="42" rx="7" ry="3" fill="#fff" transform="rotate(15 55 42)"/><ellipse cx="62" cy="58" rx="7" ry="3" fill="#fff" transform="rotate(-10 62 58)"/><ellipse cx="45" cy="62" rx="7" ry="3" fill="#fff" transform="rotate(25 45 62)"/><ellipse cx="30" cy="60" rx="7" ry="3" fill="#fff" transform="rotate(5 30 60)"/>'
-};
+const GROUP_COLORS = { root:"#C96A2E", leafy:"#3FAE6A", garden:"#D6336C", legume:"#C99A2E", spice:"#8E4CC1", allergen:"#2E9CD6", dairy:"#C9A876", fruit:"#F4C430", carb:"#7C8FA6" };
+const GROUP_LABELS = { root:"Root veg", leafy:"Leafy & green veg", garden:"Garden veg", legume:"Legumes", carb:"Carbs & grains", dairy:"Dairy", fruit:"Fruit (dessert)" };
+
 const FOODS = [
-  {name:"Sweet potato", group:"root"}, {name:"Potato", group:"root"}, {name:"Carrot", group:"root"}, {name:"Parsnip", group:"root"}, {name:"Beetroot", group:"root"},
-  {name:"Spinach", group:"leafy"}, {name:"Broccoli", group:"leafy"}, {name:"Cabbage", group:"leafy"}, {name:"Peas", group:"leafy"}, {name:"Green beans", group:"leafy"}, {name:"Courgette", group:"leafy"},
-  {name:"Red peppers", group:"garden"}, {name:"Aubergine", group:"garden"}, {name:"Sweetcorn", group:"garden"}, {name:"Avocado", group:"garden"}, {name:"Butternut squash", group:"garden"}, {name:"Cauliflower", group:"garden"},
-  {name:"Red lentil", group:"legume"}, {name:"Chickpea", group:"legume"}, {name:"Butter bean", group:"legume"}, {name:"Rice", group:"legume"}
+  {name:"Sweet potato", group:"root"}, {name:"Potato", group:"root"}, {name:"Carrot", group:"root"}, {name:"Parsnip", group:"root"}, {name:"Beetroot", group:"root"}, {name:"Swede", group:"root"},
+  {name:"Spinach", group:"leafy"}, {name:"Broccoli", group:"leafy"}, {name:"Cabbage", group:"leafy"}, {name:"Peas", group:"leafy"}, {name:"Green beans", group:"leafy"}, {name:"Courgette", group:"leafy"}, {name:"Asparagus", group:"leafy"}, {name:"Brussels sprouts", group:"leafy"}, {name:"Kale", group:"leafy"},
+  {name:"Red peppers", group:"garden"}, {name:"Aubergine", group:"garden"}, {name:"Sweetcorn", group:"garden"}, {name:"Avocado", group:"garden"}, {name:"Butternut squash", group:"garden"}, {name:"Cauliflower", group:"garden"}, {name:"Mushroom", group:"garden"}, {name:"Onion", group:"garden"}, {name:"Tomato", group:"garden"},
+  {name:"Red lentil", group:"legume"}, {name:"Chickpea", group:"legume"}, {name:"Butter bean", group:"legume"}, {name:"Black beans", group:"legume"}, {name:"Kidney beans", group:"legume"}, {name:"Cannellini beans", group:"legume"}, {name:"Chia seeds", group:"legume"}, {name:"Flaxseed", group:"legume"},
+  {name:"Rice", group:"carb"}, {name:"Oats", group:"carb"}, {name:"Quinoa", group:"carb"}, {name:"Amaranth", group:"carb"}, {name:"Barley", group:"carb"}, {name:"Bread/toast", group:"carb", allergenLink:"Wheat"}, {name:"Cornmeal/polenta", group:"carb"}, {name:"Couscous", group:"carb", allergenLink:"Wheat"}, {name:"Crumpets", group:"carb", allergenLink:"Wheat"}, {name:"Fusilli", group:"carb", allergenLink:"Wheat"}, {name:"Gnocchi", group:"carb", allergenLink:"Wheat"}, {name:"Noodles", group:"carb", allergenLink:"Wheat"}, {name:"Orzo", group:"carb", allergenLink:"Wheat"}, {name:"Pancakes", group:"carb", allergenLink:"Wheat"}, {name:"Pastry", group:"carb", allergenLink:"Wheat"}, {name:"Penne", group:"carb", allergenLink:"Wheat"}, {name:"Pitta", group:"carb", allergenLink:"Wheat"}, {name:"Spaghetti", group:"carb", allergenLink:"Wheat"}, {name:"Wraps", group:"carb", allergenLink:"Wheat"},
+  {name:"Yoghurt", group:"dairy", allergenLink:"Dairy"}, {name:"Cheese", group:"dairy", allergenLink:"Dairy"}, {name:"Butter/Ghee", group:"dairy", allergenLink:"Dairy"}
+];
+const FRUITS = [
+  {name:"Apple", group:"fruit"}, {name:"Banana", group:"fruit"}, {name:"Pear", group:"fruit"}, {name:"Blueberries", group:"fruit"}, {name:"Strawberries", group:"fruit"},
+  {name:"Mango", group:"fruit"}, {name:"Melon", group:"fruit"}, {name:"Kiwi", group:"fruit"}, {name:"Plum", group:"fruit"}, {name:"Orange", group:"fruit"}
 ];
 const ALLERGENS = [
   {name:"Dairy", group:"allergen", ingredient:"Plain yoghurt"}, {name:"Peanut", group:"allergen", ingredient:"Peanut butter, smooth"},
   {name:"Wheat", group:"allergen", ingredient:"Wheat bread or pasta"}, {name:"Sesame", group:"allergen", ingredient:"Sesame seeds, ground at home"},
   {name:"Soya", group:"allergen", ingredient:"Firm tofu"}, {name:"Tree nut", group:"allergen", ingredient:"Cashews, ground at home"}
 ];
-const foodByName = {}; FOODS.forEach(f=>foodByName[f.name]=f);
+const foodByName = {}; [...FOODS, ...FRUITS].forEach(f=>foodByName[f.name]=f);
 const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
 
 function badgeSvg(name, size){
   const def = foodByName[name] || allergenByName[name];
   const group = def ? def.group : 'spice';
   const color = GROUP_COLORS[group] || '#999';
-  const iconMarkup = (ICONS[name]||'').split('AC').join(color);
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" style="flex-shrink:0;"><circle cx="50" cy="50" r="50" fill="'+color+'"/>'+iconMarkup+'</svg>';
+  const letter = name.replace(/\(.*?\)/g,'').trim()[0].toUpperCase();
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" style="flex-shrink:0;"><circle cx="50" cy="50" r="50" fill="'+color+'"/>'+
+    '<text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="Baloo 2, sans-serif" font-weight="700" font-size="48" fill="#fff">'+escapeHtml(letter)+'</text></svg>';
 }
 
 let entries = [];
 
 function computeStats(){
-  const foodExposures = {}; FOODS.forEach(f=>foodExposures[f.name]=[]);
+  const allTrackable = [...FOODS, ...FRUITS];
+  const foodExposures = {}; allTrackable.forEach(f=>foodExposures[f.name]=[]);
   const pairs = {};
   const allergenLog = {}; ALLERGENS.forEach(a=>allergenLog[a.name]=[]);
   const sorted = [...entries].sort((a,b)=> new Date(a.ts) - new Date(b.ts));
@@ -218,7 +199,7 @@ function computeStats(){
     if(e.allergenUsed && e.allergens){ e.allergens.forEach(a=>{ if(allergenLog[a]) allergenLog[a].push({ts:e.ts, reaction:e.allergenReaction}); }); }
   });
   const acceptance = {};
-  FOODS.forEach(f=>{
+  allTrackable.forEach(f=>{
     const exp = foodExposures[f.name];
     const last2 = exp.slice(-2).map(x=>x.reaction);
     acceptance[f.name] = exp.length>=3 && !last2.includes('Refused');
@@ -230,23 +211,42 @@ function computeStats(){
     const hadReaction = log.some(x=>x.reaction==='reaction');
     let state = 'not-started';
     if(hadReaction) state='reaction'; else if(log.length>=2) state='introduced'; else if(log.length===1) state='awaiting-repeat';
-    const lastGiven = log.length ? new Date(log[log.length-1].ts) : null;
+    let lastGiven = log.length ? new Date(log[log.length-1].ts) : null;
+    // Once safely introduced, any food already linked to this allergen (e.g. toast for
+    // Wheat) also refreshes "last given" for maintenance purposes — mirrors index.html.
+    if(state==='introduced'){
+      const linkedFoods = FOODS.filter(f=>f.allergenLink===a.name).map(f=>f.name);
+      if(linkedFoods.length){
+        sorted.forEach(e=>{
+          if((e.items||[]).some(it=>linkedFoods.includes(it))){
+            const d = new Date(e.ts);
+            if(!lastGiven || d>lastGiven) lastGiven = d;
+          }
+        });
+      }
+    }
     const daysSince = lastGiven ? Math.floor((now-lastGiven)/dayMs) : null;
     allergenStatus[a.name] = {state, daysSince, count:log.length};
   });
-  return {foodExposures, pairs, acceptance, allergenStatus, sortedEntries:sorted};
+  const acceptedCoreCount = FOODS.filter(f=>acceptance[f.name]).length;
+  const fruitsUnlocked = FOODS.length>0 && (acceptedCoreCount/FOODS.length) >= 0.8;
+  return {foodExposures, pairs, acceptance, allergenStatus, sortedEntries:sorted, fruitsUnlocked};
 }
 
 // ==================== Tab 1: Overview ====================
 function renderOverview(stats){
   const acceptedCount = FOODS.filter(f=>stats.acceptance[f.name]).length;
-  const groups = ['root','leafy','garden','legume'];
+  const groups = ['root','leafy','garden','legume','carb','dairy'];
   const groupRows = groups.map(g=>{
     const foods = FOODS.filter(f=>f.group===g);
     const accepted = foods.filter(f=>stats.acceptance[f.name]).length;
     const pct = foods.length ? (accepted/foods.length*100) : 0;
     return {g, label:GROUP_LABELS[g], accepted, total:foods.length, pct};
   });
+  if(stats.fruitsUnlocked){
+    const fruitAccepted = FRUITS.filter(f=>stats.acceptance[f.name]).length;
+    groupRows.push({g:'fruit', label:GROUP_LABELS.fruit, accepted:fruitAccepted, total:FRUITS.length, pct: FRUITS.length ? (fruitAccepted/FRUITS.length*100) : 0});
+  }
 
   let trendSvg = '<span class="empty" style="color:#fff;">No meals logged yet.</span>';
   if(stats.sortedEntries.length){
@@ -298,26 +298,51 @@ function renderOverview(stats){
 
 // ==================== Tab 2: By food ====================
 function renderByFood(stats){
-  const groups = ['root','leafy','garden','legume'];
-  let html = '';
+  const groups = ['root','leafy','garden','legume','carb','dairy'];
+  const allRows = [];
   groups.forEach(g=>{
-    const foods = FOODS.filter(f=>f.group===g).map(f=>{
+    FOODS.filter(f=>f.group===g).forEach(f=>{
       const exp = stats.foodExposures[f.name];
-      const liked = exp.filter(x=>x.reaction==='Liked').length;
-      const neutral = exp.filter(x=>x.reaction==='Neutral').length;
-      const refused = exp.filter(x=>x.reaction==='Refused').length;
-      return {name:f.name, liked, neutral, refused, total:exp.length};
-    }).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
+      if(!exp.length) return;
+      allRows.push({
+        name:f.name, group:g,
+        liked: exp.filter(x=>x.reaction==='Liked').length,
+        neutral: exp.filter(x=>x.reaction==='Neutral').length,
+        refused: exp.filter(x=>x.reaction==='Refused').length,
+        total: exp.length
+      });
+    });
+  });
+  if(stats.fruitsUnlocked){
+    FRUITS.forEach(f=>{
+      const exp = stats.foodExposures[f.name];
+      if(!exp.length) return;
+      allRows.push({
+        name:f.name, group:'fruit',
+        liked: exp.filter(x=>x.reaction==='Liked').length,
+        neutral: exp.filter(x=>x.reaction==='Neutral').length,
+        refused: exp.filter(x=>x.reaction==='Refused').length,
+        total: exp.length
+      });
+    });
+  }
+  const maxTotal = Math.max(...allRows.map(r=>r.total), 1);
+
+  let html = '';
+  const groupOrder = stats.fruitsUnlocked ? [...groups,'fruit'] : groups;
+  groupOrder.forEach(g=>{
+    const foods = allRows.filter(r=>r.group===g).sort((a,b)=>b.total-a.total);
     if(!foods.length) return;
     html += '<div class="food-group-heading" style="background:'+GROUP_COLORS[g]+'">'+GROUP_LABELS[g]+'</div>';
     html += foods.map(r=>{
-      const pct = x => (x/r.total*100);
+      const segPct = x => (x/r.total*100); // proportion WITHIN this food's own bar
+      const barPct = (r.total/maxTotal*100); // this food's bar length relative to the most-tried food
       return '<div class="reaction-row"><span class="fname">'+badgeSvg(r.name,22)+escapeHtml(r.name)+'</span>'+
-        '<div class="reaction-bar">'+
-          (r.liked?'<div data-w="'+pct(r.liked)+'" style="background:var(--emerald)"></div>':'')+
-          (r.neutral?'<div data-w="'+pct(r.neutral)+'" style="background:var(--text-muted)"></div>':'')+
-          (r.refused?'<div data-w="'+pct(r.refused)+'" style="background:var(--burgundy)"></div>':'')+
-        '</div><span class="reaction-counts">'+r.total+' tried</span></div>';
+        '<div class="reaction-track"><div class="reaction-bar" data-barw="'+barPct+'">'+
+          (r.liked?'<div style="width:'+segPct(r.liked)+'%;background:var(--emerald)"></div>':'')+
+          (r.neutral?'<div style="width:'+segPct(r.neutral)+'%;background:var(--text-muted)"></div>':'')+
+          (r.refused?'<div style="width:'+segPct(r.refused)+'%;background:var(--burgundy)"></div>':'')+
+        '</div></div><span class="reaction-counts">'+r.total+' tried</span></div>';
     }).join('');
   });
   if(!html) html = '<span class="empty">No meals logged yet.</span>';
@@ -326,7 +351,7 @@ function renderByFood(stats){
       '<div class="legend"><span><i style="background:var(--emerald)"></i>Liked</span><span><i style="background:var(--text-muted)"></i>Neutral</span><span><i style="background:var(--burgundy)"></i>Refused</span></div>'+
     '</div></section>';
   requestAnimationFrame(()=>{
-    document.querySelectorAll('#panel-byfood .reaction-bar div').forEach(el=>{ el.style.width = el.dataset.w+'%'; });
+    document.querySelectorAll('#panel-byfood .reaction-bar').forEach(el=>{ el.style.width = el.dataset.barw+'%'; });
   });
 }
 
@@ -367,12 +392,19 @@ function renderProgression(stats){
       '<div class="funnel-badges">'+(items.length ? badges+(more>0?'<span class="funnel-more">+'+more+' more</span>':'') : '<span class="empty">None yet</span>')+'</div></div>';
   }
 
+  let dessertBlock = '';
+  if(stats.fruitsUnlocked){
+    const fruitAccepted = FRUITS.filter(f=>stats.acceptance[f.name]);
+    dessertBlock = stageBlock('Dessert (fruit accepted)', GROUP_COLORS.fruit, fruitAccepted, true);
+  }
+
   document.getElementById('panel-progression').innerHTML =
     '<section><div class="card">'+
       stageBlock('Foundation', 'var(--text)', foundation, true)+
       stageBlock('Paired', 'var(--indigo)', paired, false)+
       stageBlock('Spiced pair', 'var(--spice)', spiced, false)+
       stageBlock('Combined dish', 'var(--emerald)', combined, false)+
+      dessertBlock+
     '</div></section>';
 }
 
