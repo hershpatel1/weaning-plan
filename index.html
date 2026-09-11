@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riyaan's Weaning — Field Notes</title>
+<title>Riyaan's Weaning Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --coral:#FF6B57; --indigo:#6C63FF; --amber:#F5A623; --teal:#17A6A6; --emerald:#1DA55E;
+  --coral:#FF6B57; --coral-dark:#E5503C;
+  --indigo:#6C63FF; --indigo-dark:#5148E0;
+  --amber:#F5A623; --amber-dark:#C6820D;
+  --teal:#17A6A6; --teal-dark:#0E7F7F;
+  --emerald:#1DA55E; --emerald-dark:#158048;
   --root:#C96A2E; --leafy:#3FAE6A; --garden:#D6336C; --legume:#C99A2E; --spice:#8E4CC1; --allergenc:#2E9CD6;
   --bg:#FAFAF8; --card:#FFFFFF; --border:#ECEAE3;
   --text:#20232B; --text-muted:#767B87;
@@ -18,116 +22,212 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px;}
-.wrap{max-width:820px;margin:0 auto;padding:20px 16px 60px;}
-.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:10px;}
-h1{font-family:'Baloo 2',sans-serif;font-size:23px;font-weight:800;}
-.subtitle{color:var(--text-muted);font-size:13px;margin:8px 0 18px;}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 90px;}
+.header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+h1{font-family:'Baloo 2',sans-serif;font-size:23px;font-weight:800;color:var(--text);}
 .nav-link{font-size:12.5px;color:var(--indigo);text-decoration:none;font-weight:700;}
 .sync-status{font-size:9px;font-weight:800;padding:3px 9px;border-radius:20px;background:var(--border);color:var(--text-muted);}
 .sync-status.live{background:var(--emerald);color:#fff;}
 .sync-status.err{background:var(--burgundy);color:#fff;}
 
-/* Tabs */
-.tab-nav{display:flex;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:5px;box-shadow:var(--shadow-sm);margin-bottom:18px;overflow-x:auto;}
-.tab-btn{border:none;background:transparent;font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;color:var(--text-muted);padding:9px 16px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:background 0.2s, color 0.2s;}
-.tab-btn.active{background:var(--indigo);color:#fff;}
-.tab-panel{display:none;}
-.tab-panel.pre-in{display:block;opacity:0;transform:translateY(10px);}
-.tab-panel.in{display:block;opacity:1;transform:translateY(0);transition:opacity 0.28s ease, transform 0.28s ease;}
-
 section{margin-bottom:22px;}
 .section-label{font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:9px;padding-left:2px;}
-.card{background:var(--card);border-radius:18px;padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow-sm);}
-.hero-card{border-radius:24px;padding:20px;color:#fff;box-shadow:var(--shadow-md);}
+
+/* Bold full-bleed hero cards */
+.hero-card{border-radius:24px;padding:22px;color:#fff;box-shadow:var(--shadow-md);}
+.hero-card.c-coral{background:var(--coral);}
 .hero-card.c-indigo{background:var(--indigo);}
 .hero-card.c-amber{background:var(--amber);}
+.hero-card.c-teal{background:var(--teal);}
+.week-plan-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.22);}
+.week-plan-row:last-child{border-bottom:none;}
+.wp-day{width:74px;font-size:11.5px;font-weight:700;color:#fff;flex-shrink:0;}
+.wp-badges{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.hero-card .hc-tag{font-size:11px;font-weight:800;background:rgba(255,255,255,0.28);display:inline-block;padding:3px 11px;border-radius:20px;margin-bottom:12px;}
+.hero-card .hc-items{font-family:'Baloo 2',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;}
+.hero-card .hc-meta{font-size:12.5px;opacity:0.92;margin-bottom:14px;}
+.hero-card .hc-allergen{font-size:12.5px;font-weight:700;background:rgba(255,255,255,0.2);border-radius:10px;padding:8px 12px;margin-bottom:14px;}
+.badge-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.badge-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.22);border-radius:20px;padding:5px 12px 5px 5px;}
+.badge-chip .label{font-size:12px;font-weight:700;}
 
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.btn-hero{display:block;width:100%;background:#fff;color:var(--coral);border:none;border-radius:16px;padding:15px;font-size:16px;font-weight:800;font-family:'Baloo 2',sans-serif;cursor:pointer;min-height:52px;}
+.pill-secondary{display:block;width:100%;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:30px;padding:13px;font-size:13.5px;font-weight:700;cursor:pointer;min-height:48px;margin-top:10px;}
+.pill-secondary:active{background:var(--border);}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:2px;}
 .stat-pill{background:rgba(255,255,255,0.18);border-radius:14px;padding:11px 14px;}
 .stat-pill .num{font-family:'Baloo 2',sans-serif;font-size:clamp(18px,5vw,23px);font-weight:800;color:#fff;white-space:nowrap;}
 .stat-pill .lbl{font-size:10.5px;color:#fff;opacity:0.85;}
+.allergen-list{margin-top:12px;font-size:12.5px;}
+.allergen-list .row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.22);}
+.allergen-list .row:last-child{border-bottom:none;}
+.allergen-list .aname{flex:1;font-weight:700;color:#fff;}
+.status-pill{font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.25);color:#fff;}
+.status-pill.alert{background:#fff;color:var(--burgundy);}
 
-/* Group breakdown bars */
-.group-row{display:flex;align-items:center;gap:10px;padding:9px 0;}
-.group-row .gname{width:110px;font-size:12.5px;font-weight:800;flex-shrink:0;}
-.group-track{flex:1;height:14px;background:var(--border);border-radius:8px;overflow:hidden;}
-.group-fill{height:100%;border-radius:8px;width:0;transition:width 0.7s cubic-bezier(.2,.8,.3,1);}
-.group-count{width:44px;text-align:right;font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;flex-shrink:0;}
+/* Shopping list */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px;}
+.shop-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.22);border-radius:12px;padding:7px 10px;}
+.shop-item .label{font-size:12px;font-weight:700;color:#fff;}
 
-/* Reaction breakdown */
-.food-group-heading{font-size:11px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.04em;padding:5px 12px;border-radius:20px;display:inline-block;margin:14px 0 8px;}
-.food-group-heading:first-child{margin-top:0;}
-.reaction-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
-.reaction-row .fname{width:130px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;flex-shrink:0;}
-.reaction-track{flex:1;height:14px;background:var(--border);border-radius:8px;overflow:hidden;}
-.reaction-bar{display:flex;height:100%;width:0;border-radius:8px;overflow:hidden;transition:width 0.6s cubic-bezier(.2,.8,.3,1);}
-.reaction-bar div{height:100%;}
-.reaction-counts{font-size:10.5px;color:var(--text-muted);text-align:right;white-space:nowrap;width:56px;flex-shrink:0;}
-.legend{display:flex;gap:16px;font-size:11px;color:var(--text-muted);margin-top:12px;flex-wrap:wrap;}
-.legend span{display:inline-flex;align-items:center;gap:5px;}
-.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;}
-
-/* Trend chart */
-.trend-svg{width:100%;height:auto;}
-.trend-bar{fill:var(--amber);}
-.trend-axis{stroke:rgba(255,255,255,0.3);stroke-width:1;}
-.trend-label{font-size:9px;fill:#fff;opacity:0.85;font-family:'Nunito Sans',sans-serif;}
-
-/* Allergen timeline */
-.allergen-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
-.allergen-row:last-child{border-bottom:none;}
-.allergen-order{font-family:'Baloo 2',sans-serif;font-size:13px;color:var(--text-muted);width:18px;}
-.allergen-name{font-weight:800;flex:1;font-size:13.5px;display:flex;align-items:center;gap:8px;}
-.status-pill{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap;}
-.status-done{background:#E4F7EC;color:var(--emerald);}
-.status-due{background:#FDF0DC;color:#8C6416;}
-.status-wait{background:var(--border);color:var(--text-muted);}
-.status-alert{background:var(--burgundy-light);color:var(--burgundy);}
-.allergen-meta{font-size:11px;color:var(--text-muted);width:110px;text-align:right;}
-
-/* Funnel */
-.funnel-stage{margin-bottom:18px;}
-.funnel-stage-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.funnel-stage-name{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:700;}
-.funnel-stage-count{font-size:11.5px;color:var(--text-muted);}
-.funnel-badges{display:flex;flex-wrap:wrap;gap:8px;}
-.funnel-pair{display:flex;align-items:center;gap:2px;background:var(--bg);border-radius:20px;padding:4px 10px 4px 4px;}
-.funnel-more{font-size:11.5px;color:var(--text-muted);align-self:center;padding:4px 8px;}
-
+/* History — clean white cards, colour comes from badges */
+.hist-entry{background:var(--card);border-radius:16px;padding:12px 14px;border:1px solid var(--border);margin-bottom:8px;box-shadow:var(--shadow-sm);}
+.hist-entry .top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.hist-entry .badges{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.hist-entry .date{color:var(--text-muted);font-size:11px;white-space:nowrap;}
+.hist-entry .tags{margin-top:7px;font-size:11.5px;color:var(--text-muted);}
+.hist-entry .actions{margin-top:8px;display:flex;gap:6px;}
+.hist-entry .actions button{font-size:12px;padding:8px 13px;min-height:36px;border-radius:20px;border:none;font-weight:700;cursor:pointer;}
+.hist-entry .actions .edit-btn{background:var(--border);color:var(--text);}
+.hist-entry .actions .del-btn{background:var(--burgundy-light);color:var(--burgundy);}
 .empty{color:var(--text-muted);font-size:13px;font-style:italic;}
-@media(max-width:600px){.reaction-row .fname{width:96px;}.group-row .gname{width:88px;}}
+
+/* Badge icon (food/spice/allergen) */
+.food-badge{border-radius:50%;flex-shrink:0;display:inline-flex;}
+.badge-with-label{display:inline-flex;align-items:center;gap:7px;}
+
+/* Chips with badges (used in sheet) */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--border);background:var(--card);border-radius:24px;padding:7px 14px 7px 7px;font-size:13px;font-weight:700;cursor:pointer;min-height:44px;color:var(--text);}
+.chip.selected{border-color:var(--indigo);background:#EEEDFF;}
+.chip-group-label{font-size:11px;font-weight:800;color:var(--text-muted);margin:12px 0 6px;text-transform:uppercase;letter-spacing:0.04em;}
+.chip-group-label:first-child{margin-top:0;}
+
+/* Sheet */
+.fab{display:none;}
+.sheet-backdrop{position:fixed;inset:0;background:rgba(32,35,43,0.45);z-index:390;display:none;}
+.sheet-backdrop.open{display:block;}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:90vh;background:var(--card);border-radius:26px 26px 0 0;z-index:395;transform:translateY(110%);transition:transform 0.32s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;box-shadow:0 -8px 30px rgba(32,35,43,0.2);}
+.sheet.open{transform:translateY(0);}
+.sheet-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 2px;}
+.sheet-header{padding:8px 20px 4px;}
+.sheet-header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sheet-step-label{font-size:11.5px;font-weight:800;color:var(--indigo);}
+.sheet-close{background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;line-height:1;padding:4px 6px;}
+.sheet-progress{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.sheet-progress-fill{height:100%;background:var(--indigo);border-radius:3px;transition:width 0.25s ease;}
+.sheet-body{padding:14px 20px 18px;overflow-y:auto;flex:1;}
+.sheet-step-title{font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:700;margin-bottom:14px;}
+.sheet-footer{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border);}
+.sheet-footer button{flex:1;border:none;border-radius:16px;padding:14px;font-size:15px;font-weight:800;font-family:'Baloo 2',sans-serif;cursor:pointer;min-height:50px;}
+.sheet-footer .btn-back{background:var(--border);color:var(--text);flex:0 0 90px;}
+.sheet-footer .btn-next{background:var(--indigo);color:#fff;}
+.sheet-footer .btn-submit{background:var(--emerald);color:#fff;}
+
+label{font-size:11.5px;font-weight:800;color:var(--text-muted);display:block;margin-bottom:7px;text-transform:uppercase;letter-spacing:0.03em;}
+input,select,textarea{width:100%;font-size:16px;font-family:inherit;padding:11px 12px;border:2px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);}
+textarea{resize:vertical;min-height:60px;}
+.quick-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.quick-chip{border:2px solid var(--border);background:var(--card);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;}
+
+/* Format cards */
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.format-card{border:2px solid var(--border);background:var(--card);border-radius:14px;padding:14px;cursor:pointer;text-align:left;}
+.format-card.selected{border-color:var(--indigo);background:#EEEDFF;}
+.format-card .fc-icon{color:var(--indigo);margin-bottom:8px;}
+.format-card .fc-title{font-weight:800;font-size:13.5px;margin-bottom:2px;}
+.format-card .fc-desc{font-size:11.5px;color:var(--text-muted);line-height:1.35;}
+
+/* Reaction cards */
+.reaction-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.reaction-card{border:2px solid var(--border);background:var(--card);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;}
+.reaction-card .rc-icon{font-size:26px;margin-bottom:4px;}
+.reaction-card .rc-label{font-size:12.5px;font-weight:800;}
+.reaction-card.selected.r-liked{border-color:var(--emerald);background:#E4F7EC;}
+.reaction-card.selected.r-neutral{border-color:var(--text-muted);background:var(--border);}
+.reaction-card.selected.r-refused{border-color:var(--burgundy);background:var(--burgundy-light);}
+
+.checkbox-row{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;}
+.checkbox-row input{width:20px;height:20px;min-height:auto;}
+.sub-fields{padding:12px;background:var(--bg);border-radius:12px;margin-top:10px;display:none;}
+.sub-fields.open{display:block;}
+
+.summary-strip{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;padding:12px;background:var(--bg);border-radius:12px;}
+
+/* Recipe panel */
+.recipe-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;padding:20px;max-height:65vh;overflow-y:auto;z-index:400;display:none;box-shadow:0 -8px 30px rgba(32,35,43,0.2);}
+.recipe-panel.open{display:block;}
+.recipe-panel h3{font-family:'Baloo 2',sans-serif;font-size:19px;color:var(--text);margin-bottom:12px;}
+.recipe-panel .close-btn{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);}
+.recipe-panel p{font-size:13.5px;margin-bottom:8px;}
+
+@media(max-width:600px){.format-grid{grid-template-columns:1fr 1fr;}.shop-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <div class="header-bar">
-  <h1>Field Notes</h1>
+  <h1>Riyaan's Weaning Log</h1>
   <div style="display:flex;align-items:center;gap:12px;">
-    <a href="index.html" class="nav-link">&larr; Back to log</a>
+    <a href="analytics.html" class="nav-link">Analytics &rarr;</a>
     <span id="syncStatus" class="sync-status">connecting&hellip;</span>
   </div>
 </div>
-<p class="subtitle">Riyaan's weaning journey, read live from the same log as the meal tracker.</p>
 
-<div class="tab-nav" id="tabNav">
-  <button class="tab-btn active" data-tab="overview">Overview</button>
-  <button class="tab-btn" data-tab="byfood">By food</button>
-  <button class="tab-btn" data-tab="allergens">Allergens</button>
-  <button class="tab-btn" data-tab="progression">Progression</button>
+<section>
+  <div id="nextMealCard"></div>
+  <button class="pill-secondary" id="logOwnBtn">Log your own meal</button>
+</section>
+
+<section>
+  <div class="section-label">Progress</div>
+  <div class="hero-card c-indigo">
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="allergen-list" id="allergenStatus"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Week ahead</div>
+  <div class="hero-card c-teal">
+    <div id="weekAheadList"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Shopping · matches the week ahead</div>
+  <div class="hero-card c-amber">
+    <div class="shop-grid" id="shopList"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label" style="color:var(--teal-dark);">History</div>
+  <div id="historyList"></div>
+</section>
+
 </div>
 
-<div id="panel-overview" class="tab-panel"></div>
-<div id="panel-byfood" class="tab-panel"></div>
-<div id="panel-allergens" class="tab-panel"></div>
-<div id="panel-progression" class="tab-panel"></div>
-
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-header-top">
+      <span class="sheet-step-label" id="sheetStepLabel"></span>
+      <button class="sheet-close" id="sheetCloseBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="sheet-progress"><div class="sheet-progress-fill" id="sheetProgressFill"></div></div>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-footer" id="sheetFooter"></div>
 </div>
+
+<div class="recipe-panel" id="recipePanel">
+  <button class="close-btn" onclick="closeRecipe()">&times;</button>
+  <div id="recipeContent"></div>
+</div>
+
+<script>
+function closeRecipe(){ document.getElementById('recipePanel').classList.remove('open'); }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+</script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7jLl4DbwmNVJ_lCDMk6pQCO1ROdpXJZw",
@@ -143,77 +243,166 @@ const db = getFirestore(app);
 const mealsCol = collection(db, "mealLog");
 const statusEl = document.getElementById('syncStatus');
 
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-// ==================== Colour + icon system (kept in sync with index.html) ====================
+// ==================== Colour system ====================
 const GROUP_COLORS = { root:"#C96A2E", leafy:"#3FAE6A", garden:"#D6336C", legume:"#C99A2E", spice:"#8E4CC1", allergen:"#2E9CD6", dairy:"#C9A876", fruit:"#F4C430", carb:"#7C8FA6" };
 const GROUP_LABELS = { root:"Root veg", leafy:"Leafy & green veg", garden:"Garden veg", legume:"Legumes", carb:"Carbs & grains", dairy:"Dairy", fruit:"Fruit (dessert)" };
-
-const FOODS = [
-  {name:"Sweet potato", group:"root"}, {name:"Potato", group:"root"}, {name:"Carrot", group:"root"}, {name:"Parsnip", group:"root"}, {name:"Beetroot", group:"root"}, {name:"Swede", group:"root"},
-  {name:"Spinach", group:"leafy"}, {name:"Broccoli", group:"leafy"}, {name:"Cabbage", group:"leafy"}, {name:"Peas", group:"leafy"}, {name:"Green beans", group:"leafy"}, {name:"Courgette", group:"leafy"}, {name:"Asparagus", group:"leafy"}, {name:"Brussels sprouts", group:"leafy"}, {name:"Kale", group:"leafy"},
-  {name:"Red peppers", group:"garden"}, {name:"Aubergine", group:"garden"}, {name:"Sweetcorn", group:"garden"}, {name:"Avocado", group:"garden"}, {name:"Butternut squash", group:"garden"}, {name:"Cauliflower", group:"garden"}, {name:"Mushroom", group:"garden"}, {name:"Onion", group:"garden"}, {name:"Tomato", group:"garden"},
-  {name:"Red lentil", group:"legume"}, {name:"Chickpea", group:"legume"}, {name:"Butter bean", group:"legume"}, {name:"Black beans", group:"legume"}, {name:"Kidney beans", group:"legume"}, {name:"Cannellini beans", group:"legume"}, {name:"Chia seeds", group:"legume"}, {name:"Flaxseed", group:"legume"},
-  {name:"Rice", group:"carb"}, {name:"Oats", group:"carb"}, {name:"Quinoa", group:"carb"}, {name:"Amaranth", group:"carb"}, {name:"Barley", group:"carb"}, {name:"Bread/toast", group:"carb", allergenLink:"Wheat"}, {name:"Cornmeal/polenta", group:"carb"}, {name:"Couscous", group:"carb", allergenLink:"Wheat"}, {name:"Crumpets", group:"carb", allergenLink:"Wheat"}, {name:"Fusilli", group:"carb", allergenLink:"Wheat"}, {name:"Gnocchi", group:"carb", allergenLink:"Wheat"}, {name:"Noodles", group:"carb", allergenLink:"Wheat"}, {name:"Orzo", group:"carb", allergenLink:"Wheat"}, {name:"Pancakes", group:"carb", allergenLink:"Wheat"}, {name:"Pastry", group:"carb", allergenLink:"Wheat"}, {name:"Penne", group:"carb", allergenLink:"Wheat"}, {name:"Pitta", group:"carb", allergenLink:"Wheat"}, {name:"Spaghetti", group:"carb", allergenLink:"Wheat"}, {name:"Wraps", group:"carb", allergenLink:"Wheat"},
-  {name:"Yoghurt", group:"dairy", allergenLink:"Dairy"}, {name:"Cheese", group:"dairy", allergenLink:"Dairy"}, {name:"Butter/Ghee", group:"dairy", allergenLink:"Dairy"}
-];
-const FRUITS = [
-  {name:"Apple", group:"fruit"}, {name:"Banana", group:"fruit"}, {name:"Pear", group:"fruit"}, {name:"Blueberries", group:"fruit"}, {name:"Strawberries", group:"fruit"},
-  {name:"Mango", group:"fruit"}, {name:"Melon", group:"fruit"}, {name:"Kiwi", group:"fruit"}, {name:"Plum", group:"fruit"}, {name:"Orange", group:"fruit"}
-];
-const ALLERGENS = [
-  {name:"Dairy", group:"allergen", ingredient:"Plain yoghurt"}, {name:"Peanut", group:"allergen", ingredient:"Peanut butter, smooth"},
-  {name:"Wheat", group:"allergen", ingredient:"Wheat bread or pasta"}, {name:"Sesame", group:"allergen", ingredient:"Sesame seeds, ground at home"},
-  {name:"Soya", group:"allergen", ingredient:"Firm tofu"}, {name:"Tree nut", group:"allergen", ingredient:"Cashews, ground at home"}
-];
-const foodByName = {}; [...FOODS, ...FRUITS].forEach(f=>foodByName[f.name]=f);
-const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
 
 function badgeSvg(name, size){
   const def = foodByName[name] || allergenByName[name];
   const group = def ? def.group : 'spice';
   const color = GROUP_COLORS[group] || '#999';
   const letter = name.replace(/\(.*?\)/g,'').trim()[0].toUpperCase();
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" style="flex-shrink:0;"><circle cx="50" cy="50" r="50" fill="'+color+'"/>'+
+  return '<svg class="food-badge" width="'+size+'" height="'+size+'" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="'+color+'"/>'+
     '<text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="Baloo 2, sans-serif" font-weight="700" font-size="48" fill="#fff">'+escapeHtml(letter)+'</text></svg>';
 }
+function badgeWithLabel(name, size){
+  return '<span class="badge-with-label">'+badgeSvg(name,size)+'<span class="label">'+escapeHtml(name)+'</span></span>';
+}
 
+// ==================== Reference data ====================
+const FOODS = [
+  {name:"Sweet potato", group:"root", formats:["soft","finger"], soft:"Steamed and mashed or puréed", finger:"Steamed spear, adult-finger sized"},
+  {name:"Potato", group:"root", formats:["soft","finger"], soft:"Boiled and mashed", finger:"Boiled wedge"},
+  {name:"Carrot", group:"root", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed stick, well softened"},
+  {name:"Parsnip", group:"root", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed spear"},
+  {name:"Beetroot", group:"root", formats:["soft","finger"], soft:"Roasted or boiled, puréed", finger:"Roasted spear, cooled and softened"},
+  {name:"Swede", group:"root", formats:["soft","finger"], soft:"Steamed and mashed, similar to turnip", finger:"Steamed spear, well softened"},
+  {name:"Spinach", group:"leafy", formats:["soft"], soft:"Wilted/steamed, finely puréed or mashed", finger:"Not yet — offer soft wilted strands once pincer grasp is established"},
+  {name:"Broccoli", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed", finger:"Steamed floret, stem trimmed"},
+  {name:"Cabbage", group:"leafy", formats:["soft","finger"], soft:"Steamed until very soft, finely puréed", finger:"Steamed strip, well softened"},
+  {name:"Peas", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed — squash each pea before serving whole", finger:"Soft-cooked whole peas, squashed, once pincer grip is there"},
+  {name:"Green beans", group:"leafy", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed bean, halved lengthways"},
+  {name:"Courgette", group:"leafy", formats:["soft","finger"], soft:"Steamed and mashed", finger:"Steamed spear, skin on"},
+  {name:"Asparagus", group:"leafy", formats:["soft","finger"], soft:"Steamed tips, mashed", finger:"Steamed spear, thick end trimmed"},
+  {name:"Brussels sprouts", group:"leafy", formats:["soft","finger"], soft:"Steamed until very soft, halved and mashed", finger:"Steamed sprout, quartered lengthways"},
+  {name:"Kale", group:"leafy", formats:["soft"], soft:"Stripped from the stem, steamed and finely puréed", finger:"Not yet — the stem is tough, offer once older"},
+  {name:"Red peppers", group:"garden", formats:["soft","finger"], soft:"Roasted, skin removed, puréed", finger:"Roasted strip, skin removed"},
+  {name:"Aubergine", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted strip, skin removed"},
+  {name:"Sweetcorn", group:"garden", formats:["soft","finger"], soft:"Cooked kernels, blended and sieved", finger:"Corn on the cob to gnaw, supervised — not loose kernels"},
+  {name:"Avocado", group:"garden", formats:["soft","finger"], soft:"Mashed, no cooking needed", finger:"Ripe spear, skin on as a handle"},
+  {name:"Butternut squash", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted spear"},
+  {name:"Cauliflower", group:"garden", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed floret"},
+  {name:"Mushroom", group:"garden", formats:["soft","finger"], soft:"Cooked soft and finely chopped or puréed", finger:"Cooked mushroom strip, well softened"},
+  {name:"Onion", group:"garden", formats:["soft"], soft:"Cooked down soft and sweet, stirred into a purée", finger:"Not recommended whole — too fibrous, use as a soft stir-in only"},
+  {name:"Tomato", group:"garden", formats:["soft","finger"], soft:"Skinned, deseeded and cooked down soft", finger:"Skinned wedge, deseeded"},
+  {name:"Red lentil", group:"legume", formats:["soft"], soft:"Cooked soft and mashed or blended, dal-style", finger:"Not applicable — too small, choking risk whole"},
+  {name:"Chickpea", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — whole chickpeas are a choking hazard"},
+  {name:"Butter bean", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet"},
+  {name:"Black beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — mash only"},
+  {name:"Kidney beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed (never raw or undercooked)", finger:"Not applicable yet"},
+  {name:"Cannellini beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet"},
+  {name:"Chia seeds", group:"legume", formats:["soft"], soft:"Soaked until gelled, stirred into a purée", finger:"Not applicable — always soaked and gelled first"},
+  {name:"Flaxseed", group:"legume", formats:["soft"], soft:"Ground and stirred into a purée", finger:"Not applicable — always ground first"},
+  {name:"Rice", group:"carb", formats:["soft"], soft:"Cooked very soft and slightly sticky, mashed", finger:"Not applicable at this stage"},
+  {name:"Oats", group:"carb", formats:["soft"], soft:"Cooked into a soft porridge with milk", finger:"Not applicable at this stage"},
+  {name:"Quinoa", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, mashed", finger:"Well-cooked, sticky clumps once older"},
+  {name:"Amaranth", group:"carb", formats:["soft"], soft:"Cooked into a soft porridge-like consistency", finger:"Not applicable at this stage"},
+  {name:"Barley", group:"carb", formats:["soft"], soft:"Cooked very soft (pearl barley), mashed", finger:"Not applicable at this stage"},
+  {name:"Bread/toast", group:"carb", formats:["soft","finger"], soft:"Soaked in milk or purée until soft", finger:"Lightly toasted strip", allergenLink:"Wheat"},
+  {name:"Cornmeal/polenta", group:"carb", formats:["soft"], soft:"Cooked soft and creamy", finger:"Cooled, firm-set strip once older"},
+  {name:"Couscous", group:"carb", formats:["soft"], soft:"Cooked very soft, fluffed and mashed", finger:"Not applicable at this stage", allergenLink:"Wheat"},
+  {name:"Crumpets", group:"carb", formats:["soft","finger"], soft:"Torn up and soaked soft in milk", finger:"Torn strip, lightly toasted", allergenLink:"Wheat"},
+  {name:"Fusilli", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, mashed", finger:"Well-cooked spiral, soft enough to squash", allergenLink:"Wheat"},
+  {name:"Gnocchi", group:"carb", formats:["soft","finger"], soft:"Cooked soft, mashed", finger:"Well-cooked piece, soft enough to squash", allergenLink:"Wheat"},
+  {name:"Noodles", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, cut short and mashed", finger:"Well-cooked, cut into short manageable lengths", allergenLink:"Wheat"},
+  {name:"Orzo", group:"carb", formats:["soft"], soft:"Cooked very soft, mashed", finger:"Not applicable — too small for finger feeding", allergenLink:"Wheat"},
+  {name:"Pancakes", group:"carb", formats:["soft","finger"], soft:"Torn into small soft pieces", finger:"Soft strip, no syrup or sugar", allergenLink:"Wheat"},
+  {name:"Pastry", group:"carb", formats:["finger"], soft:"Not typically offered soft", finger:"Small soft-baked piece, plain (no sugar filling)", allergenLink:"Wheat"},
+  {name:"Penne", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, mashed", finger:"Well-cooked tube, soft enough to squash", allergenLink:"Wheat"},
+  {name:"Pitta", group:"carb", formats:["soft","finger"], soft:"Torn and soaked soft in purée", finger:"Soft strip, lightly warmed", allergenLink:"Wheat"},
+  {name:"Spaghetti", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, cut short and mashed", finger:"Well-cooked, cut into short manageable lengths", allergenLink:"Wheat"},
+  {name:"Wraps", group:"carb", formats:["soft","finger"], soft:"Torn and soaked soft in purée", finger:"Soft strip", allergenLink:"Wheat"},
+  {name:"Yoghurt", group:"dairy", formats:["soft"], soft:"Plain, full-fat, unsweetened, offered by spoon", finger:"Not applicable", allergenLink:"Dairy"},
+  {name:"Cheese", group:"dairy", formats:["soft","finger"], soft:"Grated and melted into a purée", finger:"Soft cheese cube, mild cheddar", allergenLink:"Dairy"},
+  {name:"Butter/Ghee", group:"dairy", formats:["soft"], soft:"A small knob stirred through a hot purée", finger:"Not applicable", allergenLink:"Dairy"}
+];
+const FRUITS = [
+  {name:"Apple", group:"fruit", formats:["soft","finger"], soft:"Peeled, cored, steamed and puréed", finger:"Steamed, or very ripe soft wedge"},
+  {name:"Banana", group:"fruit", formats:["soft","finger"], soft:"Mashed with a fork", finger:"Banana half, skin as a handle"},
+  {name:"Pear", group:"fruit", formats:["soft","finger"], soft:"Ripe, peeled and mashed", finger:"Ripe wedge, skin removed"},
+  {name:"Blueberries", group:"fruit", formats:["soft","finger"], soft:"Mashed or blended", finger:"Squashed between fingers before serving — whole ones are a choking hazard"},
+  {name:"Strawberries", group:"fruit", formats:["soft","finger"], soft:"Mashed", finger:"Quartered lengthways, never whole"},
+  {name:"Mango", group:"fruit", formats:["soft","finger"], soft:"Ripe, mashed", finger:"Ripe spear"},
+  {name:"Melon", group:"fruit", formats:["soft","finger"], soft:"Mashed ripe flesh", finger:"Deseeded spear, skin removed"},
+  {name:"Kiwi", group:"fruit", formats:["soft","finger"], soft:"Mashed ripe flesh", finger:"Peeled spear"},
+  {name:"Plum", group:"fruit", formats:["soft","finger"], soft:"Stoned, steamed and mashed", finger:"Stoned, ripe wedge"},
+  {name:"Orange", group:"fruit", formats:["soft","finger"], soft:"Segmented, membrane removed, mashed", finger:"Segment, membrane and pips removed"}
+];
+const SPICES = ["Turmeric","Cumin","Coriander","Fennel","Asafoetida (hing)","Ginger","Cardamom","Cinnamon","Garlic","Basil","Mint","Parsley"];
+const SPICES_CAUTION = [
+  {name:"Black pepper", note:"Milder heat than chilli, but still a heat spice — many parents wait until closer to 9-12 months. Start with a tiny pinch if used."},
+  {name:"Paprika", note:"Sweet/mild paprika is generally fine in small amounts — check the jar isn't a hot/smoked blend with chilli added."},
+  {name:"Mild curry powder", note:"Blends vary a lot — some contain chilli despite being labelled \"mild\". Safer to build a curry flavour from the individual spices already in the everyday list."},
+  {name:"Nutmeg", note:"Fine in the very small amounts used in cooking — guidance is more cautious about large quantities, which isn't a realistic risk at normal cooking doses."}
+];
+const ALLERGENS = [
+  {name:"Dairy", group:"allergen", ingredient:"Plain yoghurt"},
+  {name:"Peanut", group:"allergen", ingredient:"Peanut butter, smooth"},
+  {name:"Wheat", group:"allergen", ingredient:"Wheat bread or pasta"},
+  {name:"Sesame", group:"allergen", ingredient:"Sesame seeds, ground at home"},
+  {name:"Soya", group:"allergen", ingredient:"Firm tofu"},
+  {name:"Tree nut", group:"allergen", ingredient:"Cashews, ground at home"}
+];
+const foodByName = {}; [...FOODS, ...FRUITS].forEach(f=>foodByName[f.name]=f);
+const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
+
+// ---------------- State ----------------
 let entries = [];
+let editingId = null;
+let selectedItems = [];
+let selectedReaction = null;
+let selectedAllergens = [];
+let selectedAllergenReaction = null;
+let selectedSpices = [];
 
+// ---------------- Derived stats (unchanged logic) ----------------
 function computeStats(){
   const allTrackable = [...FOODS, ...FRUITS];
   const foodExposures = {}; allTrackable.forEach(f=>foodExposures[f.name]=[]);
   const pairs = {};
-  const allergenLog = {}; ALLERGENS.forEach(a=>allergenLog[a.name]=[]);
+  const allergenLogExplicit = {}; ALLERGENS.forEach(a=>allergenLogExplicit[a.name]=[]);
+
   const sorted = [...entries].sort((a,b)=> new Date(a.ts) - new Date(b.ts));
   sorted.forEach(e=>{
     (e.items||[]).forEach(it=>{ if(foodExposures[it]) foodExposures[it].push({ts:e.ts, reaction:e.reaction}); });
     if(e.items && e.items.length===2){
       const key = [...e.items].sort().join(' + ');
-      if(!pairs[key]) pairs[key] = {items:[...e.items].sort(), count:0, spicedCount:0, combinedCount:0, lastPlain:null, lastSpiced:null};
+      if(!pairs[key]) pairs[key] = {count:0, spicedCount:0, combinedCount:0, lastPlain:null, lastSpiced:null, lastCombined:null};
       const p = pairs[key];
-      if(e.format==='combined'){ p.combinedCount++; }
+      if(e.format==='combined'){ p.combinedCount++; p.lastCombined=e.reaction; }
       else if(e.spices && e.spices.length){ p.spicedCount++; p.lastSpiced=e.reaction; }
       else { p.count++; p.lastPlain=e.reaction; }
     }
-    if(e.allergenUsed && e.allergens){ e.allergens.forEach(a=>{ if(allergenLog[a]) allergenLog[a].push({ts:e.ts, reaction:e.allergenReaction}); }); }
+    if(e.allergenUsed && e.allergens){
+      e.allergens.forEach(a=>{ if(allergenLogExplicit[a]) allergenLogExplicit[a].push({ts:e.ts, reaction:e.allergenReaction}); });
+    }
   });
+
+  const dayMs = 86400000;
+  const now = new Date();
   const acceptance = {};
   allTrackable.forEach(f=>{
     const exp = foodExposures[f.name];
     const last2 = exp.slice(-2).map(x=>x.reaction);
     acceptance[f.name] = exp.length>=3 && !last2.includes('Refused');
   });
-  const now = new Date(); const dayMs = 86400000;
+
+  // Pass 1: allergen STATE only ever advances from explicit, deliberately-flagged
+  // exposures — this preserves the watched day-1/day-2 introduction safety behaviour.
+  // Pass 2: once an allergen is safely introduced, any food already known to contain it
+  // (e.g. toast for Wheat, via each food's allergenLink) also refreshes its "last given"
+  // date — so eating bread keeps Wheat's maintenance schedule accurate without needing
+  // the allergen box ticked every single time. This never advances state on its own.
   const allergenStatus = {};
   ALLERGENS.forEach(a=>{
-    const log = allergenLog[a.name];
+    const log = allergenLogExplicit[a.name];
     const hadReaction = log.some(x=>x.reaction==='reaction');
     let state = 'not-started';
-    if(hadReaction) state='reaction'; else if(log.length>=2) state='introduced'; else if(log.length===1) state='awaiting-repeat';
+    if(hadReaction) state = 'reaction';
+    else if(log.length>=2) state = 'introduced';
+    else if(log.length===1) state = 'awaiting-repeat';
+
     let lastGiven = log.length ? new Date(log[log.length-1].ts) : null;
-    // Once safely introduced, any food already linked to this allergen (e.g. toast for
-    // Wheat) also refreshes "last given" for maintenance purposes — mirrors index.html.
     if(state==='introduced'){
       const linkedFoods = FOODS.filter(f=>f.allergenLink===a.name).map(f=>f.name);
       if(linkedFoods.length){
@@ -226,232 +415,622 @@ function computeStats(){
       }
     }
     const daysSince = lastGiven ? Math.floor((now-lastGiven)/dayMs) : null;
-    allergenStatus[a.name] = {state, daysSince, count:log.length};
+    allergenStatus[a.name] = {state, lastGiven, daysSince, count:log.length};
   });
+
+  // The main-course pool stays scoped to FOODS only — fruit is deliberately kept out of
+  // the Foundation/Paired/Spiced/Combined pairing logic and handled as a separate "dessert"
+  // suggestion instead, so a fruit never gets algorithmically paired with a vegetable as if
+  // it were an equal main-course partner.
+  const unlockedFoods = FOODS.map(f=>f.name);
+
+  // Fruit unlocks once ~80% of everything else is accepted — a proxy for "happy with his veg."
+  // This threshold is a judgement call, not a researched figure — easy to loosen or tighten.
   const acceptedCoreCount = FOODS.filter(f=>acceptance[f.name]).length;
   const fruitsUnlocked = FOODS.length>0 && (acceptedCoreCount/FOODS.length) >= 0.8;
-  return {foodExposures, pairs, acceptance, allergenStatus, sortedEntries:sorted, fruitsUnlocked};
+
+  return {foodExposures, pairs, allergenStatus, acceptance, unlockedFoods, fruitsUnlocked};
 }
 
-// ==================== Tab 1: Overview ====================
-function renderOverview(stats){
+function suggestDessert(stats){
+  if(!stats.fruitsUnlocked) return null;
+  const names = FRUITS.map(f=>f.name);
+  names.sort((a,b)=> stats.foodExposures[a].length - stats.foodExposures[b].length);
+  return names[0];
+}
+
+function suggestAllergenAction(stats){
+  const order = ALLERGENS.map(a=>a.name);
+  for(const name of order){
+    if(stats.allergenStatus[name].state==='awaiting-repeat') return {type:'repeat', name};
+  }
+  const due = order.find(name=>{
+    const s = stats.allergenStatus[name];
+    return s.state==='introduced' && s.daysSince!==null && s.daysSince>=3;
+  });
+  if(due) return {type:'maintenance', name:due};
+  const lastIntroDate = order.map(n=>stats.allergenStatus[n]).filter(s=>s.count>0).map(s=>s.lastGiven).sort((a,b)=>b-a)[0];
+  const daysSinceLastIntro = lastIntroDate ? Math.floor((new Date()-lastIntroDate)/86400000) : 99;
+  if(daysSinceLastIntro>=2){
+    const next = order.find(name=>stats.allergenStatus[name].state==='not-started');
+    if(next) return {type:'new', name:next};
+  }
+  return null;
+}
+
+function suggestNextMeal(stats){
+  const allergenAction = suggestAllergenAction(stats);
+  const allergenTag = allergenAction ? (
+    allergenAction.type==='repeat' ? 'Repeat allergen (day 2): '+allergenAction.name :
+    allergenAction.type==='new' ? 'New allergen to introduce: '+allergenAction.name :
+    'Allergen maintenance due: '+allergenAction.name
+  ) : null;
+  const allergenIngredient = allergenAction ? ALLERGENS.find(a=>a.name===allergenAction.name).ingredient : null;
+  const withAllergen = obj => ({...obj, allergenTag, allergenIngredient});
+
+  for(const key in stats.pairs){
+    const p = stats.pairs[key];
+    const items = key.split(' + ');
+    if(p.spicedCount>=3 && p.lastSpiced!=='Refused' && p.combinedCount===0){
+      return withAllergen({stage:'Combined dish', items, format:'combined', spiceSuggested:true});
+    }
+    if(p.count>=3 && p.lastPlain!=='Refused' && p.spicedCount===0){
+      return withAllergen({stage:'Spiced pair', items, format:'both', spiceSuggested:true});
+    }
+  }
+
+  function findInProgress(){
+    for(const key in stats.pairs){
+      const p = stats.pairs[key];
+      const items = key.split(' + ');
+      if(p.spicedCount>=1 && p.combinedCount===0 && !(p.spicedCount>=3 && p.lastSpiced!=='Refused')){
+        return {stage:'Spiced pair', items, format:'both', spiceSuggested:true};
+      }
+    }
+    for(const key in stats.pairs){
+      const p = stats.pairs[key];
+      const items = key.split(' + ');
+      if(p.count>=1 && p.spicedCount===0 && !(p.count>=3 && p.lastPlain!=='Refused')){
+        return {stage:'Paired', items, format:'both', spiceSuggested:false};
+      }
+    }
+    return null;
+  }
+
+  const candidates = stats.unlockedFoods.filter(f=>!stats.acceptance[f]);
+  const inProgress = findInProgress();
+
+  if(candidates.length>0){
+    const alternateToFoundation = (entries.length % 2 === 0) || !inProgress;
+    if(alternateToFoundation){
+      candidates.sort((a,b)=> stats.foodExposures[a].length - stats.foodExposures[b].length);
+      return withAllergen({stage:'Foundation', items:[candidates[0]], format:'both', spiceSuggested:false});
+    }
+  }
+  if(inProgress) return withAllergen(inProgress);
+
+  const accepted = stats.unlockedFoods.filter(f=>stats.acceptance[f]);
+  const pairCountFor = f => Object.keys(stats.pairs).filter(k=>k.split(' + ').includes(f)).length;
+  const byFewestPairs = [...accepted].sort((a,b)=> pairCountFor(a)-pairCountFor(b));
+  for(let i=0;i<byFewestPairs.length;i++){
+    for(let j=i+1;j<byFewestPairs.length;j++){
+      const key = [byFewestPairs[i],byFewestPairs[j]].sort().join(' + ');
+      if(!stats.pairs[key]){
+        return withAllergen({stage:'Paired', items:[byFewestPairs[i],byFewestPairs[j]], format:'both', spiceSuggested:false});
+      }
+    }
+  }
+  if(candidates.length){
+    candidates.sort((a,b)=> stats.foodExposures[a].length - stats.foodExposures[b].length);
+    return withAllergen({stage:'Foundation', items:[candidates[0]], format:'both', spiceSuggested:false});
+  }
+  return withAllergen({stage:'All caught up', items:[], format:null, spiceSuggested:false});
+}
+
+function projectWeekPlan(stats){
+  const clone = {foodExposures:Object.fromEntries(Object.entries(stats.foodExposures).map(([k,v])=>[k,v.length])), pairs:JSON.parse(JSON.stringify(stats.pairs)), acceptance:{...stats.acceptance}, unlockedFoods:[...stats.unlockedFoods]};
+  const days = [];
+  const today = new Date();
+  for(let i=0;i<7;i++){
+    const fakeStats = {
+      foodExposures: Object.fromEntries(Object.entries(clone.foodExposures).map(([k,v])=>[k,Array(v)])),
+      pairs: clone.pairs, acceptance: clone.acceptance, unlockedFoods: clone.unlockedFoods,
+      allergenStatus: stats.allergenStatus, fruitsUnlocked: stats.fruitsUnlocked
+    };
+    const s = suggestNextMeal(fakeStats);
+    const d = suggestDessert(fakeStats);
+    const date = new Date(today.getTime() + i*86400000);
+    days.push({date, main:s, dessert:d});
+    s.items.forEach(it=>{ clone.foodExposures[it] = (clone.foodExposures[it]||0)+1; });
+    if(d) clone.foodExposures[d] = (clone.foodExposures[d]||0)+1;
+    if(s.items.length===0 && !d) break;
+  }
+  return days;
+}
+
+// Shopping is deliberately derived from the SAME 7-day plan shown in Week Ahead,
+// rather than its own separate simulation — the two can never drift apart.
+function projectShoppingList(stats){
+  const plan = projectWeekPlan(stats);
+  const needed = new Set();
+  plan.forEach(day=>{
+    day.main.items.forEach(it=>needed.add(it));
+    if(day.main.allergenIngredient) needed.add(day.main.allergenIngredient);
+    if(day.dessert) needed.add(day.dessert);
+  });
+  return [...needed];
+}
+
+// ==================== Rendering ====================
+function renderNextMeal(stats){
+  const s = suggestNextMeal(stats);
+  const dessert = suggestDessert(stats);
+  const el = document.getElementById('nextMealCard');
+  if(!s.items.length){
+    el.innerHTML = '<div class="hero-card c-coral"><div class="hc-tag">All caught up</div><div class="hc-items">Every unlocked food is accepted and paired</div><div class="hc-meta">Check back once more foods unlock, or log something yourself below.</div></div>';
+    return;
+  }
+  const badges = s.items.map(it=>'<span class="badge-chip" data-food="'+escapeHtml(it)+'">'+badgeSvg(it,28)+'<span class="label">'+escapeHtml(it)+'</span></span>').join('');
+  el.innerHTML =
+    '<div class="hero-card c-coral">'+
+      '<div class="hc-tag">'+s.stage+'</div>'+
+      '<div class="badge-row">'+badges+'</div>'+
+      '<div class="hc-meta">'+(s.spiceSuggested?'Add a mild spice this time · ':'')+'Format: '+s.format+'</div>'+
+      (s.allergenTag ? '<div class="hc-allergen">'+escapeHtml(s.allergenTag)+'</div>' : '')+
+      (dessert ? '<div class="badge-row" style="margin-bottom:10px;"><span class="badge-chip">'+badgeSvg(dessert,26)+'<span class="label">Dessert: '+escapeHtml(dessert)+'</span></span></div>' : '')+
+      '<button class="btn-hero" id="logNextBtn">Log the next meal</button>'+
+    '</div>';
+  document.getElementById('logNextBtn').onclick = ()=>{
+    const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+    openSheet({
+      items: s.items,
+      format: s.format==='combined' ? 'combined' : (s.format==='both'?'both':'soft'),
+      allergenUsed: !!matchedAllergen,
+      allergens: matchedAllergen ? [matchedAllergen.name] : [],
+      dessertPrefill: dessert
+    });
+  };
+  el.querySelectorAll('.badge-chip').forEach(b=>{
+    b.onclick = ()=>{
+      const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
+      openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [] });
+    };
+  });
+}
+
+function renderStats(stats){
+  const allTrackable = [...FOODS, ...FRUITS];
   const acceptedCount = FOODS.filter(f=>stats.acceptance[f.name]).length;
-  const groups = ['root','leafy','garden','legume','carb','dairy'];
-  const groupRows = groups.map(g=>{
-    const foods = FOODS.filter(f=>f.group===g);
-    const accepted = foods.filter(f=>stats.acceptance[f.name]).length;
-    const pct = foods.length ? (accepted/foods.length*100) : 0;
-    return {g, label:GROUP_LABELS[g], accepted, total:foods.length, pct};
+  const acceptedFruitCount = FRUITS.filter(f=>stats.acceptance[f.name]).length;
+  document.getElementById('statGrid').innerHTML =
+    '<div class="stat-pill"><div class="num">'+acceptedCount+'/'+FOODS.length+'</div><div class="lbl">Foods accepted</div></div>'+
+    '<div class="stat-pill"><div class="num">'+entries.length+'</div><div class="lbl">Meals logged</div></div>'+
+    '<div class="stat-pill"><div class="num">'+Object.keys(stats.pairs).length+'</div><div class="lbl">Pairings started</div></div>'+
+    (stats.fruitsUnlocked
+      ? '<div class="stat-pill"><div class="num">'+acceptedFruitCount+'/'+FRUITS.length+'</div><div class="lbl">Fruits accepted</div></div>'
+      : '<div class="stat-pill"><div class="num">'+Object.values(stats.pairs).filter(p=>p.combinedCount>0).length+'</div><div class="lbl">Combined dishes</div></div>');
+
+  document.getElementById('allergenStatus').innerHTML = ALLERGENS.map(a=>{
+    const s = stats.allergenStatus[a.name];
+    let pill = '<span class="status-pill">Not started</span>';
+    if(s.state==='awaiting-repeat') pill = '<span class="status-pill">Repeat tomorrow</span>';
+    if(s.state==='introduced') pill = '<span class="status-pill">Introduced'+(s.daysSince>=3?' — top-up due':'')+'</span>';
+    if(s.state==='reaction') pill = '<span class="status-pill alert">Reaction noted</span>';
+    return '<div class="row">'+badgeSvg(a.name,22)+'<span class="aname">'+a.name+'</span>'+pill+'</div>';
+  }).join('');
+}
+
+function renderWeekAhead(stats){
+  const plan = projectWeekPlan(stats);
+  const el = document.getElementById('weekAheadList');
+  if(!plan.length){ el.innerHTML = '<span class="empty" style="color:#fff;">Nothing projected yet — log a meal or two first.</span>'; return; }
+  el.innerHTML = plan.map((day,i)=>{
+    const dayLabel = i===0 ? 'Today' : i===1 ? 'Tomorrow' : day.date.toLocaleDateString('en-GB',{weekday:'short', day:'numeric'});
+    const badges = day.main.items.map(it=>badgeSvg(it,24)).join('') + (day.dessert ? badgeSvg(day.dessert,24) : '');
+    return '<div class="week-plan-row"><span class="wp-day">'+dayLabel+'</span><div class="wp-badges">'+(badges||'<span class="empty" style="color:#fff;">—</span>')+'</div></div>';
+  }).join('');
+}
+
+function renderShopping(stats){
+  const items = projectShoppingList(stats);
+  const el = document.getElementById('shopList');
+  if(!items.length){ el.innerHTML = '<span class="empty" style="color:#fff;">Nothing projected yet — log a meal or two first.</span>'; return; }
+  el.innerHTML = items.map(i=>{
+    const known = foodByName[i] || allergenByName[i];
+    const b = known ? badgeSvg(i,22) : '<span class="food-badge" style="width:22px;height:22px;background:rgba(255,255,255,0.35);border-radius:50%;display:inline-block;"></span>';
+    return '<div class="shop-item">'+b+'<span class="label">'+escapeHtml(i)+'</span></div>';
+  }).join('');
+}
+
+function renderHistory(){
+  const el = document.getElementById('historyList');
+  if(!entries.length){ el.innerHTML = '<span class="empty">No meals logged yet.</span>'; return; }
+  const sorted = [...entries].sort((a,b)=> new Date(b.ts)-new Date(a.ts));
+  el.innerHTML = sorted.map(e=>{
+    const d = new Date(e.ts);
+    const dateStr = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const tags = [e.mealSlot||null, e.format, e.reaction, (e.spices&&e.spices.length)?('spice: '+e.spices.join(', ')):null, e.allergenUsed?('allergen: '+(e.allergens||[]).join(', ')):null].filter(Boolean).join(' · ');
+    const badges = (e.items||[]).map(it=>'<span data-food="'+escapeHtml(it)+'" class="hist-badge">'+badgeSvg(it,26)+'</span>').join('');
+    return '<div class="hist-entry" data-id="'+e.id+'">'+
+      '<div class="top"><div class="badges">'+badges+'</div><span class="date">'+dateStr+'</span></div>'+
+      '<div class="tags">'+escapeHtml(tags)+(e.notes?(' · '+escapeHtml(e.notes)):'')+'</div>'+
+      '<div class="actions"><button class="edit-btn" data-edit="'+e.id+'">Edit</button><button class="del-btn" data-del="'+e.id+'">Delete</button></div>'+
+    '</div>';
+  }).join('');
+  el.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{
+    const en = entries.find(x=>x.id===b.dataset.edit);
+    if(en) openSheet({...en, editingId: en.id});
   });
-  if(stats.fruitsUnlocked){
-    const fruitAccepted = FRUITS.filter(f=>stats.acceptance[f.name]).length;
-    groupRows.push({g:'fruit', label:GROUP_LABELS.fruit, accepted:fruitAccepted, total:FRUITS.length, pct: FRUITS.length ? (fruitAccepted/FRUITS.length*100) : 0});
-  }
-
-  let trendSvg = '<span class="empty" style="color:#fff;">No meals logged yet.</span>';
-  if(stats.sortedEntries.length){
-    const first = new Date(stats.sortedEntries[0].ts);
-    const weekOf = d => Math.floor((new Date(d)-first)/(7*86400000));
-    const counts = {};
-    stats.sortedEntries.forEach(e=>{ const w = weekOf(e.ts); counts[w]=(counts[w]||0)+1; });
-    const maxWeek = Math.max(...Object.keys(counts).map(Number));
-    const bars = []; for(let w=0; w<=maxWeek; w++) bars.push(counts[w]||0);
-    const maxVal = Math.max(...bars, 1);
-    const barW = Math.max(18, Math.min(40, 600/bars.length));
-    const gap = 6;
-    const chartW = bars.length*(barW+gap);
-    const chartH = 100;
-    trendSvg = '<svg class="trend-svg" viewBox="0 0 '+chartW+' '+(chartH+20)+'" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="'+chartH+'" x2="'+chartW+'" y2="'+chartH+'" class="trend-axis"/>'+
-      bars.map((v,i)=>{
-        const h = (v/maxVal)*(chartH-10);
-        const x = i*(barW+gap);
-        return '<rect class="trend-bar" data-h="'+h+'" x="'+x+'" y="'+chartH+'" width="'+barW+'" height="0" rx="3"/>'+
-               '<text class="trend-label" x="'+(x+barW/2)+'" y="'+(chartH+14)+'" text-anchor="middle">W'+(i+1)+'</text>';
-      }).join('')+'</svg>';
-  }
-
-  document.getElementById('panel-overview').innerHTML =
-    '<section><div class="hero-card c-indigo"><div class="stat-grid">'+
-      '<div class="stat-pill"><div class="num">'+acceptedCount+'/'+FOODS.length+'</div><div class="lbl">Foods accepted</div></div>'+
-      '<div class="stat-pill"><div class="num">'+entries.length+'</div><div class="lbl">Meals logged</div></div>'+
-      '<div class="stat-pill"><div class="num">'+Object.keys(stats.pairs).length+'</div><div class="lbl">Pairings started</div></div>'+
-      '<div class="stat-pill"><div class="num">'+Object.values(stats.pairs).filter(p=>p.combinedCount>0).length+'</div><div class="lbl">Combined dishes</div></div>'+
-    '</div></div></section>'+
-    '<section><div class="section-label">Acceptance by food group</div><div class="card">'+
-      groupRows.map(r=>
-        '<div class="group-row"><span class="gname">'+r.label+'</span><div class="group-track"><div class="group-fill" data-pct="'+r.pct+'" style="background:'+GROUP_COLORS[r.g]+'"></div></div><span class="group-count">'+r.accepted+'/'+r.total+'</span></div>'
-      ).join('')+
-    '</div></section>'+
-    '<section><div class="section-label">Meals logged per week</div><div class="hero-card c-amber">'+trendSvg+'</div></section>';
-
-  requestAnimationFrame(()=>{
-    document.querySelectorAll('.group-fill').forEach(el=>{ el.style.width = el.dataset.pct+'%'; });
-    document.querySelectorAll('.trend-bar').forEach(el=>{
-      const h = parseFloat(el.dataset.h);
-      const y = parseFloat(el.getAttribute('y')) - h;
-      el.style.transition = 'height 0.6s cubic-bezier(.2,.8,.3,1), y 0.6s cubic-bezier(.2,.8,.3,1)';
-      el.setAttribute('height', h);
-      el.setAttribute('y', y);
-    });
+  el.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>removeEntry(b.dataset.del));
+  el.querySelectorAll('.hist-badge').forEach(b=>{
+    b.onclick = ()=>{
+      const entry = entries.find(x=>x.id===b.closest('.hist-entry').dataset.id);
+      if(!entry) return;
+      const allergenObjs = (entry.allergenUsed && entry.allergens || []).map(n=>ALLERGENS.find(a=>a.name===n)).filter(Boolean);
+      openRecipe(entry.items||[], { format: entry.format, spiceNames: entry.spices||[], allergens: allergenObjs });
+    };
   });
 }
 
-// ==================== Tab 2: By food ====================
-function renderByFood(stats){
-  const groups = ['root','leafy','garden','legume','carb','dairy'];
-  const allRows = [];
-  groups.forEach(g=>{
-    FOODS.filter(f=>f.group===g).forEach(f=>{
-      const exp = stats.foodExposures[f.name];
-      if(!exp.length) return;
-      allRows.push({
-        name:f.name, group:g,
-        liked: exp.filter(x=>x.reaction==='Liked').length,
-        neutral: exp.filter(x=>x.reaction==='Neutral').length,
-        refused: exp.filter(x=>x.reaction==='Refused').length,
-        total: exp.length
-      });
-    });
+function openRecipe(items, context){
+  context = context || {};
+  const format = context.format || 'both';
+  const foods = items.map(n=>foodByName[n]).filter(Boolean);
+  if(!foods.length) return;
+  let body = '<div class="badge-row">'+foods.map(f=>badgeWithLabel(f.name,30)).join('')+'</div>';
+  foods.forEach(f=>{
+    body += '<p><b>'+escapeHtml(f.name)+':</b> ';
+    if(format==='finger'){ body += escapeHtml(f.finger); }
+    else if(format==='soft' || format==='combined'){ body += escapeHtml(f.soft); }
+    else { body += 'Soft — '+escapeHtml(f.soft)+'. Finger — '+escapeHtml(f.finger); }
+    body += '</p>';
   });
-  if(stats.fruitsUnlocked){
-    FRUITS.forEach(f=>{
-      const exp = stats.foodExposures[f.name];
-      if(!exp.length) return;
-      allRows.push({
-        name:f.name, group:'fruit',
-        liked: exp.filter(x=>x.reaction==='Liked').length,
-        neutral: exp.filter(x=>x.reaction==='Neutral').length,
-        refused: exp.filter(x=>x.reaction==='Refused').length,
-        total: exp.length
-      });
-    });
+  if(format==='combined' && foods.length>1){
+    body += '<p><b>To combine:</b> Prepare each ingredient using its soft method above, then mash or stir together into one dish.</p>';
   }
-  const maxTotal = Math.max(...allRows.map(r=>r.total), 1);
-
-  let html = '';
-  const groupOrder = stats.fruitsUnlocked ? [...groups,'fruit'] : groups;
-  groupOrder.forEach(g=>{
-    const foods = allRows.filter(r=>r.group===g).sort((a,b)=>b.total-a.total);
-    if(!foods.length) return;
-    html += '<div class="food-group-heading" style="background:'+GROUP_COLORS[g]+'">'+GROUP_LABELS[g]+'</div>';
-    html += foods.map(r=>{
-      const segPct = x => (x/r.total*100); // proportion WITHIN this food's own bar
-      const barPct = (r.total/maxTotal*100); // this food's bar length relative to the most-tried food
-      return '<div class="reaction-row"><span class="fname">'+badgeSvg(r.name,22)+escapeHtml(r.name)+'</span>'+
-        '<div class="reaction-track"><div class="reaction-bar" data-barw="'+barPct+'">'+
-          (r.liked?'<div style="width:'+segPct(r.liked)+'%;background:var(--emerald)"></div>':'')+
-          (r.neutral?'<div style="width:'+segPct(r.neutral)+'%;background:var(--text-muted)"></div>':'')+
-          (r.refused?'<div style="width:'+segPct(r.refused)+'%;background:var(--burgundy)"></div>':'')+
-        '</div></div><span class="reaction-counts">'+r.total+' tried</span></div>';
-    }).join('');
-  });
-  if(!html) html = '<span class="empty">No meals logged yet.</span>';
-  document.getElementById('panel-byfood').innerHTML =
-    '<section><div class="card">'+html+
-      '<div class="legend"><span><i style="background:var(--emerald)"></i>Liked</span><span><i style="background:var(--text-muted)"></i>Neutral</span><span><i style="background:var(--burgundy)"></i>Refused</span></div>'+
-    '</div></section>';
-  requestAnimationFrame(()=>{
-    document.querySelectorAll('#panel-byfood .reaction-bar').forEach(el=>{ el.style.width = el.dataset.barw+'%'; });
-  });
-}
-
-// ==================== Tab 3: Allergens ====================
-function renderAllergens(stats){
-  document.getElementById('panel-allergens').innerHTML =
-    '<section><div class="card">'+
-      ALLERGENS.map((a,i)=>{
-        const s = stats.allergenStatus[a.name];
-        let pill = '<span class="status-pill status-wait">Not started</span>', meta = '';
-        if(s.state==='awaiting-repeat') pill = '<span class="status-pill status-due">Repeat tomorrow</span>';
-        if(s.state==='introduced'){ pill = '<span class="status-pill status-done">Introduced</span>'; meta = s.daysSince+' day'+(s.daysSince===1?'':'s')+' since last'; if(s.daysSince>=3) pill = '<span class="status-pill status-due">Top-up due</span>'; }
-        if(s.state==='reaction') pill = '<span class="status-pill status-alert">Reaction noted</span>';
-        return '<div class="allergen-row"><span class="allergen-order">'+(i+1)+'</span><span class="allergen-name">'+badgeSvg(a.name,26)+a.name+'</span>'+pill+'<span class="allergen-meta">'+meta+'</span></div>';
-      }).join('')+
-    '</div></section>';
-}
-
-// ==================== Tab 4: Progression ====================
-function pairBadgeHtml(items){
-  return '<span class="funnel-pair">'+items.map(n=>badgeSvg(n,26)).join('')+'</span>';
-}
-function renderProgression(stats){
-  const foundation = FOODS.filter(f=>!stats.acceptance[f.name]);
-  const pairsArr = Object.values(stats.pairs);
-  const paired = pairsArr.filter(p=>p.count>0 && p.spicedCount===0);
-  const spiced = pairsArr.filter(p=>p.spicedCount>0 && p.combinedCount===0);
-  const combined = pairsArr.filter(p=>p.combinedCount>0);
-
-  function stageBlock(name, color, list, isFoodList){
-    const items = isFoodList ? list.map(f=>f.name) : list.map(p=>p.items);
-    const shown = items.slice(0,8);
-    const more = items.length-8;
-    const badges = isFoodList
-      ? shown.map(n=>badgeSvg(n,30)).join('')
-      : shown.map(pair=>pairBadgeHtml(pair)).join('');
-    return '<div class="funnel-stage"><div class="funnel-stage-head"><span class="funnel-stage-name" style="color:'+color+'">'+name+'</span><span class="funnel-stage-count">'+items.length+'</span></div>'+
-      '<div class="funnel-badges">'+(items.length ? badges+(more>0?'<span class="funnel-more">+'+more+' more</span>':'') : '<span class="empty">None yet</span>')+'</div></div>';
+  if(context.spiceNames && context.spiceNames.length){
+    body += '<p><b>Spice:</b> stir in a small pinch of '+escapeHtml(context.spiceNames.join(', '))+', ground, no salt.</p>';
+  } else if(context.spiceSuggested){
+    body += '<p><b>Spice:</b> a mild spice is suggested this time — pick one in the log flow.</p>';
   }
-
-  let dessertBlock = '';
-  if(stats.fruitsUnlocked){
-    const fruitAccepted = FRUITS.filter(f=>stats.acceptance[f.name]);
-    dessertBlock = stageBlock('Dessert (fruit accepted)', GROUP_COLORS.fruit, fruitAccepted, true);
-  }
-
-  document.getElementById('panel-progression').innerHTML =
-    '<section><div class="card">'+
-      stageBlock('Foundation', 'var(--text)', foundation, true)+
-      stageBlock('Paired', 'var(--indigo)', paired, false)+
-      stageBlock('Spiced pair', 'var(--spice)', spiced, false)+
-      stageBlock('Combined dish', 'var(--emerald)', combined, false)+
-      dessertBlock+
-    '</div></section>';
-}
-
-// ==================== Tab switching ====================
-const tabNav = document.getElementById('tabNav');
-const renderers = { overview: renderOverview, byfood: renderByFood, allergens: renderAllergens, progression: renderProgression };
-let currentTab = 'overview';
-
-tabNav.addEventListener('click', e=>{
-  const btn = e.target.closest('.tab-btn');
-  if(!btn) return;
-  const tab = btn.dataset.tab;
-  if(tab===currentTab) return;
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const oldPanel = document.getElementById('panel-'+currentTab);
-  oldPanel.classList.remove('in');
-  oldPanel.classList.add('pre-in');
-  setTimeout(()=>{ oldPanel.classList.remove('pre-in'); oldPanel.style.display='none'; }, 280);
-  currentTab = tab;
-  const panel = document.getElementById('panel-'+tab);
-  panel.style.display='block';
-  panel.classList.add('pre-in');
-  const stats = computeStats();
-  renderers[tab](stats);
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{ panel.classList.remove('pre-in'); panel.classList.add('in'); });
+  (context.allergens||[]).forEach(a=>{
+    body += '<p><b>Allergen — '+escapeHtml(a.name)+':</b> stir in '+escapeHtml(a.ingredient)+' to combine.</p>';
   });
-});
+  document.getElementById('recipeContent').innerHTML = '<h3>'+escapeHtml(items.join(' + '))+'</h3>' + body;
+  document.getElementById('recipePanel').classList.add('open');
+}
+window.closeRecipe = closeRecipe;
 
 function renderAll(){
   const stats = computeStats();
-  const panel = document.getElementById('panel-'+currentTab);
-  panel.style.display='block';
-  panel.classList.add('in');
-  renderers[currentTab](stats);
+  renderNextMeal(stats);
+  renderStats(stats);
+  renderWeekAhead(stats);
+  renderShopping(stats);
+  renderHistory();
 }
 
+// ==================== Sheet: 6-step guided flow ====================
+const MEAL_SLOTS = ["Breakfast","Lunch","Dinner","Snack"];
+const FORMAT_OPTIONS = [
+  {value:'soft', title:'Soft / purée', desc:'Just the smooth version', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor"/></svg>'},
+  {value:'finger', title:'Finger food', desc:'Just self-fed pieces', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><rect x="7" y="2" width="6" height="16" rx="3" fill="currentColor"/></svg>'},
+  {value:'both', title:'Both textures', desc:'Same food, offered two ways side by side', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="6" cy="10" r="5" fill="currentColor"/><rect x="13" y="3" width="4" height="14" rx="2" fill="currentColor"/></svg>'},
+  {value:'combined', title:'Combined dish', desc:'Everything mashed or mixed together as one', icon:'<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="currentColor" opacity="0.35"/><circle cx="7" cy="8" r="1.6" fill="currentColor"/><circle cx="12" cy="7" r="1.4" fill="currentColor"/><circle cx="11" cy="12" r="1.7" fill="currentColor"/><circle cx="7" cy="12" r="1.2" fill="currentColor"/></svg>'}
+];
+const REACTION_OPTIONS = [
+  {value:'Refused', label:'Refused', cls:'r-refused', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 16c1-1.3 2.5-2 4-2s3 0.7 4 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+  {value:'Neutral', label:'Neutral', cls:'r-neutral', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 15h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+  {value:'Liked', label:'Liked', cls:'r-liked', icon:'<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10" r="1.1" fill="currentColor"/><circle cx="15.5" cy="10" r="1.1" fill="currentColor"/><path d="M8 14c1 1.6 2.5 2.4 4 2.4s3-0.8 4-2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'}
+];
+
+let sheetStep = 1;
+let sheetHasDessert = false;
+let sheetTotalSteps = 6;
+let selectedFormat = 'soft';
+let selectedTs = '';
+let selectedMealSlot = null;
+let allergenUsedFlag = false;
+let notesValue = '';
+
+function nowLocalIso(){ return new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16); }
+
+function getStepLabel(n){
+  const labels = ["Meal & time","Main veg","Legume, grain or dairy","Spice","Allergen"];
+  if(sheetHasDessert) labels.push("Dessert");
+  labels.push("Review & save");
+  return labels[n-1];
+}
+function isDessertStep(n){ return sheetHasDessert && n===6; }
+function isReviewStep(n){ return n===sheetTotalSteps; }
+
+function resetSheetState(prefill){
+  editingId = (prefill && prefill.editingId) || null;
+  selectedItems = (prefill && prefill.items) ? [...prefill.items] : [];
+  if(sheetHasDessert && prefill && prefill.dessertPrefill && !selectedItems.includes(prefill.dessertPrefill) && selectedItems.length<4){
+    selectedItems.push(prefill.dessertPrefill);
+  }
+  selectedMealSlot = (prefill && prefill.mealSlot) || null;
+  selectedFormat = (prefill && prefill.format) || 'soft';
+  selectedReaction = (prefill && prefill.reaction) || null;
+  selectedSpices = (prefill && Array.isArray(prefill.spices)) ? [...prefill.spices] : [];
+  allergenUsedFlag = !!(prefill && prefill.allergenUsed);
+  selectedAllergens = (prefill && prefill.allergens) ? [...prefill.allergens] : [];
+  selectedAllergenReaction = (prefill && prefill.allergenReaction) || null;
+  selectedTs = (prefill && prefill.ts) ? new Date(new Date(prefill.ts) - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16) : nowLocalIso();
+  notesValue = (prefill && prefill.notes) || '';
+}
+
+function openSheet(prefill){
+  const stats = computeStats();
+  sheetHasDessert = stats.fruitsUnlocked;
+  sheetTotalSteps = sheetHasDessert ? 7 : 6;
+  resetSheetState(prefill);
+  sheetStep = 1;
+  document.getElementById('sheetBackdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  renderSheetStep();
+}
+function closeSheet(){
+  document.getElementById('sheetBackdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+document.getElementById('sheetCloseBtn').onclick = closeSheet;
+document.getElementById('sheetBackdrop').onclick = closeSheet;
+document.getElementById('logOwnBtn').onclick = ()=> openSheet(null);
+
+function chipListHtml(names, selectedArr, dataAttr){
+  return names.map(n=>
+    '<button type="button" class="chip'+(selectedArr.includes(n)?' selected':'')+'" data-'+dataAttr+'="'+escapeHtml(n)+'">'+badgeSvg(n,24)+'<span>'+escapeHtml(n)+'</span></button>'
+  ).join('');
+}
+
+function renderSheetStep(){
+  document.getElementById('sheetStepLabel').textContent = 'Step '+sheetStep+' of '+sheetTotalSteps+' · '+getStepLabel(sheetStep);
+  document.getElementById('sheetProgressFill').style.width = (sheetStep/sheetTotalSteps*100)+'%';
+  const body = document.getElementById('sheetBody');
+  const footer = document.getElementById('sheetFooter');
+
+  if(sheetStep===1){
+    body.innerHTML =
+      '<div class="sheet-step-title">Which meal, and when?</div>'+
+      '<label>Meal</label>'+
+      '<div class="chip-grid" id="mealSlotChips">'+MEAL_SLOTS.map(m=>'<button type="button" class="chip'+(selectedMealSlot===m?' selected':'')+'" data-slot="'+m+'"><span>'+m+'</span></button>').join('')+'</div>'+
+      '<label style="margin-top:16px;">Date &amp; time</label>'+
+      '<input type="datetime-local" id="sheetTsInput" value="'+selectedTs+'">'+
+      '<div class="quick-chips">'+
+        '<button type="button" class="quick-chip" id="qcNow">Just now</button>'+
+      '</div>';
+    document.getElementById('sheetTsInput').oninput = e=>{ selectedTs = e.target.value; };
+    document.getElementById('qcNow').onclick = ()=>{ selectedTs = nowLocalIso(); renderSheetStep(); };
+    body.querySelectorAll('#mealSlotChips .chip').forEach(c=>{
+      c.onclick = ()=>{ selectedMealSlot = (selectedMealSlot===c.dataset.slot) ? null : c.dataset.slot; renderSheetStep(); };
+    });
+    footer.innerHTML = '<button class="btn-next" id="nextBtn" style="flex:1;">Next</button>';
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
+  }
+
+  else if(sheetStep===2){
+    const rootF = FOODS.filter(f=>f.group==='root').map(f=>f.name);
+    const leafyF = FOODS.filter(f=>f.group==='leafy').map(f=>f.name);
+    const gardenF = FOODS.filter(f=>f.group==='garden').map(f=>f.name);
+    body.innerHTML =
+      '<div class="sheet-step-title">Which vegetable(s)?</div>'+
+      '<div class="chip-group-label">Root veg</div><div class="chip-grid">'+chipListHtml(rootF, selectedItems, 'food')+'</div>'+
+      '<div class="chip-group-label">Leafy &amp; green veg</div><div class="chip-grid">'+chipListHtml(leafyF, selectedItems, 'food')+'</div>'+
+      '<div class="chip-group-label">Garden veg</div><div class="chip-grid">'+chipListHtml(gardenF, selectedItems, 'food')+'</div>';
+    body.querySelectorAll('.chip').forEach(c=>{
+      c.onclick = ()=>{
+        const f = c.dataset.food;
+        if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
+        else if(selectedItems.length<4) selectedItems.push(f);
+        renderSheetStep();
+      };
+    });
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=1; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=3; renderSheetStep(); };
+  }
+
+  else if(sheetStep===3){
+    const legF = FOODS.filter(f=>f.group==='legume').map(f=>f.name);
+    const carbF = FOODS.filter(f=>f.group==='carb').map(f=>f.name);
+    const dairyF = FOODS.filter(f=>f.group==='dairy').map(f=>f.name);
+    body.innerHTML =
+      '<div class="sheet-step-title">Any legume, carb or dairy?</div>'+
+      '<input type="text" id="step3Filter" placeholder="Search this list…" style="margin-bottom:12px;">'+
+      '<div id="step3Lists">'+
+        '<div class="chip-group-label">Legumes</div><div class="chip-grid">'+chipListHtml(legF, selectedItems, 'food')+'</div>'+
+        '<div class="chip-group-label">Carbs &amp; grains</div><div class="chip-grid">'+chipListHtml(carbF, selectedItems, 'food')+'</div>'+
+        '<div class="chip-group-label">Dairy</div><div class="chip-grid">'+chipListHtml(dairyF, selectedItems, 'food')+'</div>'+
+      '</div>'+
+      '<p style="font-size:12px;color:var(--text-muted);margin-top:12px;">Optional — skip if this meal is veg only.</p>';
+    body.querySelectorAll('.chip').forEach(c=>{
+      c.onclick = ()=>{
+        const f = c.dataset.food;
+        if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
+        else if(selectedItems.length<4) selectedItems.push(f);
+        renderSheetStep();
+      };
+    });
+    document.getElementById('step3Filter').oninput = e=>{
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('#step3Lists .chip').forEach(c=>{
+        const name = (c.dataset.food||'').toLowerCase();
+        c.style.display = (!q || name.includes(q)) ? '' : 'none';
+      });
+      document.querySelectorAll('#step3Lists .chip-grid').forEach(grid=>{
+        const anyVisible = Array.from(grid.querySelectorAll('.chip')).some(c=>c.style.display!=='none');
+        grid.style.display = anyVisible ? '' : 'none';
+        const label = grid.previousElementSibling;
+        if(label && label.classList.contains('chip-group-label')) label.style.display = anyVisible ? '' : 'none';
+      });
+    };
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=2; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=4; renderSheetStep(); };
+  }
+
+  else if(sheetStep===4){
+    body.innerHTML =
+      '<div class="sheet-step-title">Any spice?</div>'+
+      '<div class="chip-group-label">Everyday</div>'+
+      '<div class="chip-grid">'+chipListHtml(SPICES, selectedSpices, 'sp')+'</div>'+
+      '<div class="chip-group-label" style="margin-top:16px;">Occasional</div>'+
+      '<p style="font-size:11.5px;color:var(--text-muted);margin-bottom:8px;">Fine to use — just worth a quick reason why these sit apart from the everyday list. Tap one to see why.</p>'+
+      '<div class="chip-grid">'+SPICES_CAUTION.map(sp=>
+        '<button type="button" class="chip'+(selectedSpices.includes(sp.name)?' selected':'')+'" data-sp="'+escapeHtml(sp.name)+'" data-note="'+escapeHtml(sp.note)+'">'+badgeSvg(sp.name,24)+'<span>'+escapeHtml(sp.name)+'</span></button>'
+      ).join('')+'</div>'+
+      '<div id="cautionNote" style="display:none;font-size:12px;color:var(--text-muted);margin-top:8px;padding:10px;background:var(--bg);border-radius:8px;"></div>'+
+      '<p style="font-size:12px;color:var(--text-muted);margin-top:12px;">Optional — ground, no salt, a pinch is plenty.</p>';
+    body.querySelectorAll('.chip[data-sp]').forEach(c=>{
+      c.onclick = ()=>{
+        const n = c.dataset.sp;
+        if(c.dataset.note){
+          const noteEl = document.getElementById('cautionNote');
+          noteEl.textContent = n+': '+c.dataset.note;
+          noteEl.style.display = 'block';
+        }
+        if(selectedSpices.includes(n)) selectedSpices = selectedSpices.filter(x=>x!==n);
+        else selectedSpices.push(n);
+        renderSheetStep();
+      };
+    });
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=3; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=5; renderSheetStep(); };
+  }
+
+  else if(sheetStep===5){
+    body.innerHTML =
+      '<div class="sheet-step-title">Any allergen this meal?</div>'+
+      '<div class="checkbox-row" style="margin-bottom:12px;"><input type="checkbox" id="allergenCheck"'+(allergenUsedFlag?' checked':'')+'><span>Allergen used</span></div>'+
+      '<div class="sub-fields'+(allergenUsedFlag?' open':'')+'" id="allergenFields">'+
+        '<div class="chip-grid" id="allergenChips">'+chipListHtml(ALLERGENS.map(a=>a.name), selectedAllergens, 'al')+'</div>'+
+      '</div>';
+    document.getElementById('allergenCheck').onchange = e=>{
+      allergenUsedFlag = e.target.checked;
+      document.getElementById('allergenFields').classList.toggle('open', allergenUsedFlag);
+    };
+    body.querySelectorAll('#allergenChips .chip').forEach(c=>{
+      c.onclick = ()=>{
+        const n = c.dataset.al;
+        if(selectedAllergens.includes(n)) selectedAllergens = selectedAllergens.filter(x=>x!==n);
+        else selectedAllergens.push(n);
+        renderSheetStep();
+      };
+    });
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=4; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=6; renderSheetStep(); };
+  }
+
+  else if(isDessertStep(sheetStep)){
+    const fruitNames = FRUITS.map(f=>f.name);
+    body.innerHTML =
+      '<div class="sheet-step-title">Dessert?</div>'+
+      '<p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">A small piece of fruit after the main — optional, and unlocked now he\u2019s doing well on his veg.</p>'+
+      '<div class="chip-grid">'+chipListHtml(fruitNames, selectedItems, 'food')+'</div>';
+    body.querySelectorAll('.chip').forEach(c=>{
+      c.onclick = ()=>{
+        const f = c.dataset.food;
+        if(selectedItems.includes(f)) selectedItems = selectedItems.filter(x=>x!==f);
+        else if(selectedItems.length<4) selectedItems.push(f);
+        renderSheetStep();
+      };
+    });
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-next" id="nextBtn">Next</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep=5; renderSheetStep(); };
+    document.getElementById('nextBtn').onclick = ()=>{ sheetStep=sheetTotalSteps; renderSheetStep(); };
+  }
+
+  else if(isReviewStep(sheetStep)){
+    const summaryItems = [...selectedItems, ...selectedSpices, ...(allergenUsedFlag?selectedAllergens:[])];
+    body.innerHTML =
+      (selectedMealSlot ? '<div class="chip-group-label" style="margin-top:0;">'+escapeHtml(selectedMealSlot)+'</div>' : '')+
+      '<div class="sheet-step-title">How did it go?</div>'+
+      '<div class="reaction-grid" id="reactionGrid">'+REACTION_OPTIONS.map(ro=>
+        '<button type="button" class="reaction-card '+ro.cls+(selectedReaction===ro.value?' selected':'')+'" data-reaction="'+ro.value+'"><div class="rc-icon">'+ro.icon+'</div><div class="rc-label">'+ro.label+'</div></button>'
+      ).join('')+'</div>'+
+      '<label style="margin-top:18px;">Format</label>'+
+      '<div class="format-grid" id="formatGrid">'+FORMAT_OPTIONS.map(fo=>
+        '<button type="button" class="format-card'+(selectedFormat===fo.value?' selected':'')+'" data-fmt="'+fo.value+'"><div class="fc-icon">'+fo.icon+'</div><div class="fc-title">'+fo.title+'</div><div class="fc-desc">'+fo.desc+'</div></button>'
+      ).join('')+'</div>'+
+      (allergenUsedFlag ? (
+        '<label style="margin-top:18px;">Allergen reaction observed?</label>'+
+        '<div class="chip-grid">'+
+          '<button type="button" class="chip'+(selectedAllergenReaction==='fine'?' selected':'')+'" data-ar="fine"><span>No reaction</span></button>'+
+          '<button type="button" class="chip'+(selectedAllergenReaction==='reaction'?' selected':'')+'" data-ar="reaction"><span>Reaction observed</span></button>'+
+        '</div>'
+      ) : '')+
+      '<label style="margin-top:18px;">Notes</label>'+
+      '<textarea id="notesInput" placeholder="Optional">'+escapeHtml(notesValue)+'</textarea>'+
+      '<label style="margin-top:18px;">Summary</label>'+
+      '<div class="summary-strip">'+(summaryItems.length ? summaryItems.map(n=>badgeSvg(n,26)).join('') : '<span class="empty">Nothing selected yet</span>')+'</div>';
+
+    body.querySelectorAll('#reactionGrid .reaction-card').forEach(c=>{
+      c.onclick = ()=>{ selectedReaction = c.dataset.reaction; renderSheetStep(); };
+    });
+    body.querySelectorAll('#formatGrid .format-card').forEach(c=>{
+      c.onclick = ()=>{ selectedFormat = c.dataset.fmt; renderSheetStep(); };
+    });
+    body.querySelectorAll('[data-ar]').forEach(c=>{
+      c.onclick = ()=>{ selectedAllergenReaction = c.dataset.ar; renderSheetStep(); };
+    });
+    document.getElementById('notesInput').oninput = e=>{ notesValue = e.target.value; };
+
+    footer.innerHTML = '<button class="btn-back" id="backBtn">Back</button><button class="btn-submit" id="submitBtn">'+(editingId?'Update meal':'Save meal')+'</button>';
+    document.getElementById('backBtn').onclick = ()=>{ sheetStep = sheetHasDessert ? 6 : 5; renderSheetStep(); };
+    document.getElementById('submitBtn').onclick = saveMeal;
+  }
+}
+
+async function saveMeal(){
+  if(!selectedItems.length){ alert('Pick at least one vegetable, legume, grain or dairy item.'); return; }
+  if(!selectedReaction){ alert('Pick a reaction.'); return; }
+  const payload = {
+    ts: selectedTs ? new Date(selectedTs).toISOString() : new Date().toISOString(),
+    mealSlot: selectedMealSlot,
+    items: selectedItems,
+    format: selectedFormat,
+    reaction: selectedReaction,
+    spices: selectedSpices,
+    allergenUsed: allergenUsedFlag,
+    allergens: allergenUsedFlag ? selectedAllergens : [],
+    allergenReaction: allergenUsedFlag ? selectedAllergenReaction : null,
+    notes: (notesValue||'').trim()
+  };
+  try{
+    if(editingId){ await updateDoc(doc(db,'mealLog',editingId), payload); }
+    else { await addDoc(mealsCol, payload); }
+    closeSheet();
+  }catch(err){ console.error(err); alert('Could not save — check your connection.'); }
+}
+
+async function removeEntry(id){
+  if(!confirm('Delete this logged meal? This cannot be undone.')) return;
+  try{ await deleteDoc(doc(db,'mealLog',id)); }catch(err){ console.error(err); alert('Could not delete — check your connection.'); }
+}
+
+// ---------------- Firebase wiring ----------------
 onAuthStateChanged(auth, user=>{
   if(!user) return;
   onSnapshot(mealsCol, snap=>{
     entries = snap.docs.map(d=>({id:d.id, ...d.data()}));
-    statusEl.textContent = 'live'; statusEl.className = 'sync-status live';
+    statusEl.textContent = 'live';
+    statusEl.className = 'sync-status live';
     renderAll();
-  }, err=>{ statusEl.textContent='sync error'; statusEl.className='sync-status err'; console.error(err); });
+  }, err=>{
+    statusEl.textContent = 'sync error';
+    statusEl.className = 'sync-status err';
+    console.error(err);
+  });
 });
-signInAnonymously(auth).catch(err=>{ statusEl.textContent='sync error'; statusEl.className='sync-status err'; console.error(err); });
+signInAnonymously(auth).catch(err=>{
+  statusEl.textContent = 'sync error';
+  statusEl.className = 'sync-status err';
+  console.error(err);
+});
 renderAll();
 </script>
 </body>
