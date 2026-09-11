@@ -282,7 +282,7 @@ const FOODS = [
   {name:"Butternut squash", group:"garden", formats:["soft","finger"], soft:"Roasted and mashed", finger:"Roasted spear"},
   {name:"Cauliflower", group:"garden", formats:["soft","finger"], soft:"Steamed and puréed", finger:"Steamed floret"},
   {name:"Mushroom", group:"garden", formats:["soft","finger"], soft:"Cooked soft and finely chopped or puréed", finger:"Cooked mushroom strip, well softened"},
-  {name:"Onion", group:"garden", formats:["soft"], soft:"Cooked down soft and sweet, stirred into a purée", finger:"Not recommended whole — too fibrous, use as a soft stir-in only"},
+  {name:"Onion", group:"garden", formats:["soft"], soft:"Cooked down soft and sweet, stirred into a purée", finger:"Not recommended whole — too fibrous, use as a soft stir-in only", role:"addin"},
   {name:"Tomato", group:"garden", formats:["soft","finger"], soft:"Skinned, deseeded and cooked down soft", finger:"Skinned wedge, deseeded"},
   {name:"Red lentil", group:"legume", formats:["soft"], soft:"Cooked soft and mashed or blended, dal-style", finger:"Not applicable — too small, choking risk whole"},
   {name:"Chickpea", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — whole chickpeas are a choking hazard"},
@@ -290,8 +290,8 @@ const FOODS = [
   {name:"Black beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet — mash only"},
   {name:"Kidney beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed (never raw or undercooked)", finger:"Not applicable yet"},
   {name:"Cannellini beans", group:"legume", formats:["soft"], soft:"Well cooked and mashed", finger:"Not applicable yet"},
-  {name:"Chia seeds", group:"legume", formats:["soft"], soft:"Soaked until gelled, stirred into a purée", finger:"Not applicable — always soaked and gelled first"},
-  {name:"Flaxseed", group:"legume", formats:["soft"], soft:"Ground and stirred into a purée", finger:"Not applicable — always ground first"},
+  {name:"Chia seeds", group:"legume", formats:["soft"], soft:"Soaked until gelled, stirred into a purée", finger:"Not applicable — always soaked and gelled first", role:"addin"},
+  {name:"Flaxseed", group:"legume", formats:["soft"], soft:"Ground and stirred into a purée", finger:"Not applicable — always ground first", role:"addin"},
   {name:"Rice", group:"carb", formats:["soft"], soft:"Cooked very soft and slightly sticky, mashed", finger:"Not applicable at this stage"},
   {name:"Oats", group:"carb", formats:["soft"], soft:"Cooked into a soft porridge with milk", finger:"Not applicable at this stage"},
   {name:"Quinoa", group:"carb", formats:["soft","finger"], soft:"Cooked very soft, mashed", finger:"Well-cooked, sticky clumps once older"},
@@ -313,7 +313,7 @@ const FOODS = [
   {name:"Wraps", group:"carb", formats:["soft","finger"], soft:"Torn and soaked soft in purée", finger:"Soft strip", allergenLink:"Wheat"},
   {name:"Yoghurt", group:"dairy", formats:["soft"], soft:"Plain, full-fat, unsweetened, offered by spoon", finger:"Not applicable", allergenLink:"Dairy"},
   {name:"Cheese", group:"dairy", formats:["soft","finger"], soft:"Grated and melted into a purée", finger:"Soft cheese cube, mild cheddar", allergenLink:"Dairy"},
-  {name:"Butter/Ghee", group:"dairy", formats:["soft"], soft:"A small knob stirred through a hot purée", finger:"Not applicable", allergenLink:"Dairy"}
+  {name:"Butter/Ghee", group:"dairy", formats:["soft"], soft:"A small knob stirred through a hot purée", finger:"Not applicable", allergenLink:"Dairy", role:"addin"}
 ];
 const FRUITS = [
   {name:"Apple", group:"fruit", formats:["soft","finger"], soft:"Peeled, cored, steamed and puréed", finger:"Steamed, or very ripe soft wedge"},
@@ -344,6 +344,41 @@ const ALLERGENS = [
 ];
 const foodByName = {}; [...FOODS, ...FRUITS].forEach(f=>foodByName[f.name]=f);
 const allergenByName = {}; ALLERGENS.forEach(a=>allergenByName[a.name]=a);
+
+// Curated real dishes to build toward, drawn entirely from the tracked ingredient list.
+// foods[0] and foods[1] are the "core pair" — they progress through Paired -> Spiced pair
+// exactly like any other pairing. Any further foods in the list are folded in only once
+// EVERY ingredient is individually accepted, at which point the suggestion becomes the
+// full named dish (e.g. "Tomato & spinach pasta") instead of a generic two-item combine.
+const TARGET_MEALS = [
+  {name:"Tomato & spinach pasta", foods:["Tomato","Spinach","Spaghetti","Red peppers"], spice:"Basil"},
+  {name:"Carrot & lentil dal", foods:["Carrot","Red lentil","Rice"], spice:"Cumin"},
+  {name:"Broccoli & cheese pasta", foods:["Broccoli","Cheese","Penne"], spice:"Garlic"},
+  {name:"Sweet potato & chickpea mash", foods:["Sweet potato","Chickpea"], spice:"Turmeric"},
+  {name:"Butternut squash risotto", foods:["Butternut squash","Rice","Cheese"], spice:"Garlic"},
+  {name:"Mushroom & pea risotto", foods:["Mushroom","Peas","Rice"], spice:"Garlic"},
+  {name:"Aubergine & tomato bake", foods:["Aubergine","Tomato","Cheese"], spice:"Basil"},
+  {name:"Butter bean & spinach stew", foods:["Butter bean","Spinach","Tomato"], spice:"Cumin"},
+  {name:"Beetroot & butter bean mash", foods:["Beetroot","Butter bean"], spice:"Cumin"},
+  {name:"Green bean & potato mash", foods:["Green beans","Potato"], spice:"Parsley"},
+  {name:"Swede & carrot mash", foods:["Swede","Carrot"], spice:"Ginger"},
+  {name:"Courgette & sweetcorn mash", foods:["Courgette","Sweetcorn"], spice:"Coriander"},
+  {name:"Cauliflower & cheese bake", foods:["Cauliflower","Cheese","Bread/toast"], spice:"Garlic"},
+  {name:"Kale & white bean stew", foods:["Kale","Cannellini beans","Tomato"], spice:"Garlic"}
+];
+function targetMealCoreKey(meal){ return [meal.foods[0], meal.foods[1]].sort().join(' + '); }
+function findTargetMealByCoreKey(key){ return TARGET_MEALS.find(m => targetMealCoreKey(m)===key); }
+
+// Same idea for dessert — once a fruit AND a dairy food are both individually accepted,
+// suggest the named combo (e.g. "Strawberry yoghurt") instead of the fruit alone.
+const DESSERT_COMBOS = [
+  {name:"Strawberry yoghurt", foods:["Strawberries","Yoghurt"]},
+  {name:"Mango yoghurt", foods:["Mango","Yoghurt"]},
+  {name:"Apple & cinnamon yoghurt", foods:["Apple","Yoghurt"], spice:"Cinnamon"},
+  {name:"Banana yoghurt", foods:["Banana","Yoghurt"]},
+  {name:"Blueberry yoghurt", foods:["Blueberries","Yoghurt"]},
+  {name:"Pear & cinnamon yoghurt", foods:["Pear","Yoghurt"], spice:"Cinnamon"}
+];
 
 // ---------------- State ----------------
 let entries = [];
@@ -433,9 +468,14 @@ function computeStats(){
 
 function suggestDessert(stats){
   if(!stats.fruitsUnlocked) return null;
+  for(const combo of DESSERT_COMBOS){
+    if(stats.acceptance[combo.foods[0]] && stats.acceptance[combo.foods[1]]){
+      return {items:[...combo.foods], name:combo.name, spice:combo.spice||null};
+    }
+  }
   const names = FRUITS.map(f=>f.name);
   names.sort((a,b)=> stats.foodExposures[a].length - stats.foodExposures[b].length);
-  return names[0];
+  return {items:[names[0]], name:null, spice:null};
 }
 
 function suggestAllergenAction(stats){
@@ -471,10 +511,15 @@ function suggestNextMeal(stats){
     const p = stats.pairs[key];
     const items = key.split(' + ');
     if(p.spicedCount>=3 && p.lastSpiced!=='Refused' && p.combinedCount===0){
+      const meal = findTargetMealByCoreKey(key);
+      if(meal && meal.foods.every(f=>stats.acceptance[f])){
+        return withAllergen({stage:'Combined dish', items:[...meal.foods], format:'combined', spiceSuggested:true, mealName:meal.name, suggestedSpice:meal.spice});
+      }
       return withAllergen({stage:'Combined dish', items, format:'combined', spiceSuggested:true});
     }
     if(p.count>=3 && p.lastPlain!=='Refused' && p.spicedCount===0){
-      return withAllergen({stage:'Spiced pair', items, format:'both', spiceSuggested:true});
+      const meal = findTargetMealByCoreKey(key);
+      return withAllergen({stage:'Spiced pair', items, format:'both', spiceSuggested:true, suggestedSpice: meal ? meal.spice : undefined, mealName: meal ? meal.name : undefined});
     }
   }
 
@@ -483,14 +528,16 @@ function suggestNextMeal(stats){
       const p = stats.pairs[key];
       const items = key.split(' + ');
       if(p.spicedCount>=1 && p.combinedCount===0 && !(p.spicedCount>=3 && p.lastSpiced!=='Refused')){
-        return {stage:'Spiced pair', items, format:'both', spiceSuggested:true};
+        const meal = findTargetMealByCoreKey(key);
+        return {stage:'Spiced pair', items, format:'both', spiceSuggested:true, suggestedSpice: meal ? meal.spice : undefined, mealName: meal ? meal.name : undefined};
       }
     }
     for(const key in stats.pairs){
       const p = stats.pairs[key];
       const items = key.split(' + ');
       if(p.count>=1 && p.spicedCount===0 && !(p.count>=3 && p.lastPlain!=='Refused')){
-        return {stage:'Paired', items, format:'both', spiceSuggested:false};
+        const meal = findTargetMealByCoreKey(key);
+        return {stage:'Paired', items, format:'both', spiceSuggested:false, mealName: meal ? meal.name : undefined};
       }
     }
     return null;
@@ -510,9 +557,28 @@ function suggestNextMeal(stats){
 
   const accepted = stats.unlockedFoods.filter(f=>stats.acceptance[f]);
   const pairCountFor = f => Object.keys(stats.pairs).filter(k=>k.split(' + ').includes(f)).length;
+  const isAddin = f => (foodByName[f] && foodByName[f].role==='addin');
+
+  // Prefer starting a pair that's the core of a real target dish, when both its foods
+  // are already accepted — this is what actually builds toward named meals rather than
+  // arbitrary fewest-exposure combinations.
+  for(const meal of TARGET_MEALS){
+    const [a,b] = meal.foods.slice(0,2);
+    if(stats.acceptance[a] && stats.acceptance[b]){
+      const key = [a,b].sort().join(' + ');
+      if(!stats.pairs[key]){
+        return withAllergen({stage:'Paired', items:[a,b], format:'both', spiceSuggested:false, mealName:meal.name});
+      }
+    }
+  }
+
   const byFewestPairs = [...accepted].sort((a,b)=> pairCountFor(a)-pairCountFor(b));
   for(let i=0;i<byFewestPairs.length;i++){
     for(let j=i+1;j<byFewestPairs.length;j++){
+      // Skip pairing two "stir-in" items together (e.g. chia + flaxseed) — neither is a
+      // meal on its own, so that combo doesn't read as a sensible dish. At least one side
+      // of any new pairing should be a genuine base food.
+      if(isAddin(byFewestPairs[i]) && isAddin(byFewestPairs[j])) continue;
       const key = [byFewestPairs[i],byFewestPairs[j]].sort().join(' + ');
       if(!stats.pairs[key]){
         return withAllergen({stage:'Paired', items:[byFewestPairs[i],byFewestPairs[j]], format:'both', spiceSuggested:false});
@@ -560,7 +626,7 @@ function projectWeekPlan(stats){
       const d = suggestDessert(fakeStats);
       meals.push({main:s, dessert:d});
       s.items.forEach(it=>{ clone.foodExposures[it] = (clone.foodExposures[it]||0)+1; });
-      if(d) clone.foodExposures[d] = (clone.foodExposures[d]||0)+1;
+      if(d) d.items.forEach(it=>{ clone.foodExposures[it] = (clone.foodExposures[it]||0)+1; });
       if(s.items.length===0 && !d && m===0 && days.length===0) break outer;
     }
     days.push({date, meals, mealsPerDay});
@@ -577,7 +643,7 @@ function projectShoppingList(stats){
     day.meals.forEach(meal=>{
       meal.main.items.forEach(it=>needed.add(it));
       if(meal.main.allergenIngredient) needed.add(meal.main.allergenIngredient);
-      if(meal.dessert) needed.add(meal.dessert);
+      if(meal.dessert) meal.dessert.items.forEach(it=>needed.add(it));
     });
   });
   return [...needed];
@@ -592,12 +658,16 @@ function renderNextMeal(stats){
     el.innerHTML = '<div class="hero-card c-coral"><div class="hc-tag">All caught up</div><div class="hc-items">Every unlocked food is accepted and paired</div><div class="hc-meta">Check back once more foods unlock, or log something yourself below.</div></div>';
     return;
   }
-  const monoRow = s.items.map(it=>badgeSvg(it,30)).join('') + (dessert ? badgeSvg(dessert,30) : '');
-  const namesText = s.items.map(it=>escapeHtml(it)).join(' + ') + (dessert ? ' + '+escapeHtml(dessert)+' (dessert)' : '');
+  const dessertItems = dessert ? dessert.items : [];
+  const monoRow = s.items.map(it=>badgeSvg(it,30)).join('') + dessertItems.map(it=>badgeSvg(it,30)).join('');
+  const mainNamesText = s.mealName ? s.mealName : s.items.map(it=>escapeHtml(it)).join(' + ');
+  const dessertText = dessert ? (dessert.name ? dessert.name : dessert.items.map(it=>escapeHtml(it)).join(' + ')) : null;
+  const namesText = mainNamesText + (dessertText ? ' with '+escapeHtml(dessertText)+' for dessert' : '');
   const metaParts = [];
-  if(s.spiceSuggested) metaParts.push('add a mild spice');
+  if(s.spiceSuggested) metaParts.push(s.suggestedSpice ? 'try: '+s.suggestedSpice : 'add a mild spice');
   metaParts.push('format: '+s.format);
   if(s.allergenTag) metaParts.push(s.allergenTag);
+  if(dessert && dessert.spice) metaParts.push('dessert spice: '+dessert.spice);
   el.innerHTML =
     '<div class="hero-card c-coral">'+
       '<div class="hc-tag">'+s.stage+'</div>'+
@@ -613,12 +683,12 @@ function renderNextMeal(stats){
       format: s.format==='combined' ? 'combined' : (s.format==='both'?'both':'soft'),
       allergenUsed: !!matchedAllergen,
       allergens: matchedAllergen ? [matchedAllergen.name] : [],
-      dessertPrefill: dessert
+      dessertPrefill: dessertItems
     });
   };
   const openThisRecipe = ()=>{
     const matchedAllergen = s.allergenTag ? ALLERGENS.find(a=>s.allergenTag.includes(a.name)) : null;
-    openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [] });
+    openRecipe(s.items, { format: s.format, spiceSuggested: s.spiceSuggested, allergens: matchedAllergen ? [matchedAllergen] : [], mealName: s.mealName, suggestedSpice: s.suggestedSpice });
   };
   document.getElementById('nextMealMono').onclick = openThisRecipe;
   document.getElementById('nextMealNames').onclick = openThisRecipe;
@@ -655,7 +725,7 @@ function renderWeekAhead(stats){
   const rows = plan.map((day,i)=>{
     const dayLabel = i===0 ? 'Today' : i===1 ? 'Tomorrow' : day.date.toLocaleDateString('en-GB',{weekday:'short', day:'numeric'});
     const mealRows = day.meals.map(meal=>{
-      const badges = meal.main.items.map(it=>badgeSvg(it,24)).join('') + (meal.dessert ? badgeSvg(meal.dessert,24) : '');
+      const badges = meal.main.items.map(it=>badgeSvg(it,24)).join('') + (meal.dessert ? meal.dessert.items.map(it=>badgeSvg(it,24)).join('') : '');
       return '<div class="wp-badges">'+(badges||'<span class="empty" style="color:#fff;">—</span>')+'</div>';
     }).join('');
     return '<div class="week-plan-row"><span class="wp-day">'+dayLabel+'</span><div class="wp-meals">'+mealRows+'</div></div>';
@@ -722,13 +792,16 @@ function openRecipe(items, context){
   }
   if(context.spiceNames && context.spiceNames.length){
     body += '<p><b>Spice:</b> stir in a small pinch of '+escapeHtml(context.spiceNames.join(', '))+', ground, no salt.</p>';
+  } else if(context.suggestedSpice){
+    body += '<p><b>Spice:</b> try '+escapeHtml(context.suggestedSpice)+' — a small pinch, ground, no salt.</p>';
   } else if(context.spiceSuggested){
     body += '<p><b>Spice:</b> a mild spice is suggested this time — pick one in the log flow.</p>';
   }
   (context.allergens||[]).forEach(a=>{
     body += '<p><b>Allergen — '+escapeHtml(a.name)+':</b> stir in '+escapeHtml(a.ingredient)+' to combine.</p>';
   });
-  document.getElementById('recipeContent').innerHTML = '<h3>'+escapeHtml(items.join(' + '))+'</h3>' + body;
+  const title = context.mealName || items.join(' + ');
+  document.getElementById('recipeContent').innerHTML = '<h3>'+escapeHtml(title)+'</h3>' + body;
   document.getElementById('recipePanel').classList.add('open');
 }
 window.closeRecipe = closeRecipe;
@@ -779,8 +852,10 @@ function isReviewStep(n){ return n===sheetTotalSteps; }
 function resetSheetState(prefill){
   editingId = (prefill && prefill.editingId) || null;
   selectedItems = (prefill && prefill.items) ? [...prefill.items] : [];
-  if(sheetHasDessert && prefill && prefill.dessertPrefill && !selectedItems.includes(prefill.dessertPrefill) && selectedItems.length<4){
-    selectedItems.push(prefill.dessertPrefill);
+  if(sheetHasDessert && prefill && prefill.dessertPrefill && prefill.dessertPrefill.length){
+    prefill.dessertPrefill.forEach(it=>{
+      if(!selectedItems.includes(it) && selectedItems.length<4) selectedItems.push(it);
+    });
   }
   selectedMealSlot = (prefill && prefill.mealSlot) || null;
   selectedFormat = (prefill && prefill.format) || 'soft';
